@@ -4,8 +4,7 @@
     {
         public enum Stage
         {
-            GROUP_STAGE,
-            //Group,
+            Group,
             RoundOf16,
             QuarterFinal,
             SemiFinal,

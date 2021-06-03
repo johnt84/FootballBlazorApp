@@ -1,0 +1,33 @@
+﻿@page "/groups"
+
+@using Euro2020BlazorApp.Data;
+@using Euro2020BlazorApp.Components;
+@inject IFootballDataService FootballDataService;
+
+<h3>Groups</h3>
+
+@if (groups == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (!groups.Any())
+{
+    <p><em>No groups could be found</em></p>
+}
+else
+{
+    @foreach (var group in groups)
+    {
+        <Group group="group"></Group>
+    }
+}
+
+
+@code {
+    List<Models.Group> groups = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        groups = await FootballDataService.GetGroups();
+    }
+}

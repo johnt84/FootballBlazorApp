@@ -1,0 +1,34 @@
+﻿<h3>Group @group.Name</h3>
+
+<table>
+    <tr>
+        <th></th>
+        <th>Played</th>
+        <th>Won</th>
+        <th>Drawn</th>
+        <th>Lost</th>
+        <th>Goals For</th>
+        <th>Goals Against</th>
+        <th>Goal Difference</th>
+        <th>Points</th>
+    </tr>
+    @foreach (var groupStanding in group.GroupStandings)
+    {
+        <tr>
+            <td>@groupStanding.Team.Name</td>
+            <td>@groupStanding.GamesPlayed</td>
+            <td>@groupStanding.GamesWon</td>
+            <td>@groupStanding.GamesDrawn</td>
+            <td>@groupStanding.GamesLost</td>
+            <td>@groupStanding.GoalsScored</td>
+            <td>@groupStanding.GoalsAgainst</td>
+            <td>@groupStanding.GoalDifference</td>
+            <td>@groupStanding.PointsTotal</td>
+        </tr>
+    }
+</table>
+
+@code {
+    [Parameter]
+    public Models.Group group { get; set; }
+}
