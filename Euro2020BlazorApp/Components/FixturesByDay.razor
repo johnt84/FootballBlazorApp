@@ -1,8 +1,8 @@
 ﻿@if(fixturesExist)
 {
-    <h3>@fixtureDate.ToString("dddd dd MMMM yyyy")</h3>
+    <h3 style="padding-bottom: 10px;">@fixtureDate.ToString("dddd dd MMMM yyyy")</h3>
 
-    <table>
+    <table class="table" style="width: 450px; margin-bottom: 20px;">
         @foreach (var fixture in fixtureByDay.Fixtures)
         {
             <Fixture fixture="fixture"></Fixture>
