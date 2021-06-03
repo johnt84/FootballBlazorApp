@@ -25,7 +25,7 @@ namespace Euro2020BlazorApp.Data
             return groupService.GetGroups();
         }
 
-        public async Task<List<Fixture>> GetFixtures()
+        public async Task<List<FixturesByDay>> GetFixtures()
         {
             string json = await _httpAPIClient.Get($"{ _httpAPIClient._Client.BaseAddress }matches/");
             var model = JsonSerializer.Deserialize<Model>(json);

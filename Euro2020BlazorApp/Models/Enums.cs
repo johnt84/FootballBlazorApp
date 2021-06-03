@@ -5,9 +5,9 @@
         public enum Stage
         {
             Group,
-            RoundOf16,
-            QuarterFinal,
-            SemiFinal,
+            Round_of_16,
+            Quarter_Final,
+            Semi_Final,
             Final,
         }
 
