@@ -2,21 +2,26 @@
 using Euro2020BlazorApp.Models.FootballData;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using static Euro2020BlazorApp.Models.Enums.Enums;
 
 namespace Euro2020BlazorApp.Data
 {
     public class FixtureService
     {
-        Model _model;
+        private readonly Model _model;
+        private readonly ITimeZoneOffsetService _timeZoneOffsetService;
         
-        public FixtureService(Model model)
+        public FixtureService(Model model, ITimeZoneOffsetService timeZoneOffsetService)
         {
             _model = model;
+            _timeZoneOffsetService = timeZoneOffsetService;
         }
 
-        public List<FixturesByDay> GetFixtures()
+        public async Task<List<FixturesByDay>> GetFixtures()
         {
+            int timeZoneOffsetInMinutes = await _timeZoneOffsetService.GetLocalOffsetInMinutes();
+
             var fixtures = _model
                                 .matches
                                 .ToList()
@@ -30,7 +35,7 @@ namespace Euro2020BlazorApp.Data
                                     {
                                         Name = x.awayTeam.name,
                                     },
-                                    FixtureDate = x.utcDate,
+                                    FixtureDate = x.utcDate.AddMinutes(-timeZoneOffsetInMinutes),
                                     Stage = GetStage(x.stage),
                                     Group = new Group()
                                     {
@@ -42,7 +47,7 @@ namespace Euro2020BlazorApp.Data
             return fixtures
                         .GroupBy(x => x.FixtureDate.Date).Select(x => new FixturesByDay()
                         {
-                            FixtureDate = x.Key.Date,
+                            FixtureDate = x.Key,
                             Fixtures = x.ToList(),
                         })
                         .ToList();

@@ -22,6 +22,7 @@ namespace Euro2020BlazorApp
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddHttpClient<HttpAPIClient>();
+            services.AddScoped<ITimeZoneOffsetService, TimeZoneOffsetService>();
             services.AddScoped<IFootballDataService, FootballDataService>();
         }
 

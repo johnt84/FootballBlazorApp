@@ -10,10 +10,12 @@ namespace Euro2020BlazorApp.Data
     public class FootballDataService : IFootballDataService
     {
         private readonly HttpAPIClient _httpAPIClient;
+        private readonly ITimeZoneOffsetService _timeZoneOffsetService;
 
-        public FootballDataService(HttpAPIClient httpAPIClient)
+        public FootballDataService(HttpAPIClient httpAPIClient, ITimeZoneOffsetService timeZoneOffsetService)
         {
             _httpAPIClient = httpAPIClient;
+            _timeZoneOffsetService = timeZoneOffsetService;
         }
 
         public async Task<List<Group>> GetGroups()
@@ -30,8 +32,8 @@ namespace Euro2020BlazorApp.Data
             string json = await _httpAPIClient.Get($"{ _httpAPIClient._Client.BaseAddress }matches/");
             var model = JsonSerializer.Deserialize<Model>(json);
 
-            var fixtureService = new FixtureService(model);
-            return fixtureService.GetFixtures();
+            var fixtureService = new FixtureService(model, _timeZoneOffsetService);
+            return await fixtureService.GetFixtures();
         }
     }
 }
