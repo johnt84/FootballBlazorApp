@@ -9,12 +9,12 @@ namespace Euro2020BlazorApp.Data
 {
     public class FixtureService
     {
-        private readonly Model _model;
+        private readonly FootballDataModel _footballDataModel;
         private readonly ITimeZoneOffsetService _timeZoneOffsetService;
         
-        public FixtureService(Model model, ITimeZoneOffsetService timeZoneOffsetService)
+        public FixtureService(FootballDataModel footballDataModel, ITimeZoneOffsetService timeZoneOffsetService)
         {
-            _model = model;
+            _footballDataModel = footballDataModel;
             _timeZoneOffsetService = timeZoneOffsetService;
         }
 
@@ -22,7 +22,7 @@ namespace Euro2020BlazorApp.Data
         {
             int timeZoneOffsetInMinutes = await _timeZoneOffsetService.GetLocalOffsetInMinutes();
 
-            var fixtures = _model
+            var fixtures = _footballDataModel
                                 .matches
                                 .ToList()
                                 .Select(x => new Fixture()

@@ -21,7 +21,7 @@ namespace Euro2020BlazorApp.Data
         public async Task<List<Group>> GetGroups()
         {
             string json = await _httpAPIClient.Get($"{ _httpAPIClient._Client.BaseAddress }standings/");
-            var model = JsonSerializer.Deserialize<Model>(json);
+            var model = JsonSerializer.Deserialize<FootballDataModel>(json);
 
             var groupService = new GroupService(model);
             return groupService.GetGroups();
@@ -30,7 +30,7 @@ namespace Euro2020BlazorApp.Data
         public async Task<List<FixturesByDay>> GetFixtures()
         {
             string json = await _httpAPIClient.Get($"{ _httpAPIClient._Client.BaseAddress }matches/");
-            var model = JsonSerializer.Deserialize<Model>(json);
+            var model = JsonSerializer.Deserialize<FootballDataModel>(json);
 
             var fixtureService = new FixtureService(model, _timeZoneOffsetService);
             return await fixtureService.GetFixtures();

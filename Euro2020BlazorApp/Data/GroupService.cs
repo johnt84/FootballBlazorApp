@@ -7,18 +7,18 @@ namespace Euro2020BlazorApp.Data
 {
     public class GroupService
     {
-        Model _model;
+        FootballDataModel _footballDataModel;
 
         const string GROUP_ = "GROUP_";
 
-        public GroupService(Model model)
+        public GroupService(FootballDataModel footballDataModel)
         {
-            _model = model;
+            _footballDataModel = footballDataModel;
         }
 
         public List<Group> GetGroups()
         {
-            return _model
+            return _footballDataModel
                         .standings
                         .ToList()
                         .Select(x => new Group()

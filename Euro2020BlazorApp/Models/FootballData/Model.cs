@@ -2,7 +2,7 @@
 
 namespace Euro2020BlazorApp.Models.FootballData
 {
-    public class Model
+    public class FootballDataModel
     {
         public int count { get; set; }
         public Filters filters { get; set; }
