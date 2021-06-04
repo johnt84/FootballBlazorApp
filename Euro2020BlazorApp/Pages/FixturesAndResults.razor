@@ -1,0 +1,32 @@
+﻿@page "/fixturesandresults"
+
+@using Euro2020BlazorApp.Data;
+@using Euro2020BlazorApp.Components;
+@inject IFootballDataService FootballDataService;
+
+<h3 style="padding-bottom: 10px;">Fixtures</h3>
+
+@if (fixturesAndResultsByDay == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (!fixturesAndResultsByDay.Any())
+{
+    <p><em>No fixtures could be found</em></p>
+}
+else
+{
+    @foreach (var fixtureandResultByDay in fixturesAndResultsByDay)
+    {
+        <FixturesAndResultsByDay fixturesAndResultsByDay="fixtureandResultByDay"></FixturesAndResultsByDay>
+    }
+}
+
+@code {
+    private List<Models.FixturesAndResultsByDay> fixturesAndResultsByDay = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        fixturesAndResultsByDay = await FootballDataService.GetFixturesAndResults();
+    }
+}

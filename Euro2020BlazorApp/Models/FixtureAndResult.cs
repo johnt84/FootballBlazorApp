@@ -3,8 +3,9 @@ using static Euro2020BlazorApp.Models.Enums.Enums;
 
 namespace Euro2020BlazorApp.Models
 {
-    public class Fixture
+    public class FixtureAndResult
     {
+        public GameStatus GameStatus { get; set; }
         public Team HomeTeam { get; set; }
         public Team AwayTeam { get; set; }
         public DateTime FixtureDate { get; set; }

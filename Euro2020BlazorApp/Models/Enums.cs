@@ -13,9 +13,16 @@
 
         public enum Result
         {
-            HomeWin,
-            AwayWin,
+            Home_Win,
+            Away_Win,
             Draw,
+        }
+
+        public enum GameStatus
+        {
+            Scheduled,
+            In_Play,
+            Result,
         }
     }
 }

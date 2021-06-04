@@ -27,13 +27,13 @@ namespace Euro2020BlazorApp.Data
             return groupService.GetGroups();
         }
 
-        public async Task<List<FixturesByDay>> GetFixtures()
+        public async Task<List<FixturesAndResultsByDay>> GetFixturesAndResults()
         {
             string json = await _httpAPIClient.Get($"{ _httpAPIClient._Client.BaseAddress }matches/");
             var model = JsonSerializer.Deserialize<FootballDataModel>(json);
 
-            var fixtureService = new FixtureService(model, _timeZoneOffsetService);
-            return await fixtureService.GetFixtures();
+            var fixtureAndResultService = new FixtureAndResultService(model, _timeZoneOffsetService);
+            return await fixtureAndResultService.GetFixturesAndResults();
         }
     }
 }
