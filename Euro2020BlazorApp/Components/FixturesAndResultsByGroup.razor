@@ -1,0 +1,20 @@
+﻿@using Models.Enums;
+
+@if (fixturesAndResultsExist)
+{
+    <h3 style="padding-bottom: 10px;">Fixtures</h3>
+    
+    <table class="table" style="width: 570px; margin-bottom: 20px;">
+        @foreach (var fixtureAndResult in fixturesAndResultsByGroup.FixturesAndResults)
+        {
+            <FixtureAndResult fixtureSource="@Enums.FixtureSource.FixturesByGroup" fixtureAndResult="fixtureAndResult"></FixtureAndResult>
+        }
+    </table>
+}
+
+@code {
+    private bool fixturesAndResultsExist => fixturesAndResultsByGroup != null && (fixturesAndResultsByGroup.FixturesAndResults?.Count ?? 0) > 0;
+
+    [Parameter]
+    public Models.FixturesAndResultsByGroup fixturesAndResultsByGroup { get; set; }
+}

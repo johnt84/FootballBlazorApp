@@ -24,5 +24,11 @@
             In_Play,
             Result,
         }
+
+        public enum FixtureSource
+        {
+            FixturesByDay,
+            FixturesByGroup,
+        }
     }
 }

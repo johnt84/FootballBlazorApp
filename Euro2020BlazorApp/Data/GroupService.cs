@@ -7,41 +7,72 @@ namespace Euro2020BlazorApp.Data
 {
     public class GroupService
     {
-        FootballDataModel _footballDataModel;
+        private readonly FootballDataModel _groupsFootballDataModel;
 
         const string GROUP_ = "GROUP_";
 
-        public GroupService(FootballDataModel footballDataModel)
+        public GroupService(FootballDataModel groupsFootballDataModel)
         {
-            _footballDataModel = footballDataModel;
+            _groupsFootballDataModel = groupsFootballDataModel;
         }
 
         public List<Group> GetGroups()
         {
-            return _footballDataModel
-                        .standings
-                        .ToList()
-                        .Select(x => new Group()
-                        {
-                            Name = x.group.Replace(GROUP_, string.Empty),
-                            GroupStandings = x.table.ToList().Select(y => new GroupStanding()
+            return _groupsFootballDataModel
+                            .standings
+                            .ToList()
+                            .Select(x => new Group()
                             {
-                                Team = new Models.Team()
+                                Name = x.group.Replace(GROUP_, string.Empty),
+                                GroupStandings = x.table.ToList().Select(y => new GroupStanding()
                                 {
-                                    Name = y.team.name,
-                                },
-                                GamesPlayed = y.playedGames,
-                                GamesWon = y.won,
-                                GamesDrawn = y.draw,
-                                GamesLost = y.lost,
-                                GoalsScored = y.goalsFor,
-                                GoalsAgainst = y.goalsAgainst,
-                                GoalDifference = y.goalDifference,
-                                PointsTotal = y.points,
+                                    Team = new Models.Team()
+                                    {
+                                        Name = y.team.name,
+                                    },
+                                    GamesPlayed = y.playedGames,
+                                    GamesWon = y.won,
+                                    GamesDrawn = y.draw,
+                                    GamesLost = y.lost,
+                                    GoalsScored = y.goalsFor,
+                                    GoalsAgainst = y.goalsAgainst,
+                                    GoalDifference = y.goalDifference,
+                                    PointsTotal = y.points,
+                                })
+                                .ToList(),
                             })
-                            .ToList(),
-                        })
-                        .ToList();
+                            .ToList();
+        }
+
+        public Group GetGroup(string groupName)
+        {
+            var group = _groupsFootballDataModel
+                            .standings
+                            .Where(x => x.group == GROUP_ + groupName)
+                            .ToList()
+                            .Select(x => new Group()
+                            {
+                                Name = x.group.Replace(GROUP_, string.Empty),
+                                GroupStandings = x.table.ToList().Select(y => new GroupStanding()
+                                {
+                                    Team = new Models.Team()
+                                    {
+                                        Name = y.team.name,
+                                    },
+                                    GamesPlayed = y.playedGames,
+                                    GamesWon = y.won,
+                                    GamesDrawn = y.draw,
+                                    GamesLost = y.lost,
+                                    GoalsScored = y.goalsFor,
+                                    GoalsAgainst = y.goalsAgainst,
+                                    GoalDifference = y.goalDifference,
+                                    PointsTotal = y.points,
+                                })
+                                .ToList(),
+                            })
+                            .FirstOrDefault();
+
+            return group;
         }
     }
 }

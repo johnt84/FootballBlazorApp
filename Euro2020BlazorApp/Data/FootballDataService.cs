@@ -20,20 +20,46 @@ namespace Euro2020BlazorApp.Data
 
         public async Task<List<Group>> GetGroups()
         {
-            string json = await _httpAPIClient.Get($"{ _httpAPIClient._Client.BaseAddress }standings/");
-            var model = JsonSerializer.Deserialize<FootballDataModel>(json);
+            var footballDataStandings = await GetFootballDataStandings();
 
-            var groupService = new GroupService(model);
+            var groupService = new GroupService(footballDataStandings);
             return groupService.GetGroups();
         }
 
-        public async Task<List<FixturesAndResultsByDay>> GetFixturesAndResults()
+        public async Task<Group> GetGroup(string groupName)
+        {
+            var footballDataStandings = await GetFootballDataStandings();
+
+            var groupService = new GroupService(footballDataStandings);
+            return groupService.GetGroup(groupName);
+        }
+
+        public async Task<List<FixturesAndResultsByDay>> GetFixturesAndResultsByDays()
+        {
+            var footballDataMatches = await GetFootballDataMatches();
+
+            var fixtureAndResultService = new FixtureAndResultService(footballDataMatches, _timeZoneOffsetService);
+            return await fixtureAndResultService.GetFixturesAndResultsByDay();
+        }
+
+        public async Task<FixturesAndResultsByGroup> GetFixturesAndResultsByGroup(Group group)
+        {
+            var footballDataMatches = await GetFootballDataMatches();
+
+            var fixtureAndResultService = new FixtureAndResultService(footballDataMatches, _timeZoneOffsetService);
+            return await fixtureAndResultService.GetFixturesAndResultsByGroup(group);
+        }
+
+        private async Task<FootballDataModel> GetFootballDataMatches()
         {
             string json = await _httpAPIClient.Get($"{ _httpAPIClient._Client.BaseAddress }matches/");
-            var model = JsonSerializer.Deserialize<FootballDataModel>(json);
+            return JsonSerializer.Deserialize<FootballDataModel>(json);
+        }
 
-            var fixtureAndResultService = new FixtureAndResultService(model, _timeZoneOffsetService);
-            return await fixtureAndResultService.GetFixturesAndResults();
+        private async Task<FootballDataModel> GetFootballDataStandings()
+        {
+            string json = await _httpAPIClient.Get($"{ _httpAPIClient._Client.BaseAddress }standings/");
+            return JsonSerializer.Deserialize<FootballDataModel>(json);
         }
     }
 }

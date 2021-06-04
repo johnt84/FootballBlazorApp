@@ -6,5 +6,6 @@ namespace Euro2020BlazorApp.Models
     {
         public string Name { get; set; }
         public List<GroupStanding> GroupStandings { get; set; }
+        public FixturesAndResultsByGroup FixturesAndResultsByGroup { get; set; }
     }
 }
