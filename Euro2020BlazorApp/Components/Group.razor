@@ -1,18 +1,4 @@
-﻿@using Models.Enums;
-
-@switch (ComponentSource)
-{
-    case Enums.ComponentSource.Groups:
-        <a href="groupsandfixtures/@GroupModel.Name">
-            <h2 style="padding-bottom: 10px;">Group @GroupModel.Name</h2>
-        </a>
-        break;
-    case Enums.ComponentSource.GroupsAndFixtures:
-        <h1 style="padding-bottom: 10px;">Group @GroupModel.Name</h1>
-        break;
-    default:
-        break;
-}
+﻿<h2 style="padding-bottom: 10px;">Group @GroupModel.Name</h2>
 
 <table class="table" style="width: 870px; margin-bottom: 20px;">
     <tr>
@@ -42,10 +28,25 @@
     }
 </table>
 
+<div>
+    <button style="margin-bottom: 15px;" @onclick="@ToggleVisbilityOfFixtures">@hideOrShow Fixtures</button>
+    @if (FixturesVisible)
+    {
+        <FixturesAndResultsByGroup FixturesAndResultsByGroupModel="GroupModel.FixturesAndResultsByGroup"></FixturesAndResultsByGroup>
+    }
+</div>
+
+
 @code {
-    [Parameter]
-    public Enums.ComponentSource ComponentSource { get; set; }
+    private bool FixturesVisible { get; set; } = false;
+
+    private string hideOrShow => FixturesVisible ? "Hide" : "Show";
 
     [Parameter]
     public Models.Group GroupModel { get; set; }
+
+    private void ToggleVisbilityOfFixtures()
+    {
+        FixturesVisible = !FixturesVisible;
+    }
 }

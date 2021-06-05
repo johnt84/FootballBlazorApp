@@ -23,15 +23,9 @@ namespace Euro2020BlazorApp.Data
             var footballDataStandings = await GetFootballDataStandings();
 
             var groupService = new GroupService(footballDataStandings);
-            return groupService.GetGroups();
-        }
+            var groups = groupService.GetGroups();
 
-        public async Task<Group> GetGroup(string groupName)
-        {
-            var footballDataStandings = await GetFootballDataStandings();
-
-            var groupService = new GroupService(footballDataStandings);
-            return groupService.GetGroup(groupName);
+            return await GetFixturesAndResultsByGroups(groups);
         }
 
         public async Task<List<FixturesAndResultsByDay>> GetFixturesAndResultsByDays()
@@ -42,12 +36,12 @@ namespace Euro2020BlazorApp.Data
             return await fixtureAndResultService.GetFixturesAndResultsByDay();
         }
 
-        public async Task<FixturesAndResultsByGroup> GetFixturesAndResultsByGroup(Group group)
+        public async Task<List<Group>> GetFixturesAndResultsByGroups(List<Group> groups)
         {
             var footballDataMatches = await GetFootballDataMatches();
 
             var fixtureAndResultService = new FixtureAndResultService(footballDataMatches, _timeZoneOffsetService);
-            return await fixtureAndResultService.GetFixturesAndResultsByGroup(group);
+            return await fixtureAndResultService.GetFixturesAndResultsByGroups(groups);
         }
 
         private async Task<FootballDataModel> GetFootballDataMatches()

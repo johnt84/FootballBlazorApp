@@ -31,35 +31,32 @@ namespace Euro2020BlazorApp.Data
                         .ToList();
         }
 
-        public async Task<FixturesAndResultsByGroup> GetFixturesAndResultsByGroup(Group group)
+        public async Task<List<Group>> GetFixturesAndResultsByGroups(List<Group> groups)
         {
             var fixturesAndResults = await GetFixtureAndResults();
 
-            const string GROUP = "Group";
-
-            var fixturesAndResultsByGroup = fixturesAndResults
-                                                .Where(x => x.Group.Name == $"{GROUP} {group.Name}")
+            var fixturesAndResultsByGroups = fixturesAndResults
                                                 .GroupBy(x => x.Group.Name).Select(x => new FixturesAndResultsByGroup()
                                                 {
                                                     GroupName = x.Key,
                                                     FixturesAndResults = x.ToList(),
                                                 })
-                                                .FirstOrDefault();
+                                                .ToList();
 
-            var fixturesAndResultsByDay = fixturesAndResultsByGroup
-                                            .FixturesAndResults
-                                            .GroupBy(x => x.FixtureDate.Date)
-                                            .Select(x => new FixturesAndResultsByDay() 
-                                            { 
-                                                FixtureDate = x.Key, 
-                                                FixturesAndResults = x.ToList(), 
-                                            })
-                                            .ToList();
+            fixturesAndResultsByGroups
+                            .ForEach(x => x.FixturesAndResultsByDays = x.FixturesAndResults
+                                                                        .GroupBy(x => x.FixtureDate.Date)
+                                                                        .Select(x => new FixturesAndResultsByDay(){FixtureDate = x.Key,FixturesAndResults = x.ToList(),})
+                                                                        .ToList());
 
-            fixturesAndResultsByGroup.Group = group;
-            fixturesAndResultsByGroup.FixturesAndResultsByDays = fixturesAndResultsByDay;
+            const string GROUP = "Group";
 
-            return fixturesAndResultsByGroup;
+            groups
+                .ForEach(x => x.FixturesAndResultsByGroup = fixturesAndResultsByGroups
+                                                              .Where(y => y.GroupName == $"{GROUP} {x.Name}")
+                                                              .FirstOrDefault());
+
+            return groups;
         }
 
         private async Task<List<FixtureAndResult>> GetFixtureAndResults()
