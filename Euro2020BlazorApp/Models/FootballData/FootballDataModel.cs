@@ -95,7 +95,7 @@ namespace Euro2020BlazorApp.Models.FootballData
 
     public class Score
     {
-        public object winner { get; set; }
+        public string winner { get; set; }
         public string duration { get; set; }
         public Fulltime fullTime { get; set; }
         public Halftime halfTime { get; set; }
@@ -105,26 +105,26 @@ namespace Euro2020BlazorApp.Models.FootballData
 
     public class Fulltime
     {
-        public object homeTeam { get; set; }
-        public object awayTeam { get; set; }
+        public int? homeTeam { get; set; }
+        public int? awayTeam { get; set; }
     }
 
     public class Halftime
     {
-        public object homeTeam { get; set; }
-        public object awayTeam { get; set; }
+        public int? homeTeam { get; set; }
+        public int? awayTeam { get; set; }
     }
 
     public class Extratime
     {
-        public object homeTeam { get; set; }
-        public object awayTeam { get; set; }
+        public int? homeTeam { get; set; }
+        public int? awayTeam { get; set; }
     }
 
     public class Penalties
     {
-        public object homeTeam { get; set; }
-        public object awayTeam { get; set; }
+        public int? homeTeam { get; set; }
+        public int? awayTeam { get; set; }
     }
 
     public class Hometeam

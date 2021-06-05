@@ -83,6 +83,9 @@ namespace Euro2020BlazorApp.Data
                                             {
                                                 Name = x.group,
                                             },
+                                            HomeTeamGoals = x.score.fullTime.homeTeam.HasValue ? x.score.fullTime.homeTeam.Value : 0,
+                                            AwayTeamGoals = x.score.fullTime.awayTeam.HasValue ? x.score.fullTime.awayTeam.Value : 0,
+                                            Result = GetResult(x.score?.winner ?? string.Empty)
                                         })
                                         .ToList();
         }
@@ -136,6 +139,28 @@ namespace Euro2020BlazorApp.Data
             }
 
             return gameStatus;
+        }
+
+        private Result GetResult(string winner)
+        {
+            var result = Result.Draw;
+
+            switch (winner)
+            {
+                case "HOME_TEAM":
+                    result = Result.Away_Win;
+                    break;
+                case "AWAY_TEAM":
+                    result = Result.Away_Win;
+                    break;
+                case "DRAW":
+                    result = Result.Draw;
+                    break;
+                default:
+                    break;
+            }
+
+            return result;
         }
     }
 }
