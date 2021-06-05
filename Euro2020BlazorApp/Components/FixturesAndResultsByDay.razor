@@ -14,7 +14,7 @@
             break;
     }
 
-    <table class="table" style="width: 450px; margin-bottom: 20px;">
+    <table class="table" style="@tableStyle">
         @foreach (var fixtureAndResult in FixturesAndResultsByDayModel.FixturesAndResults)
         {
             <FixtureAndResult ComponentSource="ComponentSource" FixtureAndResultModel="fixtureAndResult"></FixtureAndResult>
@@ -25,8 +25,13 @@
 @code {
     private DateTime fixtureDate;
 
-    private bool fixturesAndResultsExist => FixturesAndResultsByDayModel != null 
+    private bool fixturesAndResultsExist => FixturesAndResultsByDayModel != null
                             && (FixturesAndResultsByDayModel.FixturesAndResults?.Count ?? 0) > 0;
+
+
+    private string tableStyle => ComponentSource == Enums.ComponentSource.FixturesAndResults 
+                                        ? "width : 450px; margin-bottom: 20px;" 
+                                        : "width : 325px; margin-bottom: 20px;";
 
     [Parameter]
     public Enums.ComponentSource ComponentSource { get; set; }
