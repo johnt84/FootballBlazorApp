@@ -1,6 +1,18 @@
-﻿<a href="groupsandfixtures/@group.Name">
-    <h2 style="padding-bottom: 10px;">Group @group.Name</h2>
-</a>
+﻿@using Models.Enums;
+
+@switch (ComponentSource)
+{
+    case Enums.ComponentSource.Groups:
+        <a href="groupsandfixtures/@GroupModel.Name">
+            <h2 style="padding-bottom: 10px;">Group @GroupModel.Name</h2>
+        </a>
+        break;
+    case Enums.ComponentSource.GroupsAndFixtures:
+        <h1 style="padding-bottom: 10px;">Group @GroupModel.Name</h1>
+        break;
+    default:
+        break;
+}
 
 <table class="table" style="width: 870px; margin-bottom: 20px;">
     <tr>
@@ -14,7 +26,7 @@
         <th>Goal Difference</th>
         <th>Points</th>
     </tr>
-    @foreach (var groupStanding in group.GroupStandings)
+    @foreach (var groupStanding in GroupModel.GroupStandings)
     {
         <tr>
             <td>@groupStanding.Team.Name</td>
@@ -32,5 +44,8 @@
 
 @code {
     [Parameter]
-    public Models.Group group { get; set; }
+    public Enums.ComponentSource ComponentSource { get; set; }
+
+    [Parameter]
+    public Models.Group GroupModel { get; set; }
 }

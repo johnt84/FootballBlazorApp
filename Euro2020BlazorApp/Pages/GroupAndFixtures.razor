@@ -3,6 +3,7 @@
 
 @using Euro2020BlazorApp.Data;
 @using Euro2020BlazorApp.Components;
+@using Models.Enums;
 @inject IFootballDataService FootballDataService;
 
 @if (group == null || fixturesAndResultsByGroup == null)
@@ -15,9 +16,9 @@ else if (string.IsNullOrEmpty(group.Name) || fixturesAndResultsByGroup.Group == 
 }
 else
 {
-    <Group group="fixturesAndResultsByGroup.Group"></Group>
+    <Group ComponentSource="Enums.ComponentSource.GroupsAndFixtures" GroupModel="fixturesAndResultsByGroup.Group"></Group>
 
-    <FixturesAndResultsByGroup fixturesAndResultsByGroup="fixturesAndResultsByGroup"></FixturesAndResultsByGroup>
+    <FixturesAndResultsByGroup FixturesAndResultsByGroupModel="fixturesAndResultsByGroup"></FixturesAndResultsByGroup>
 }
 
 @code {

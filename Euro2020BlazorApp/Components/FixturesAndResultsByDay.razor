@@ -2,25 +2,40 @@
 
 @if (fixturesAndResultsExist)
 {
-    <h2 style="padding-bottom: 10px;">@fixtureDate.ToString("dddd dd MMMM yyyy")</h2>
+    @switch (ComponentSource)
+    {
+        case Enums.ComponentSource.FixturesAndResults:
+            <h2 style="padding-bottom: 10px;">@fixtureDate.ToString("dddd dd MMMM yyyy")</h2>
+            break;
+        case Enums.ComponentSource.FixturesByGroup:
+            <h3 style="padding-bottom: 10px;">@fixtureDate.ToString("dddd dd MMMM yyyy")</h3>
+            break;
+        default:
+            break;
+    }
 
     <table class="table" style="width: 450px; margin-bottom: 20px;">
-        @foreach (var fixtureAndResult in fixturesAndResultsByDay.FixturesAndResults)
+        @foreach (var fixtureAndResult in FixturesAndResultsByDayModel.FixturesAndResults)
         {
-            <FixtureAndResult fixtureSource="@Enums.FixtureSource.FixturesByDay" fixtureAndResult="fixtureAndResult"></FixtureAndResult>
+            <FixtureAndResult ComponentSource="ComponentSource" FixtureAndResultModel="fixtureAndResult"></FixtureAndResult>
         }
     </table>
 }
 
 @code {
     private DateTime fixtureDate;
-    private bool fixturesAndResultsExist => fixturesAndResultsByDay != null && (fixturesAndResultsByDay.FixturesAndResults?.Count ?? 0) > 0;
+
+    private bool fixturesAndResultsExist => FixturesAndResultsByDayModel != null 
+                            && (FixturesAndResultsByDayModel.FixturesAndResults?.Count ?? 0) > 0;
 
     [Parameter]
-    public Models.FixturesAndResultsByDay fixturesAndResultsByDay { get; set; }
+    public Enums.ComponentSource ComponentSource { get; set; }
+
+    [Parameter]
+    public Models.FixturesAndResultsByDay FixturesAndResultsByDayModel { get; set; }
 
     protected override void OnInitialized()
     {
-        fixtureDate = fixturesAndResultsExist ? fixturesAndResultsByDay.FixtureDate : DateTime.MinValue;
+        fixtureDate = fixturesAndResultsExist ? FixturesAndResultsByDayModel.FixtureDate : DateTime.MinValue;
     }
 }

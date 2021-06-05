@@ -2,10 +2,17 @@
 @using Models;
 
 <tr>
-    <td>@GetFixtureLabel(fixtureAndResult)</td>
-    <td>@GetTeamName(fixtureAndResult.HomeTeam)</td>
-    <td>@GetScoreOrKickOffTime(fixtureAndResult)</td>
-    <td>@GetTeamName(fixtureAndResult.AwayTeam)</td>
+    @switch (ComponentSource)
+    {
+        case Enums.ComponentSource.FixturesAndResults:
+            <td>@GetStageName(FixtureAndResultModel)</td>
+            break;
+        default:
+            break;
+    }
+    <td>@GetTeamName(FixtureAndResultModel.HomeTeam)</td>
+    <td>@GetScoreOrKickOffTime(FixtureAndResultModel)</td>
+    <td>@GetTeamName(FixtureAndResultModel.AwayTeam)</td>
 </tr>
 
 @code {
@@ -30,27 +37,8 @@
                                     : GetScore(fixtureAndResult);
 
     [Parameter]
-    public Enums.FixtureSource fixtureSource { get; set; }
+    public Enums.ComponentSource ComponentSource { get; set; }
 
     [Parameter]
-    public Models.FixtureAndResult fixtureAndResult { get; set; }
-
-    private string GetFixtureLabel(Models.FixtureAndResult fixtureAndResult)
-    {
-        string fixtureLabel = string.Empty;
-
-        switch (fixtureSource)
-        {
-            case Enums.FixtureSource.FixturesByDay:
-                fixtureLabel = GetStageName(fixtureAndResult);
-                break;
-            case Enums.FixtureSource.FixturesByGroup:
-                fixtureLabel = fixtureAndResult.FixtureDate.Date.ToString("dddd dd MMMM yyyy");
-                break;
-            default:
-                break;
-        }
-
-        return fixtureLabel;
-    }
+    public Models.FixtureAndResult FixtureAndResultModel { get; set; }
 }

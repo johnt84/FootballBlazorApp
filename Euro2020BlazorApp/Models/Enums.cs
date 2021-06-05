@@ -25,10 +25,12 @@
             Result,
         }
 
-        public enum FixtureSource
+        public enum ComponentSource
         {
-            FixturesByDay,
+            FixturesAndResults,
             FixturesByGroup,
+            Groups,
+            GroupsAndFixtures,
         }
     }
 }

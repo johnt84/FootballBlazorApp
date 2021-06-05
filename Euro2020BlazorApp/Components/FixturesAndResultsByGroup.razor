@@ -2,19 +2,19 @@
 
 @if (fixturesAndResultsExist)
 {
-    <h3 style="padding-bottom: 10px;">Fixtures</h3>
+    <h2 style="padding-bottom: 10px;">Fixtures</h2>
     
-    <table class="table" style="width: 570px; margin-bottom: 20px;">
-        @foreach (var fixtureAndResult in fixturesAndResultsByGroup.FixturesAndResults)
+    <table class="table" style="width: 450px; margin-bottom: 20px;">
+        @foreach (var fixtureandResultByDay in FixturesAndResultsByGroupModel.FixturesAndResultsByDays)
         {
-            <FixtureAndResult fixtureSource="@Enums.FixtureSource.FixturesByGroup" fixtureAndResult="fixtureAndResult"></FixtureAndResult>
+            <FixturesAndResultsByDay ComponentSource="Enums.ComponentSource.FixturesByGroup" FixturesAndResultsByDayModel="fixtureandResultByDay"></FixturesAndResultsByDay>
         }
     </table>
 }
 
 @code {
-    private bool fixturesAndResultsExist => fixturesAndResultsByGroup != null && (fixturesAndResultsByGroup.FixturesAndResults?.Count ?? 0) > 0;
+    private bool fixturesAndResultsExist => FixturesAndResultsByGroupModel != null && (FixturesAndResultsByGroupModel.FixturesAndResults?.Count ?? 0) > 0;
 
     [Parameter]
-    public Models.FixturesAndResultsByGroup fixturesAndResultsByGroup { get; set; }
+    public Models.FixturesAndResultsByGroup FixturesAndResultsByGroupModel { get; set; }
 }

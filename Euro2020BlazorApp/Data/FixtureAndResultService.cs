@@ -46,7 +46,18 @@ namespace Euro2020BlazorApp.Data
                                                 })
                                                 .FirstOrDefault();
 
+            var fixturesAndResultsByDay = fixturesAndResultsByGroup
+                                            .FixturesAndResults
+                                            .GroupBy(x => x.FixtureDate.Date)
+                                            .Select(x => new FixturesAndResultsByDay() 
+                                            { 
+                                                FixtureDate = x.Key, 
+                                                FixturesAndResults = x.ToList(), 
+                                            })
+                                            .ToList();
+
             fixturesAndResultsByGroup.Group = group;
+            fixturesAndResultsByGroup.FixturesAndResultsByDays = fixturesAndResultsByDay;
 
             return fixturesAndResultsByGroup;
         }

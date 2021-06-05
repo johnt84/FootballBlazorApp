@@ -14,6 +14,5 @@ namespace Euro2020BlazorApp.Models
         public int HomeTeamGoals { get; set; }
         public int AwayTeamGoals { get; set; }
         public Result Result { get; set; }
-
     }
 }
