@@ -28,6 +28,7 @@ namespace Euro2020BlazorApp.Data
                                 {
                                     Team = new Models.Team()
                                     {
+                                        TeamID = y.team.id,
                                         Name = y.team.name,
                                     },
                                     GamesPlayed = y.playedGames,

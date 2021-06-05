@@ -71,10 +71,12 @@ namespace Euro2020BlazorApp.Data
                                             GameStatus = GetGameStatus(x.status),
                                             HomeTeam = new Models.Team()
                                             {
+                                                TeamID = x.homeTeam.id.HasValue ? x.homeTeam.id.Value : 0,
                                                 Name = x.homeTeam.name,
                                             },
                                             AwayTeam = new Models.Team()
                                             {
+                                                TeamID = x.awayTeam.id.HasValue ? x.awayTeam.id.Value : 0,
                                                 Name = x.awayTeam.name,
                                             },
                                             FixtureDate = x.utcDate.AddMinutes(-timeZoneOffsetInMinutes),

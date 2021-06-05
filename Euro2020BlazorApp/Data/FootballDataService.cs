@@ -55,5 +55,11 @@ namespace Euro2020BlazorApp.Data
             string json = await _httpAPIClient.Get($"{ _httpAPIClient._Client.BaseAddress }standings/");
             return JsonSerializer.Deserialize<FootballDataModel>(json);
         }
+
+        private async Task<FootballDataModel> GetTeam(int teamID)
+        {
+            string json = await _httpAPIClient.Get($"{ _httpAPIClient._Client.BaseAddress }teams/{teamID}");
+            return JsonSerializer.Deserialize<FootballDataModel>(json);
+        }
     }
 }

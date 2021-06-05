@@ -29,7 +29,7 @@
 </table>
 
 <div>
-    <button style="margin-bottom: 15px;" @onclick="@ToggleVisbilityOfFixtures">@hideOrShow Fixtures</button>
+    <button class="toggleFixtureAndResultsVisibilityButton" @onclick="@ToggleVisbilityOfFixtures">@hideOrShow Fixtures</button>
     @if (FixturesVisible)
     {
         <FixturesAndResultsByGroup FixturesAndResultsByGroupModel="GroupModel.FixturesAndResultsByGroup"></FixturesAndResultsByGroup>
