@@ -29,8 +29,6 @@
         {
             FixturesAndResults,
             FixturesByGroup,
-            Groups,
-            GroupsAndFixtures,
         }
     }
 }
