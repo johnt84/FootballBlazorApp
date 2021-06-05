@@ -179,7 +179,7 @@ namespace Euro2020BlazorApp.Data
             switch (winner)
             {
                 case "HOME_TEAM":
-                    result = Result.Away_Win;
+                    result = Result.Home_Win;
                     break;
                 case "AWAY_TEAM":
                     result = Result.Away_Win;
