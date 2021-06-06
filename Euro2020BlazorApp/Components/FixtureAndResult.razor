@@ -10,9 +10,9 @@
         default:
             break;
     }
-    <td>@GetTeamName(FixtureAndResultModel.HomeTeam)</td>
+    <td><a href="team/@FixtureAndResultModel.HomeTeam.TeamID">@GetTeamName(FixtureAndResultModel.HomeTeam)</a></td>
     <td>@GetScoreOrKickOffTime(FixtureAndResultModel)</td>
-    <td>@GetTeamName(FixtureAndResultModel.AwayTeam)</td>
+    <td><a href="team/@FixtureAndResultModel.AwayTeam.TeamID">@GetTeamName(FixtureAndResultModel.AwayTeam)</a></td>
 </tr>
 
 @code {

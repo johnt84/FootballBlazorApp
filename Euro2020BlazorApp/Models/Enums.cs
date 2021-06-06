@@ -29,6 +29,7 @@
         {
             FixturesAndResults,
             FixturesByGroup,
+            Team,
         }
     }
 }

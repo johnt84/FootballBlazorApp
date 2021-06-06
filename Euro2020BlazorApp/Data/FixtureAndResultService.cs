@@ -11,11 +11,18 @@ namespace Euro2020BlazorApp.Data
     public class FixtureAndResultService
     {
         private readonly FootballDataModel _fixturesAndResultsFootballDataModel;
+        private readonly Models.FootballData.Team _teamFootballDataModel;
         private readonly ITimeZoneOffsetService _timeZoneOffsetService;
 
         public FixtureAndResultService(FootballDataModel fixturesAndResultsFootballDataModel, ITimeZoneOffsetService timeZoneOffsetService)
         {
             _fixturesAndResultsFootballDataModel = fixturesAndResultsFootballDataModel;
+            _timeZoneOffsetService = timeZoneOffsetService;
+        }
+
+        public FixtureAndResultService(Models.FootballData.Team teamFootballDataModel, ITimeZoneOffsetService timeZoneOffsetService)
+        {
+            _teamFootballDataModel = teamFootballDataModel;
             _timeZoneOffsetService = timeZoneOffsetService;
         }
 
@@ -37,7 +44,8 @@ namespace Euro2020BlazorApp.Data
             var fixturesAndResults = await GetFixtureAndResults();
 
             var fixturesAndResultsByGroups = fixturesAndResults
-                                                .GroupBy(x => x.Group.Name).Select(x => new FixturesAndResultsByGroup()
+                                                .GroupBy(x => x.Group.Name)
+                                                .Select(x => new FixturesAndResultsByGroup()
                                                 {
                                                     GroupName = x.Key,
                                                     FixturesAndResults = x.ToList(),
@@ -60,6 +68,28 @@ namespace Euro2020BlazorApp.Data
             return groups;
         }
 
+        public async Task<Models.Team> GetFixturesAndResultsByTeam(Models.Team team)
+        {
+            var fixturesAndResults = await GetFixtureAndResults();
+
+            var teamsFixtures = fixturesAndResults
+                                    .Where(x => x.HomeTeam.Name == team.Name || x.AwayTeam.Name == team.Name)
+                                    .ToList();
+
+            var teamsFixturesAndResultsByDays = teamsFixtures
+                                                .GroupBy(x => x.FixtureDate.Date)
+                                                .Select(x => new FixturesAndResultsByDay() 
+                                                { 
+                                                    FixtureDate = x.Key,
+                                                    FixturesAndResults = x.ToList(), 
+                                                })
+                                                .ToList();
+
+            team.FixturesAndResultsByDays = teamsFixturesAndResultsByDays;
+
+            return team;
+        }
+
         private async Task<List<FixtureAndResult>> GetFixtureAndResults()
         {
             int timeZoneOffsetInMinutes = await _timeZoneOffsetService.GetLocalOffsetInMinutes();
@@ -67,29 +97,7 @@ namespace Euro2020BlazorApp.Data
             var fixturesAndResults = _fixturesAndResultsFootballDataModel
                                         .matches
                                         .ToList()
-                                        .Select(x => new FixtureAndResult()
-                                        {
-                                            GameStatus = GetGameStatus(x.status),
-                                            HomeTeam = new Models.Team()
-                                            {
-                                                TeamID = x.homeTeam.id.HasValue ? x.homeTeam.id.Value : 0,
-                                                Name = x.homeTeam.name,
-                                            },
-                                            AwayTeam = new Models.Team()
-                                            {
-                                                TeamID = x.awayTeam.id.HasValue ? x.awayTeam.id.Value : 0,
-                                                Name = x.awayTeam.name,
-                                            },
-                                            FixtureDate = x.utcDate.AddMinutes(-timeZoneOffsetInMinutes),
-                                            Stage = GetStage(x.stage),
-                                            Group = new Group()
-                                            {
-                                                Name = x.group,
-                                            },
-                                            HomeTeamGoals = x.score.fullTime.homeTeam.HasValue ? x.score.fullTime.homeTeam.Value : 0,
-                                            AwayTeamGoals = x.score.fullTime.awayTeam.HasValue ? x.score.fullTime.awayTeam.Value : 0,
-                                            Result = GetResult(x.score?.winner ?? string.Empty)
-                                        })
+                                        .Select(x => GetFixtureAndResultFromMatch(x, timeZoneOffsetInMinutes))
                                         .ToList();
 
             return PopulateNotDrawnFixtures(fixturesAndResults);
@@ -119,6 +127,33 @@ namespace Euro2020BlazorApp.Data
                             && string.IsNullOrEmpty(x.AwayTeam.Name));
 
             return fixturesAndResults;
+        }
+
+        private FixtureAndResult GetFixtureAndResultFromMatch(Match match, int timeZoneOffsetInMinutes)
+        {
+            return new FixtureAndResult()
+            {
+                GameStatus = GetGameStatus(match.status),
+                HomeTeam = new Models.Team()
+                {
+                    TeamID = match.homeTeam.id.HasValue ? match.homeTeam.id.Value : 0,
+                    Name = match.homeTeam.name,
+                },
+                AwayTeam = new Models.Team()
+                {
+                    TeamID = match.awayTeam.id.HasValue ? match.awayTeam.id.Value : 0,
+                    Name = match.awayTeam.name,
+                },
+                FixtureDate = match.utcDate.AddMinutes(-timeZoneOffsetInMinutes),
+                Stage = GetStage(match.stage),
+                Group = new Group()
+                {
+                    Name = match.group,
+                },
+                HomeTeamGoals = match.score.fullTime.homeTeam.HasValue ? match.score.fullTime.homeTeam.Value : 0,
+                AwayTeamGoals = match.score.fullTime.awayTeam.HasValue ? match.score.fullTime.awayTeam.Value : 0,
+                Result = GetResult(match.score?.winner ?? string.Empty)
+            };
         }
 
         private Stage GetStage(string stageName)

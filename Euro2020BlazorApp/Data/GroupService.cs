@@ -21,27 +21,7 @@ namespace Euro2020BlazorApp.Data
             return _groupsFootballDataModel
                             .standings
                             .ToList()
-                            .Select(x => new Group()
-                            {
-                                Name = x.group.Replace(GROUP_, string.Empty),
-                                GroupStandings = x.table.ToList().Select(y => new GroupStanding()
-                                {
-                                    Team = new Models.Team()
-                                    {
-                                        TeamID = y.team.id,
-                                        Name = y.team.name,
-                                    },
-                                    GamesPlayed = y.playedGames,
-                                    GamesWon = y.won,
-                                    GamesDrawn = y.draw,
-                                    GamesLost = y.lost,
-                                    GoalsScored = y.goalsFor,
-                                    GoalsAgainst = y.goalsAgainst,
-                                    GoalDifference = y.goalDifference,
-                                    PointsTotal = y.points,
-                                })
-                                .ToList(),
-                            })
+                            .Select(x => GetGroupFromStanding(x))
                             .ToList();
         }
 
@@ -51,29 +31,35 @@ namespace Euro2020BlazorApp.Data
                             .standings
                             .Where(x => x.group == GROUP_ + groupName)
                             .ToList()
-                            .Select(x => new Group()
-                            {
-                                Name = x.group.Replace(GROUP_, string.Empty),
-                                GroupStandings = x.table.ToList().Select(y => new GroupStanding()
-                                {
-                                    Team = new Models.Team()
-                                    {
-                                        Name = y.team.name,
-                                    },
-                                    GamesPlayed = y.playedGames,
-                                    GamesWon = y.won,
-                                    GamesDrawn = y.draw,
-                                    GamesLost = y.lost,
-                                    GoalsScored = y.goalsFor,
-                                    GoalsAgainst = y.goalsAgainst,
-                                    GoalDifference = y.goalDifference,
-                                    PointsTotal = y.points,
-                                })
-                                .ToList(),
-                            })
+                            .Select(x => GetGroupFromStanding(x))
                             .FirstOrDefault();
 
             return group;
+        }
+
+        private Group GetGroupFromStanding(Standing standing)
+        {
+            return new Group()
+            {
+                Name = standing.group.Replace(GROUP_, string.Empty),
+                GroupStandings = standing.table.ToList().Select(y => new GroupStanding()
+                {
+                    Team = new Models.Team()
+                    {
+                        TeamID = y.team.id,
+                        Name = y.team.name,
+                    },
+                    GamesPlayed = y.playedGames,
+                    GamesWon = y.won,
+                    GamesDrawn = y.draw,
+                    GamesLost = y.lost,
+                    GoalsScored = y.goalsFor,
+                    GoalsAgainst = y.goalsAgainst,
+                    GoalDifference = y.goalDifference,
+                    PointsTotal = y.points,
+                })
+                .ToList(),
+            };
         }
     }
 }

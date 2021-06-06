@@ -13,7 +13,8 @@
 }
 
 @code {
-    private bool fixturesAndResultsExist => FixturesAndResultsByGroupModel != null && (FixturesAndResultsByGroupModel.FixturesAndResults?.Count ?? 0) > 0;
+    private bool fixturesAndResultsExist => FixturesAndResultsByGroupModel != null 
+                                            && (FixturesAndResultsByGroupModel.FixturesAndResults?.Count ?? 0) > 0;
 
     [Parameter]
     public Models.FixturesAndResultsByGroup FixturesAndResultsByGroupModel { get; set; }

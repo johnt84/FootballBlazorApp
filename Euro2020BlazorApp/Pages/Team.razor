@@ -1,0 +1,46 @@
+﻿@page "/team/{TeamID:int}"
+
+@using Euro2020BlazorApp.Data;
+@using Euro2020BlazorApp.Components;
+@using Euro2020BlazorApp.Models.Enums;
+@inject IFootballDataService FootballDataService;
+
+@if (team == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (team.TeamID == 0)
+{
+    <p><em>The team could not be found</em></p>
+}
+else
+{
+    <h1 style="padding-bottom: 20px;">@team.Name</h1>
+
+    @if (fixturesAndResultsExist)
+    {
+        <h3 style="padding-bottom: 10px;">Fixtures</h3>
+
+        <table class="table" style="width: 450px; margin-bottom: 20px;">
+            @foreach (var fixtureandResultByDay in team.FixturesAndResultsByDays)
+            {
+                <FixturesAndResultsByDay ComponentSource="Enums.ComponentSource.Team" FixturesAndResultsByDayModel="fixtureandResultByDay"></FixturesAndResultsByDay>
+            }
+        </table>
+    }
+}
+
+@code {
+    private Models.Team team = null;
+
+    private bool fixturesAndResultsExist => team?.FixturesAndResultsByTeam != null
+                                            && (team?.FixturesAndResultsByDays?.Count ?? 0) > 0;
+
+    [Parameter]
+    public int TeamID { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        team = await FootballDataService.GetTeam(TeamID);
+    }
+}
