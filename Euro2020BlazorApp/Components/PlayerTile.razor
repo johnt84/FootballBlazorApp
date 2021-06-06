@@ -1,0 +1,10 @@
+﻿@using Models;
+
+<li>
+    <a>@Player.Name</a>
+</li>
+
+@code {
+    [Parameter]
+    public Player Player { get; set; }
+}

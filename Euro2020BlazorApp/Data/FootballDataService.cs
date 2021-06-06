@@ -38,10 +38,10 @@ namespace Euro2020BlazorApp.Data
             var teamService = new TeamService(footballDataTeam);
             var team = teamService.GetTeam();
 
-            return team;
+            var footballDataMatches = await GetFootballDataMatches();
 
-            //var fixtureAndResultService = new FixtureAndResultService(footballDataTeam, _timeZoneOffsetService);
-            //return await fixtureAndResultService.GetFixturesAndResultsByTeam(team);
+            var fixtureAndResultService = new FixtureAndResultService(footballDataTeam, footballDataMatches, _timeZoneOffsetService);
+            return await fixtureAndResultService.GetFixturesAndResultsByTeam(team);
         }
 
         public async Task<List<FixturesAndResultsByDay>> GetFixturesAndResultsByDays()

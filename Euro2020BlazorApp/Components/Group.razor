@@ -15,7 +15,9 @@
     @foreach (var groupStanding in GroupModel.GroupStandings)
     {
         <tr>
-            <td><a href="team/@groupStanding.Team.TeamID">@groupStanding.Team.Name</a></td>
+            <td>
+                <a href="team/@groupStanding.Team.TeamID">@groupStanding.Team.Name</a>
+            </td>
             <td>@groupStanding.GamesPlayed</td>
             <td>@groupStanding.GamesWon</td>
             <td>@groupStanding.GamesDrawn</td>

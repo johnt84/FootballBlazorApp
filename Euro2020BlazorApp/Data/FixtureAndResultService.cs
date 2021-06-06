@@ -20,9 +20,10 @@ namespace Euro2020BlazorApp.Data
             _timeZoneOffsetService = timeZoneOffsetService;
         }
 
-        public FixtureAndResultService(Models.FootballData.Team teamFootballDataModel, ITimeZoneOffsetService timeZoneOffsetService)
+        public FixtureAndResultService(Models.FootballData.Team teamFootballDataModel, FootballDataModel fixturesAndResultsFootballDataModel, ITimeZoneOffsetService timeZoneOffsetService)
         {
             _teamFootballDataModel = teamFootballDataModel;
+            _fixturesAndResultsFootballDataModel = fixturesAndResultsFootballDataModel;
             _timeZoneOffsetService = timeZoneOffsetService;
         }
 

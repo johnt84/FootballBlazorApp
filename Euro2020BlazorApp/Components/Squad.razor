@@ -1,0 +1,15 @@
+﻿@using Models;
+
+<h3>Squad</h3>
+
+@foreach(var player in Players)
+{
+    <ul>
+        <PlayerTile Player="player"></PlayerTile>
+    </ul>
+}
+
+@code {
+    [Parameter]
+    public List<Player> Players { get; set; }
+}
