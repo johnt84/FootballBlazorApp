@@ -1,6 +1,6 @@
 # Euro 2020 Blazor Server App
 
-Simple Bazor Server Web App which displays information about the the upcoming Euro 2020 football tournament including:
+Simple Blazor Server Web App which displays information about the the upcoming Euro 2020 football tournament including:
 
 * Fixtures and Results
 * Groups
