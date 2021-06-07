@@ -37,11 +37,11 @@ else
         </tr>
     </table>
 
-    <Squad Players="orderedPlayers"></Squad>
+    <Squad PlayersByPosition="team.SquadByPosition" CoachingStaff="team.CoachingStaff"></Squad>
 
     @if (fixturesAndResultsExist)
     {
-        <h3 style="padding-bottom: 10px;">Fixtures</h3>
+        <h2 style="padding-bottom: 10px;">Fixtures</h2>
 
         <button class="toggleFixtureAndResultsVisibilityButton" @onclick="@ToggleVisbilityOfFixtures">@hideOrShow Fixtures</button>
         @if (FixturesVisible)
@@ -66,19 +66,12 @@ else
 
     private string hideOrShow => FixturesVisible ? "Hide" : "Show";
 
-    private List<Models.Player> orderedPlayers = null;
-
     [Parameter]
     public int TeamID { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         team = await FootballDataService.GetTeam(TeamID);
-
-        orderedPlayers = team
-                            .Squad
-                            .OrderBy(x => x.Name)
-                            .ToList();
     }
 
     private void ToggleVisbilityOfFixtures()

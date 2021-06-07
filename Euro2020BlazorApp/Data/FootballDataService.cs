@@ -31,6 +31,14 @@ namespace Euro2020BlazorApp.Data
             return await GetFixturesAndResultsByGroups(groups);
         }
 
+        public async Task<List<Models.Team>> GetTeams()
+        {
+            var footballDataTeams = await GetFootballDataTeams();
+
+            var teamService = new TeamService(footballDataTeams);
+            return teamService.GetTeams();
+        }
+
         public async Task<Models.Team> GetTeam(int teamID)
         {
             var footballDataTeam = await GetFootballDataTeam(teamID);
@@ -70,6 +78,12 @@ namespace Euro2020BlazorApp.Data
         {
             string json = await _httpAPIClient.Get($"{_httpAPIClient._Client.BaseAddress}competitions/{_configuration["Competition"]}/standings/");
             return JsonSerializer.Deserialize<FootballDataModel>(json);
+        }
+
+        private async Task<Teams> GetFootballDataTeams()
+        {
+            string json = await _httpAPIClient.Get($"{_httpAPIClient._Client.BaseAddress}competitions/{_configuration["Competition"]}/teams/");
+            return JsonSerializer.Deserialize<Teams>(json);
         }
 
         private async Task<Models.FootballData.Team> GetFootballDataTeam(int teamID)

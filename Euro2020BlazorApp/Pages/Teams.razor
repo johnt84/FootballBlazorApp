@@ -1,0 +1,34 @@
+﻿@page "/teams"
+
+@using Euro2020BlazorApp.Data;
+@using Euro2020BlazorApp.Components;
+@inject IFootballDataService FootballDataService;
+
+<h1 style="padding-bottom: 20px;">Teams</h1>
+
+@if (teams == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (!teams.Any())
+{
+    <p><em>No teams could be found</em></p>
+}
+else
+{
+    <ul>
+        @foreach (var team in teams)
+        {
+            <TeamTile Team="team"></TeamTile>
+        }
+    </ul>
+}
+
+@code {
+    private List<Models.Team> teams = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        teams = await FootballDataService.GetTeams();
+    }
+}

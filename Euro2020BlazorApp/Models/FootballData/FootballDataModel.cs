@@ -81,6 +81,15 @@ namespace Euro2020BlazorApp.Models.FootballData
         public int goalDifference { get; set; }
     }
 
+    public class Teams
+    {
+        public int count { get; set; }
+        public Filters filters { get; set; }
+        public Competition competition { get; set; }
+        public Season season { get; set; }
+        public Team[] teams { get; set; }
+    }
+
     public class Team
     {
         public int id { get; set; }

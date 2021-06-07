@@ -32,7 +32,8 @@ namespace Euro2020BlazorApp.Data
             var fixturesAndResults = await GetFixtureAndResults();
 
             return fixturesAndResults
-                        .GroupBy(x => x.FixtureDate.Date).Select(x => new FixturesAndResultsByDay()
+                        .GroupBy(x => x.FixtureDate.Date)
+                        .Select(x => new FixturesAndResultsByDay()
                         {
                             FixtureDate = x.Key,
                             FixturesAndResults = x.ToList(),

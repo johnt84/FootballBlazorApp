@@ -7,7 +7,9 @@ namespace Euro2020BlazorApp.Data
     interface IFootballDataService
     {
         public Task<List<Group>> GetGroups();
+        public Task<List<Models.Team>> GetTeams();
         public Task<Models.Team> GetTeam(int teamID);
         public Task<List<FixturesAndResultsByDay>> GetFixturesAndResultsByDays();
+        public Task<List<Group>> GetFixturesAndResultsByGroups(List<Group> groups);
     }
 }

@@ -13,6 +13,8 @@ namespace Euro2020BlazorApp.Models
         public string TeamColours { get; set; }
         public string HomeStadium { get; set; }
         public List<Player> Squad { get; set; }
+        public List<Player> CoachingStaff { get; set; }
+        public List<PlayerByPosition> SquadByPosition { get; set; }
         public Stage StageReached { get; set; }
         public List<FixturesAndResultsByDay> FixturesAndResultsByDays { get; set; }
     }

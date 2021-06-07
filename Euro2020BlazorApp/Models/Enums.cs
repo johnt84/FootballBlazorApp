@@ -31,5 +31,12 @@
             FixturesByGroup,
             Team,
         }
+
+        public enum SquadRole
+        {
+            Player,
+            Coach,
+            Assistant_Coach,
+        }
     }
 }

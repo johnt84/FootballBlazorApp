@@ -25,18 +25,6 @@ namespace Euro2020BlazorApp.Data
                             .ToList();
         }
 
-        public Group GetGroup(string groupName)
-        {
-            var group = _groupsFootballDataModel
-                            .standings
-                            .Where(x => x.group == GROUP_ + groupName)
-                            .ToList()
-                            .Select(x => GetGroupFromStanding(x))
-                            .FirstOrDefault();
-
-            return group;
-        }
-
         private Group GetGroupFromStanding(Standing standing)
         {
             return new Group()
