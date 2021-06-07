@@ -1,10 +1,4 @@
-﻿@*<style>
-        #ulSquadList li {
-            display: inline
-        }
-    </style>*@
-
-@using Models;
+﻿@using Models;
 @using Models.Enums;
 
 <h2>Squad</h2>
@@ -13,27 +7,31 @@
 
 @foreach (var playerByPosition in PlayersByPosition)
 {
-    <h4>@GetPositionLabel(playerByPosition.Position)</h4>
+    <h4 class="playerPositionHeader">@GetPositionLabel(playerByPosition.Position)</h4>
 
     @foreach (var player in GetPlayersOrderedByName(playerByPosition.Players))
     {
-        <ul>
-            <PlayerTile Player="player"></PlayerTile>
-        </ul>
+        <div class="playersContainer">
+            <ul>
+                <PlayerTile Player="player"></PlayerTile>
+            </ul>
+        </div>
     }
 }
 
 @if (CoachingStaff != null && CoachingStaff.Count > 0)
 {
-    <h3>Coaching Staff</h3>
+    <h3 class="playerPositionHeader">Coaching Staff</h3>
 
     @foreach (var coach in CoachingStaff)
     {
         <h4>@GetCoachingRoleLabel(coach.SquadRole)</h4>
 
-        <ul>
-            <PlayerTile Player="coach"></PlayerTile>
-        </ul>
+        <div class="playersContainer">
+            <ul>
+                <PlayerTile Player="coach"></PlayerTile>
+            </ul>
+        </div>
     }
 }
 

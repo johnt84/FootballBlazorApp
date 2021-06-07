@@ -16,12 +16,14 @@ else if (!teams.Any())
 }
 else
 {
-    <ul>
-        @foreach (var team in teams)
-        {
-            <TeamTile Team="team"></TeamTile>
-        }
-    </ul>
+    <div class="teamsContainer">
+        <ul>
+            @foreach (var team in teams)
+            {
+                <TeamTile Team="team"></TeamTile>
+            }
+        </ul>
+    </div>
 }
 
 @code {

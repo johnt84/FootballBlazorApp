@@ -59,3 +59,38 @@ a, .btn-link {
     cursor: pointer;
     margin-bottom: 15px;
 }
+
+.teamsContainer {
+    width: 1140px;
+}
+
+.teamsContainer ul {
+    list-style-type: none;
+    padding-left: 60px;
+}
+
+.teamsContainer ul li {
+    width: 200px;
+    height: 60px;
+    float: left;
+}
+
+.playersContainer {
+    width: 357px;
+    display: inline-block;
+}
+
+.playersContainer ul {
+    list-style-type: none;
+    padding-left: 60px;
+}
+
+.playersContainer ul li {
+    width: 200px;
+    height: 60px;
+    float: left;
+}
+
+.playerPositionHeader {
+    margin-bottom: 15px;
+}
