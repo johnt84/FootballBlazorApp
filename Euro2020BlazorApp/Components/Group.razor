@@ -1,6 +1,6 @@
 ﻿<h2 style="padding-bottom: 10px;">Group @GroupModel.Name</h2>
 
-<table class="table" style="width: 870px; margin-bottom: 20px;">
+<table class="table" style="width: 920px; margin-bottom: 20px;">
     <tr>
         <th></th>
         <th>Played</th>
@@ -16,7 +16,14 @@
     {
         <tr>
             <td>
-                <a href="team/@groupStanding.Team.TeamID">@groupStanding.Team.Name</a>
+                <span>
+                    <span style="padding-right: 8px">
+                        <img src="@groupStanding.Team.TeamCrestUrl" width="40" height="55" />
+                    </span>
+                    <span>
+                        <a href="team/@groupStanding.Team.TeamID">@groupStanding.Team.Name</a>
+                    </span>
+                </span>
             </td>
             <td>@groupStanding.GamesPlayed</td>
             <td>@groupStanding.GamesWon</td>

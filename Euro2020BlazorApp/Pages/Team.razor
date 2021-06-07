@@ -15,7 +15,12 @@ else if (team.TeamID == 0)
 }
 else
 {
-    <h1 style="padding-bottom: 20px;">@team.Name</h1>
+    <table style="margin-bottom: 20px;">
+        <tr>
+            <td style="padding-right: 12px;"><img src="@team.TeamCrestUrl" width="60" height="75" /></td>
+            <td><h1>@team.Name</h1></td>
+        </tr>
+    </table>
 
     <table class="table" style="width: 630px;">
         <tr>

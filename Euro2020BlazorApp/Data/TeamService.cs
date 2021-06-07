@@ -19,6 +19,7 @@ namespace Euro2020BlazorApp.Data
             {
                 TeamID = _teamFootballDataModel.id,
                 Name = _teamFootballDataModel.name,
+                TeamCrestUrl = _teamFootballDataModel.crestUrl,
                 YearFounded = _teamFootballDataModel.founded,
                 Website = _teamFootballDataModel.website,
                 TeamColours = _teamFootballDataModel.clubColors,

@@ -7,7 +7,7 @@ namespace Euro2020BlazorApp.Models
     {
         public int TeamID { get; set; }
         public string Name { get; set; }
-        public string FlagIcon { get; set; }
+        public string TeamCrestUrl { get; set; }
         public int YearFounded { get; set; }
         public string Website { get; set; }
         public string TeamColours { get; set; }
