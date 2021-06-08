@@ -1,0 +1,11 @@
+﻿<div style="color:red; padding-bottom: 20px;">
+    @if (!string.IsNullOrEmpty(Error))
+    {
+        <p><em>@Error</em></p>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string Error { get; set; }
+}

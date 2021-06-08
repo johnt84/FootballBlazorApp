@@ -13,5 +13,7 @@ namespace Euro2020BlazorApp.Models
         public string CountryOfBirth { get; set; }
         public string Nationality { get; set; }
         public int? ShirtNumber { get; set; }
+        public int Age { get; set; }
+        public int SquadSortOrder { get; set; }
     }
 }

@@ -38,5 +38,13 @@
             Coach,
             Assistant_Coach,
         }
+
+        public enum PlayerPosition
+        {
+            Goalkeeper,
+            Defender,
+            Midfielder,
+            Attacker,
+        }
     }
 }

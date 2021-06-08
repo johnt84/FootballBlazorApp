@@ -1,0 +1,38 @@
+﻿@using Models;
+@using Models.Enums;
+
+<h2 style="padding-bottom: 20px;">@playerOrCoachLabel Profile</h2>
+
+<table class="table" style="width:780px; margin-bottom:10px;">
+    <tr>
+        <th>Name</th>
+        <th>@positionOrRoleLabel</th>
+        <th>Age</th>
+        <th>Date of birth</th>
+        <th>Country of birth</th>
+        <th>Nationality</th>
+    </tr>
+    <tr>
+        <td>@Player.Name</td>
+        <td>@positionOrRoleForDisplay</td>
+        <td>@Player.Age</td>
+        <td>@Player.DateOfBirth.ToString("dd MMM yyyy")</td>
+        <td>@Player.CountryOfBirth</td>
+        <td>@Player.Nationality</td>
+    </tr>
+</table>
+
+@code {
+    [Parameter]
+    public Player Player { get; set; }
+
+    private bool isPlayer => Player.SquadRole == Enums.SquadRole.Player;
+
+    private string playerOrCoachLabel => isPlayer ? "Player" : "Coach";
+
+    private string positionOrRoleLabel => isPlayer ? "Position" : "Role";
+
+    private string SquadRoleForDisplay(Enums.SquadRole squadRole) => squadRole.ToString().Replace("_", " ");
+
+    private string positionOrRoleForDisplay => isPlayer ? Player.Position : SquadRoleForDisplay(Player.SquadRole);
+}

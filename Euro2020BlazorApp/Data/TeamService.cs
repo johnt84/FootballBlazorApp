@@ -1,5 +1,6 @@
 ﻿using Euro2020BlazorApp.Models;
 using Euro2020BlazorApp.Models.FootballData;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using static Euro2020BlazorApp.Models.Enums.Enums;
@@ -11,7 +12,7 @@ namespace Euro2020BlazorApp.Data
         private readonly Teams _teamsFootballDataModel;
         private readonly Models.FootballData.Team _teamFootballDataModel;
 
-        public TeamService(Models.FootballData.Teams teamsFootballDataModel)
+        public TeamService(Teams teamsFootballDataModel)
         {
             _teamsFootballDataModel = teamsFootballDataModel;
         }
@@ -62,9 +63,13 @@ namespace Euro2020BlazorApp.Data
 
         private List<Player> GetCoachingStaff(List<Player> squad)
         {
-            return squad
-                    .Where(x => x.SquadRole != SquadRole.Player)
-                    .ToList();
+            var coachingStaff =  squad
+                                .Where(x => x.SquadRole != SquadRole.Player)
+                                .ToList();
+
+            coachingStaff.ForEach(x => x.SquadSortOrder = GetSquadSortOrder(x.SquadRole.ToString()));
+
+            return coachingStaff.OrderBy(x => x.SquadSortOrder).ToList();
         }
 
         private List<PlayerByPosition> GetPlayersByPosition(List<Player> squad)
@@ -75,8 +80,10 @@ namespace Euro2020BlazorApp.Data
                     .Select(x => new PlayerByPosition()
                     {
                         Position = x.Key,
+                        SortOrder = GetSquadSortOrder(x.Key),
                         Players = x.ToList(),
                     })
+                    .OrderBy(x => x.SortOrder)
                     .ToList();
         }
 
@@ -92,6 +99,7 @@ namespace Euro2020BlazorApp.Data
                 CountryOfBirth = squad.countryOfBirth,
                 Nationality = squad.nationality,
                 ShirtNumber = squad.shirtNumber,
+                Age = CalculateAge(squad.dateOfBirth),
             };
         }
 
@@ -115,6 +123,48 @@ namespace Euro2020BlazorApp.Data
             }
 
             return squadRole;
+        }
+
+        private int CalculateAge(DateTime dateOfBirth)
+        {
+            var today = DateTime.Today;
+            int age = today.Year - dateOfBirth.Year;
+            return dateOfBirth > today.AddYears(-age) 
+                                ? age - 1 
+                                : age;
+        }
+
+        private int GetSquadSortOrder(string position)
+        {
+            int squadSortOrder = (int)PlayerPosition.Goalkeeper;
+
+            string positionForDisplay = position.Replace("_", " ");
+
+            switch (positionForDisplay)
+            {
+                case "Goalkeeper":
+                    squadSortOrder = (int)PlayerPosition.Goalkeeper;
+                    break;
+                case "Defender":
+                    squadSortOrder = (int)PlayerPosition.Defender;
+                    break;
+                case "Midfielder":
+                    squadSortOrder = (int)PlayerPosition.Midfielder;
+                    break;
+                case "Attacker":
+                    squadSortOrder = (int)PlayerPosition.Attacker;
+                    break;
+                case "Coach":
+                    squadSortOrder = (int)SquadRole.Coach;
+                    break;
+                case "Assistant Coach":
+                    squadSortOrder = (int)SquadRole.Assistant_Coach;
+                    break;
+                default:
+                    break;
+            }
+
+            return squadSortOrder;
         }
     }
 }

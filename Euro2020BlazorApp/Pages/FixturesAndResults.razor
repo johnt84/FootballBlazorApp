@@ -1,5 +1,6 @@
 ﻿@page "/fixturesandresults"
 
+@using Euro2020BlazorApp.Models;
 @using Euro2020BlazorApp.Data;
 @using Euro2020BlazorApp.Components;
 @using Models.Enums;
@@ -7,13 +8,17 @@
 
 <h1 style="padding-bottom: 10px;">Fixtures</h1>
 
-@if (fixturesAndResultsByDays == null)
+@if (fixturesAndResultsByDays == null && !isInvalidFixturesAndResults)
 {
     <p><em>Loading...</em></p>
 }
+else if (isInvalidFixturesAndResults)
+{
+    <ErrorMessage Error="@ErrorMessage"></ErrorMessage>
+}
 else if (!fixturesAndResultsByDays.Any())
 {
-    <p><em>No fixtures could be found</em></p>
+    <ErrorMessage Error="No fixtures could be found"></ErrorMessage>
 }
 else
 {
@@ -26,8 +31,26 @@ else
 @code {
     private List<Models.FixturesAndResultsByDay> fixturesAndResultsByDays = null;
 
+    private bool isInvalidFixturesAndResults = false;
+
+    private string ErrorMessage { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        fixturesAndResultsByDays = await FootballDataService.GetFixturesAndResultsByDays();
+        try
+        {
+            fixturesAndResultsByDays = await FootballDataService.GetFixturesAndResultsByDays();
+            isInvalidFixturesAndResults = false;
+        }
+        catch (Exception ex) when (ex.Message.Contains(Constants.TOO_MANY_REQUESTS_ERROR_CODE.ToString()))
+        {
+            isInvalidFixturesAndResults = true;
+            ErrorMessage = Constants.TOO_MANY_REQUESTS_ERROR_MESSAGE;
+        }
+        catch (Exception)
+        {
+            isInvalidFixturesAndResults = true;
+            ErrorMessage = $"Could not retrieve any fixtures & results";
+        }
     }
 }
