@@ -12,7 +12,6 @@
     @foreach (var player in GetPlayersOrderedByName(playerByPosition.Players))
     {
         <div class="playersContainer">
-            <button class="toggleFixtureAndResultsVisibilityButton" @onclick="() => ShowPlayerProfile(player)">View Profile</button>
             <ul>
                 <PlayerTile Player="player"></PlayerTile>
             </ul>
@@ -29,18 +28,11 @@
         <h4>@GetCoachingRoleLabel(coach.SquadRole)</h4>
 
         <div class="playersContainer">
-            <button class="toggleFixtureAndResultsVisibilityButton" @onclick="() => ShowPlayerProfile(coach)">View Profile</button>
             <ul>
                 <PlayerTile Player="coach"></PlayerTile>
             </ul>
         </div>
     }
-}
-
-@if (PlayerProfileVisible)
-{
-    <PlayerProfile Player="SelectedPlayer"></PlayerProfile>
-    <button class="toggleFixtureAndResultsVisibilityButton" @onclick="() => HidePlayerProfile()">Hide Profile</button>
 }
 
 @code {
@@ -50,10 +42,6 @@
     [Parameter]
     public List<Models.Player> CoachingStaff { get; set; }
 
-    private bool PlayerProfileVisible { get; set; } = false;
-
-    private Player SelectedPlayer { get; set; } = null;
-
     private string GetPositionLabel(string position) => $"{position}s";
 
     private string GetCoachingRoleLabel(Enums.SquadRole coachingRole) =>
@@ -62,16 +50,5 @@
     private List<Player> GetPlayersOrderedByName(List<Player> players)
     {
         return players.OrderBy(x => x.Name).ToList();
-    }
-
-    private void ShowPlayerProfile(Models.Player player)
-    {
-        SelectedPlayer = player;
-        PlayerProfileVisible = true;
-    }
-
-    private void HidePlayerProfile()
-    {
-        PlayerProfileVisible = false;
     }
 }

@@ -51,7 +51,7 @@ namespace Euro2020BlazorApp.Data
                 Squad = _teamFootballDataModel
                             .squad
                             .ToList()
-                            .Select(x => GetPlayerFromSquad(x))
+                            .Select(x => GetPlayerFromSquad(x, _teamFootballDataModel.id))
                             .ToList(),
             };
 
@@ -87,7 +87,7 @@ namespace Euro2020BlazorApp.Data
                     .ToList();
         }
 
-        private Player GetPlayerFromSquad(Squad squad)
+        private Player GetPlayerFromSquad(Squad squad, int teamID)
         {
             return new Player()
             {
@@ -100,6 +100,7 @@ namespace Euro2020BlazorApp.Data
                 Nationality = squad.nationality,
                 ShirtNumber = squad.shirtNumber,
                 Age = CalculateAge(squad.dateOfBirth),
+                TeamID = teamID,
             };
         }
 

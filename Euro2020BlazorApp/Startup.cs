@@ -1,5 +1,6 @@
 using Euro2020BlazorApp.API;
 using Euro2020BlazorApp.Data;
+using Euro2020BlazorApp.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +25,7 @@ namespace Euro2020BlazorApp
             services.AddHttpClient<HttpAPIClient>();
             services.AddScoped<ITimeZoneOffsetService, TimeZoneOffsetService>();
             services.AddScoped<IFootballDataService, FootballDataService>();
+            services.AddSingleton<FootballDataState>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

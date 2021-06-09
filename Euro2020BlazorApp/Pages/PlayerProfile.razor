@@ -1,0 +1,100 @@
+﻿@page "/playerprofile/{playerid:int}/{teamid:int}"
+
+@using Euro2020BlazorApp.Models;
+@using Euro2020BlazorApp.Data;
+@using Euro2020BlazorApp.Components;
+@using Euro2020BlazorApp.Models.Enums;
+@inject IFootballDataService FootballDataService;
+
+@if (isPageLoading)
+{
+    <p><em>Loading...</em></p>
+}
+else if (isInvalidTeam)
+{
+    <ErrorMessage Error="@ErrorMessage"></ErrorMessage>
+}
+else if (team.TeamID == 0)
+{
+    <ErrorMessage Error="The team could not be found"></ErrorMessage>
+}
+else if (player.PlayerID == 0)
+{
+    <ErrorMessage Error="The player could not be found"></ErrorMessage>
+}
+else
+{
+    <h2 style="padding-bottom: 20px;">@player.Name</h2>
+
+    <table class="table" style="width:780px; margin-bottom:10px;">
+        <tr>
+            <th>@positionOrRoleLabel</th>
+            <th>Age</th>
+            <th>Date of birth</th>
+            <th>Country of birth</th>
+            <th>Nationality</th>
+        </tr>
+        <tr>
+            <td>@positionOrRoleForDisplay</td>
+            <td>@player.Age</td>
+            <td>@player.DateOfBirth.ToString("dd MMM yyyy")</td>
+            <td>@player.CountryOfBirth</td>
+            <td>@player.Nationality</td>
+        </tr>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public int PlayerID { get; set; }
+
+    [Parameter]
+    public int TeamID { get; set; }
+
+    private Models.Team team = null;
+
+    private Player player = null;
+
+    private bool isInvalidTeam = false;
+
+    private string ErrorMessage { get; set; }
+
+    private bool isPlayer => player.SquadRole == Enums.SquadRole.Player;
+
+    private string positionOrRoleLabel => isPlayer ? "Position" : "Role";
+
+    private string SquadRoleForDisplay(Enums.SquadRole squadRole) => squadRole.ToString().Replace("_", " ");
+
+    private string positionOrRoleForDisplay => isPlayer
+                                                ? player.Position
+                                                : SquadRoleForDisplay(player.SquadRole);
+
+    private bool isTeamOrPlayerNotSet => team == null || player == null;
+
+    private bool isPageLoading => isTeamOrPlayerNotSet && !isInvalidTeam;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            team = await FootballDataService.GetTeam(TeamID);
+
+            player = team
+                        .Squad
+                        .Where(x => x.PlayerID == PlayerID)
+                        .FirstOrDefault();
+
+            isInvalidTeam = false;
+        }
+        catch (Exception ex) when (ex.Message.Contains(Constants.TOO_MANY_REQUESTS_ERROR_CODE.ToString()))
+        {
+            isInvalidTeam = true;
+            ErrorMessage = Constants.TOO_MANY_REQUESTS_ERROR_MESSAGE;
+        }
+        catch (Exception)
+        {
+            isInvalidTeam = true;
+            ErrorMessage = $"Could not retrieve a team with team id of {TeamID}";
+        }
+    }
+}

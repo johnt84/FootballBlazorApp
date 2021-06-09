@@ -2,7 +2,9 @@
 using Euro2020BlazorApp.Models;
 using Euro2020BlazorApp.Models.FootballData;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -15,7 +17,17 @@ namespace Euro2020BlazorApp.Data
         private readonly IConfiguration _configuration;
         private readonly FootballDataState _footballDataState;
 
-        public FootballDataService(HttpAPIClient httpAPIClient, ITimeZoneOffsetService timeZoneOffsetService, IConfiguration configuration, FootballDataState footballDataState)
+        private DateTime GetCompetitionStateDate(DateTime startDate) => !_footballDataState.CompetitionStartDate.HasValue
+                                                                            ? startDate
+                                                                            : _footballDataState.CompetitionStartDate.Value;
+
+        private bool CacheRequiresRefresh => DateTime.UtcNow > _footballDataState.CompetitionStartDate
+                                            && DateTime.UtcNow > _footballDataState
+                                                        .LastRefreshTime
+                                                        .AddHours(Convert.ToInt32(_configuration["HoursUntilRefreshCache"].ToString()));
+
+        public FootballDataService(HttpAPIClient httpAPIClient, ITimeZoneOffsetService timeZoneOffsetService
+                                    , IConfiguration configuration, FootballDataState footballDataState)
         {
             _httpAPIClient = httpAPIClient;
             _timeZoneOffsetService = timeZoneOffsetService;
@@ -25,7 +37,12 @@ namespace Euro2020BlazorApp.Data
 
         public async Task<List<Group>> GetGroups()
         {
-            if(_footballDataState != null && _footballDataState.Groups != null)
+            bool groupsCached = _footballDataState != null && _footballDataState.Groups != null;
+            bool groupsCacheRequiresRefresh = !groupsCached
+                                    || CacheRequiresRefresh;
+
+
+            if (!groupsCacheRequiresRefresh)
             {
                 return _footballDataState.Groups;
             }
@@ -37,14 +54,20 @@ namespace Euro2020BlazorApp.Data
 
             var fixturesAndGroups = await GetFixturesAndResultsByGroups(groups);
 
+            _footballDataState.CompetitionStartDate = GetCompetitionStateDate(footballDataStandings.season.startDate);
             _footballDataState.Groups = fixturesAndGroups;
+            _footballDataState.LastRefreshTime = DateTime.UtcNow;
 
             return fixturesAndGroups;
         }
 
         public async Task<List<Models.Team>> GetTeams()
         {
-            if (_footballDataState != null && _footballDataState.Teams != null)
+            bool teamsCached = _footballDataState != null && _footballDataState.Teams != null;
+            bool teamsCacheRequiresRefresh = !teamsCached
+                                                || CacheRequiresRefresh;
+
+            if (!teamsCacheRequiresRefresh)
             {
                 return _footballDataState.Teams;
             }
@@ -56,6 +79,8 @@ namespace Euro2020BlazorApp.Data
             var teams = teamService.GetTeams();
 
             _footballDataState.Teams = teams;
+            _footballDataState.CompetitionStartDate = GetCompetitionStateDate(footballDataTeams.season.startDate);
+            _footballDataState.LastRefreshTime = DateTime.UtcNow;
 
             return teams;
         }
@@ -69,7 +94,11 @@ namespace Euro2020BlazorApp.Data
 
             FootballDataModel footballDataMatches = null;
 
-            if (_footballDataState != null && _footballDataState.FootballDataModel != null)
+            bool footballDataModelCached = _footballDataState != null && _footballDataState.FootballDataModel != null;
+            bool footballDataModelCacheRequiresRefresh = !footballDataModelCached
+                                                || CacheRequiresRefresh;
+
+            if (!footballDataModelCacheRequiresRefresh)
             {
                 footballDataMatches = _footballDataState.FootballDataModel;
             }
@@ -84,7 +113,11 @@ namespace Euro2020BlazorApp.Data
 
         public async Task<List<FixturesAndResultsByDay>> GetFixturesAndResultsByDays()
         {
-            if (_footballDataState != null && _footballDataState.FixturesAndResultsByDays != null)
+            bool fixturesAndResultsCached = _footballDataState != null && _footballDataState.FixturesAndResultsByDays != null;
+            bool fixturesAndResultsCachedCacheRequiresRefresh = !fixturesAndResultsCached
+                                                                    || CacheRequiresRefresh;
+
+            if (!fixturesAndResultsCachedCacheRequiresRefresh)
             {
                 return _footballDataState.FixturesAndResultsByDays;
             }
@@ -97,6 +130,14 @@ namespace Euro2020BlazorApp.Data
 
             _footballDataState.FixturesAndResultsByDays = fixturesAndResultsByDay;
             _footballDataState.FootballDataModel = footballDataMatches;
+
+            var startDate = footballDataMatches != null && footballDataMatches.matches != null
+                            ? footballDataMatches.matches.ToList().First().season.startDate
+                            : DateTime.MinValue;
+
+            _footballDataState.CompetitionStartDate = GetCompetitionStateDate(startDate);
+
+            _footballDataState.LastRefreshTime = DateTime.UtcNow;
 
             return fixturesAndResultsByDay;
         }
@@ -116,6 +157,7 @@ namespace Euro2020BlazorApp.Data
 
             _footballDataState.FixturesAndResultsByGroups = fixturesAndResultsByGroups;
             _footballDataState.FootballDataModel = footballDataMatches;
+            _footballDataState.LastRefreshTime = DateTime.UtcNow;
 
             return fixturesAndResultsByGroups;
         }
