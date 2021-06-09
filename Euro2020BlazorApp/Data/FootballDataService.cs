@@ -26,6 +26,9 @@ namespace Euro2020BlazorApp.Data
                                                         .LastRefreshTime
                                                         .AddHours(Convert.ToInt32(_configuration["HoursUntilRefreshCache"].ToString()));
 
+        bool IsTeamsCached(FootballDataState footballDataState) => footballDataState != null 
+                                                                    && footballDataState.Teams != null;
+
         public FootballDataService(HttpAPIClient httpAPIClient, ITimeZoneOffsetService timeZoneOffsetService
                                     , IConfiguration configuration, FootballDataState footballDataState)
         {
@@ -37,42 +40,135 @@ namespace Euro2020BlazorApp.Data
 
         public async Task<List<Group>> GetGroups()
         {
-            bool groupsCached = _footballDataState != null && _footballDataState.Groups != null;
-            bool groupsCacheRequiresRefresh = !groupsCached
-                                    || CacheRequiresRefresh;
-
-
-            if (!groupsCacheRequiresRefresh)
-            {
-                return _footballDataState.Groups;
-            }
-            
             var footballDataStandings = await GetFootballDataStandings();
 
             var groupService = new GroupService(footballDataStandings);
             var groups = groupService.GetGroups();
 
-            var fixturesAndGroups = await GetFixturesAndResultsByGroups(groups);
-
-            _footballDataState.CompetitionStartDate = GetCompetitionStateDate(footballDataStandings.season.startDate);
-            _footballDataState.Groups = fixturesAndGroups;
-            _footballDataState.LastRefreshTime = DateTime.UtcNow;
-
-            return fixturesAndGroups;
+            return await GetFixturesAndResultsByGroups(groups);
         }
 
         public async Task<List<Models.Team>> GetTeams()
         {
-            bool teamsCached = _footballDataState != null && _footballDataState.Teams != null;
-            bool teamsCacheRequiresRefresh = !teamsCached
-                                                || CacheRequiresRefresh;
-
-            if (!teamsCacheRequiresRefresh)
+            if (IsTeamsCached(_footballDataState))
             {
                 return _footballDataState.Teams;
             }
 
-            var footballDataTeams = await GetFootballDataTeams();
+            return await GetTeamsAndUpdateCache();
+        }
+
+        public async Task<Models.Team> GetTeam(int teamID)
+        {
+            List<Models.Team> teams = null;
+
+            if (IsTeamsCached(_footballDataState))
+            {
+                teams = _footballDataState.Teams.ToList();
+            }
+            else
+            {
+                teams = await GetTeamsAndUpdateCache();
+            }
+
+            var teamWithSquad = teams
+                                .Where(x => x.TeamID == teamID
+                                        && x.Squad != null && x.Squad.Count > 0)
+                                .FirstOrDefault();
+
+            if (teamWithSquad == null)
+            {
+                var footballDataTeam = await GetFootballDataTeamFromAPI(teamID);
+
+                var teamService = new TeamService(footballDataTeam);
+                teamWithSquad = teamService.GetTeam();
+
+                var teamInCacheToUpdate = _footballDataState
+                                            .Teams
+                                            .First(x => x.TeamID == teamID);
+
+                int teamInCacheToUpdateIndex = _footballDataState.Teams.IndexOf(teamInCacheToUpdate);
+                _footballDataState.Teams[teamInCacheToUpdateIndex] = teamWithSquad;
+            }
+
+            var footballDataMatches = await GetFootballDataMatches();
+
+            var fixtureAndResultService = new FixtureAndResultService(footballDataMatches, _timeZoneOffsetService);
+            return await fixtureAndResultService.GetFixturesAndResultsByTeam(teamWithSquad);
+        }
+
+        public async Task<List<FixturesAndResultsByDay>> GetFixturesAndResultsByDays()
+        {
+            var footballDataMatches = await GetFootballDataMatches();
+
+            var fixtureAndResultService = new FixtureAndResultService(footballDataMatches, _timeZoneOffsetService);
+
+            return await fixtureAndResultService.GetFixturesAndResultsByDay();
+        }
+
+        public async Task<List<Group>> GetFixturesAndResultsByGroups(List<Group> groups)
+        {
+            var footballDataMatches = await GetFootballDataMatches();
+
+            var fixtureAndResultService = new FixtureAndResultService(footballDataMatches, _timeZoneOffsetService);
+
+            return await fixtureAndResultService.GetFixturesAndResultsByGroups(groups);
+        }
+
+        private async Task<FootballDataModel> GetFootballDataMatches()
+        {
+            bool footballDataMatchesCached = _footballDataState != null && _footballDataState.FootballDataMatches != null;
+            bool footballDataMatchesCacheRequiresRefresh = !footballDataMatchesCached
+                                                || CacheRequiresRefresh;
+
+            FootballDataModel footballDataMatches = null;
+
+            if (!footballDataMatchesCacheRequiresRefresh)
+            {
+                footballDataMatches = _footballDataState.FootballDataMatches;
+            }
+            else
+            {
+                footballDataMatches = await GetFootballDataMatchesFromAPI();
+
+                var startDate = footballDataMatches != null && footballDataMatches.matches != null
+                                ? footballDataMatches.matches.ToList().First().season.startDate
+                                : DateTime.MinValue;
+
+                _footballDataState.FootballDataMatches = footballDataMatches;
+                _footballDataState.CompetitionStartDate = GetCompetitionStateDate(startDate);
+                _footballDataState.LastRefreshTime = DateTime.UtcNow;
+            }
+
+            return footballDataMatches;
+        }
+
+        private async Task<FootballDataModel> GetFootballDataStandings()
+        {
+            bool footballDataStandingsCached = _footballDataState != null && _footballDataState.FootballDataStandings != null;
+            bool footballDataModelCacheRequiresRefresh = !footballDataStandingsCached
+                                                || CacheRequiresRefresh;
+
+            FootballDataModel footballDataStandings = null;
+
+            if (!footballDataModelCacheRequiresRefresh)
+            {
+                footballDataStandings = _footballDataState.FootballDataStandings;
+            }
+            else
+            {
+                footballDataStandings = await GetFootballDataStandingsFromAPI();
+                _footballDataState.FootballDataStandings = footballDataStandings;
+                _footballDataState.CompetitionStartDate = GetCompetitionStateDate(footballDataStandings.season.startDate);
+                _footballDataState.LastRefreshTime = DateTime.UtcNow;
+            }
+
+            return footballDataStandings;
+        }
+
+        private async Task<List<Models.Team>> GetTeamsAndUpdateCache()
+        {
+            var footballDataTeams = await GetFootballDataTeamsFromAPI();
 
             var teamService = new TeamService(footballDataTeams);
 
@@ -85,102 +181,25 @@ namespace Euro2020BlazorApp.Data
             return teams;
         }
 
-        public async Task<Models.Team> GetTeam(int teamID)
-        {
-            var footballDataTeam = await GetFootballDataTeam(teamID);
-
-            var teamService = new TeamService(footballDataTeam);
-            var team = teamService.GetTeam();
-
-            FootballDataModel footballDataMatches = null;
-
-            bool footballDataModelCached = _footballDataState != null && _footballDataState.FootballDataModel != null;
-            bool footballDataModelCacheRequiresRefresh = !footballDataModelCached
-                                                || CacheRequiresRefresh;
-
-            if (!footballDataModelCacheRequiresRefresh)
-            {
-                footballDataMatches = _footballDataState.FootballDataModel;
-            }
-            else
-            {
-                footballDataMatches = await GetFootballDataMatches();
-            }
-
-            var fixtureAndResultService = new FixtureAndResultService(footballDataTeam, footballDataMatches, _timeZoneOffsetService);
-            return await fixtureAndResultService.GetFixturesAndResultsByTeam(team);
-        }
-
-        public async Task<List<FixturesAndResultsByDay>> GetFixturesAndResultsByDays()
-        {
-            bool fixturesAndResultsCached = _footballDataState != null && _footballDataState.FixturesAndResultsByDays != null;
-            bool fixturesAndResultsCachedCacheRequiresRefresh = !fixturesAndResultsCached
-                                                                    || CacheRequiresRefresh;
-
-            if (!fixturesAndResultsCachedCacheRequiresRefresh)
-            {
-                return _footballDataState.FixturesAndResultsByDays;
-            }
-
-            var footballDataMatches = await GetFootballDataMatches();
-
-            var fixtureAndResultService = new FixtureAndResultService(footballDataMatches, _timeZoneOffsetService);
-
-            var fixturesAndResultsByDay = await fixtureAndResultService.GetFixturesAndResultsByDay();
-
-            _footballDataState.FixturesAndResultsByDays = fixturesAndResultsByDay;
-            _footballDataState.FootballDataModel = footballDataMatches;
-
-            var startDate = footballDataMatches != null && footballDataMatches.matches != null
-                            ? footballDataMatches.matches.ToList().First().season.startDate
-                            : DateTime.MinValue;
-
-            _footballDataState.CompetitionStartDate = GetCompetitionStateDate(startDate);
-
-            _footballDataState.LastRefreshTime = DateTime.UtcNow;
-
-            return fixturesAndResultsByDay;
-        }
-
-        public async Task<List<Group>> GetFixturesAndResultsByGroups(List<Group> groups)
-        {
-            if (_footballDataState != null && _footballDataState.FixturesAndResultsByGroups != null)
-            {
-                return _footballDataState.FixturesAndResultsByGroups;
-            }
-
-            var footballDataMatches = await GetFootballDataMatches();
-
-            var fixtureAndResultService = new FixtureAndResultService(footballDataMatches, _timeZoneOffsetService);
-
-            var fixturesAndResultsByGroups = await fixtureAndResultService.GetFixturesAndResultsByGroups(groups);
-
-            _footballDataState.FixturesAndResultsByGroups = fixturesAndResultsByGroups;
-            _footballDataState.FootballDataModel = footballDataMatches;
-            _footballDataState.LastRefreshTime = DateTime.UtcNow;
-
-            return fixturesAndResultsByGroups;
-        }
-
-        private async Task<FootballDataModel> GetFootballDataMatches()
+        private async Task<FootballDataModel> GetFootballDataMatchesFromAPI()
         {
             string json = await _httpAPIClient.Get($"{_httpAPIClient._Client.BaseAddress}competitions/{_configuration["Competition"]}/matches/");
             return JsonSerializer.Deserialize<FootballDataModel>(json);
         }
 
-        private async Task<FootballDataModel> GetFootballDataStandings()
+        private async Task<FootballDataModel> GetFootballDataStandingsFromAPI()
         {
             string json = await _httpAPIClient.Get($"{_httpAPIClient._Client.BaseAddress}competitions/{_configuration["Competition"]}/standings/");
             return JsonSerializer.Deserialize<FootballDataModel>(json);
         }
 
-        private async Task<Teams> GetFootballDataTeams()
+        private async Task<Teams> GetFootballDataTeamsFromAPI()
         {
             string json = await _httpAPIClient.Get($"{_httpAPIClient._Client.BaseAddress}competitions/{_configuration["Competition"]}/teams/");
             return JsonSerializer.Deserialize<Teams>(json);
         }
 
-        private async Task<Models.FootballData.Team> GetFootballDataTeam(int teamID)
+        private async Task<Models.FootballData.Team> GetFootballDataTeamFromAPI(int teamID)
         {
             string json = await _httpAPIClient.Get($"{_httpAPIClient._Client.BaseAddress}teams/{teamID}");
             return JsonSerializer.Deserialize<Models.FootballData.Team>(json);
