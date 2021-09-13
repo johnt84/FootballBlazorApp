@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Euro2020BlazorApp", "Euro20
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tester", "Tester\Tester.csproj", "{0EC128C9-93F8-4CCB-8F66-41DDF09CB046}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Euro2020UnitTest", "Euro2020UnitTest\Euro2020UnitTest.csproj", "{F6B64A5C-A8DE-4102-BE20-6FD56B5D881A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{0EC128C9-93F8-4CCB-8F66-41DDF09CB046}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EC128C9-93F8-4CCB-8F66-41DDF09CB046}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EC128C9-93F8-4CCB-8F66-41DDF09CB046}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6B64A5C-A8DE-4102-BE20-6FD56B5D881A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6B64A5C-A8DE-4102-BE20-6FD56B5D881A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6B64A5C-A8DE-4102-BE20-6FD56B5D881A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6B64A5C-A8DE-4102-BE20-6FD56B5D881A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

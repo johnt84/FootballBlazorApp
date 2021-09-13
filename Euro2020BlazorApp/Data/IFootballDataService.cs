@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Euro2020BlazorApp.Data
 {
-    interface IFootballDataService
+    public interface IFootballDataService
     {
         public Task<List<Group>> GetGroups();
         public Task<List<Models.Team>> GetTeams();
