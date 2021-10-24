@@ -30,7 +30,7 @@ namespace FootballBlazorApp.Data
                         .Select(x => new Models.Team()
                         {
                             TeamID = x.id,
-                            Name = x.name,
+                            Name = x.shortName,
                             TeamCrestUrl = x.crestUrl,
                         })
                         .OrderBy(x => x.Name)
@@ -42,7 +42,7 @@ namespace FootballBlazorApp.Data
             var team = new Models.Team()
             {
                 TeamID = _teamFootballDataModel.id,
-                Name = _teamFootballDataModel.name,
+                Name = _teamFootballDataModel.shortName,
                 TeamCrestUrl = _teamFootballDataModel.crestUrl,
                 YearFounded = _teamFootballDataModel.founded,
                 Website = _teamFootballDataModel.website,
