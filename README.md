@@ -1,6 +1,6 @@
 # Football Blazor Server App
 
-Simple Blazor Server Web App which displays information about a chosen competition.  Currently configured to the English Premier League.  Informaiton is shown consists of:
+Simple Blazor Server Web App which displays information about a chosen competition.  Currently configured to the English Premier League.  Information shown consists of:
 
 * Fixtures and Results
 * Groups
