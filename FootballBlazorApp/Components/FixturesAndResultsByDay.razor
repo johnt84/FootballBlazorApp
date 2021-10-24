@@ -1,0 +1,53 @@
+﻿@using Models.Enums;
+
+@if (fixturesAndResultsExist)
+{
+    @switch (ComponentSource)
+    {
+        case Enums.ComponentSource.FixturesAndResults:
+        case Enums.ComponentSource.Team:
+            <h2 style="padding-bottom: 10px;">@fixtureDate.ToString("dddd dd MMMM yyyy")</h2>
+            break;
+        case Enums.ComponentSource.FixturesByGroup:
+            <h4 style="padding-bottom: 10px;">@fixtureDate.ToString("dddd dd MMMM yyyy")</h4>
+            break;
+        default:
+            break;
+    }
+
+    <table class="table" style="@tableStyle">
+        @foreach (var fixtureAndResult in fixturesAndResults)
+        {
+            <FixtureAndResult ComponentSource="ComponentSource" FixtureAndResultModel="fixtureAndResult"></FixtureAndResult>
+        }
+    </table>
+}
+
+@code {
+    private DateTime fixtureDate;
+
+    private bool fixturesAndResultsExist => FixturesAndResultsByDayModel != null
+                            && (FixturesAndResultsByDayModel.FixturesAndResults?.Count ?? 0) > 0;
+
+
+    private string tableStyle => ComponentSource == Enums.ComponentSource.FixturesAndResults
+                                        ? "width : 670px; margin-bottom: 20px;"
+                                        : "width : 480px; margin-bottom: 20px;";
+
+    private List<Models.FixtureAndResult> fixturesAndResults;
+
+    [Parameter]
+    public Enums.ComponentSource ComponentSource { get; set; }
+
+    [Parameter]
+    public Models.FixturesAndResultsByDay FixturesAndResultsByDayModel { get; set; }
+
+    protected override void OnInitialized()
+    {
+        fixtureDate = fixturesAndResultsExist ? FixturesAndResultsByDayModel.FixtureDate : DateTime.MinValue;
+        fixturesAndResults = FixturesAndResultsByDayModel
+                                .FixturesAndResults.OrderBy(x => x.FixtureDate)
+                                .ThenBy(x => x.HomeTeam.Name)
+                                .ToList();
+    }
+}
