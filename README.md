@@ -1,6 +1,6 @@
-# Euro 2020 Blazor Server App
+# Football Blazor Server App
 
-Simple Blazor Server Web App which displays information about the the upcoming <a href="https://www.uefa.com/uefaeuro-2020/">Euro 2020</a> football tournament including:
+Simple Blazor Server Web App which displays information about a chosen competition.  Currently configured to the English Premier League.  Informaiton is shown consists of:
 
 * Fixtures and Results
 * Groups
