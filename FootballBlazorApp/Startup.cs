@@ -22,7 +22,7 @@ namespace FootballBlazorApp
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddHttpClient<HttpAPIClient>();
+            services.AddHttpClient<IHttpAPIClient, HttpAPIClient>();
             services.AddScoped<ITimeZoneOffsetService, TimeZoneOffsetService>();
             services.AddScoped<IFootballDataService, FootballDataService>();
             services.AddSingleton<FootballDataState>();

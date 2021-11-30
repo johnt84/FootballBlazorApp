@@ -14,12 +14,12 @@ namespace FootballBlazorApp.API
         public HttpAPIClient(HttpClient httpClient, IConfiguration configuration)
         {
             _configuration = configuration;
-            httpClient.BaseAddress = new Uri(_configuration["FootballDataAPIUrl"]);
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            httpClient.DefaultRequestHeaders.Add("X-Auth-Token", _configuration["APIToken"]);
-
             _Client = httpClient;
+
+            _Client.BaseAddress = new Uri(_configuration["FootballDataAPIUrl"]);
+            _Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            _Client.DefaultRequestHeaders.Add("X-Auth-Token", _configuration["APIToken"]);
         }
 
         public async Task<string> Get(string url)
