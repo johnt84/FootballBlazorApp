@@ -12,7 +12,7 @@ namespace FootballBlazorApp.Data
 {
     public class FootballDataService : IFootballDataService
     {
-        private readonly HttpAPIClient _httpAPIClient;
+        private readonly IHttpAPIClient _httpAPIClient;
         private readonly ITimeZoneOffsetService _timeZoneOffsetService;
         private readonly IConfiguration _configuration;
         private readonly FootballDataState _footballDataState;
@@ -29,7 +29,7 @@ namespace FootballBlazorApp.Data
         bool IsTeamsCached(FootballDataState footballDataState) => footballDataState != null 
                                                                     && footballDataState.Teams != null;
 
-        public FootballDataService(HttpAPIClient httpAPIClient, ITimeZoneOffsetService timeZoneOffsetService
+        public FootballDataService(IHttpAPIClient httpAPIClient, ITimeZoneOffsetService timeZoneOffsetService
                                     , IConfiguration configuration, FootballDataState footballDataState)
         {
             _httpAPIClient = httpAPIClient;
@@ -183,25 +183,25 @@ namespace FootballBlazorApp.Data
 
         private async Task<FootballDataModel> GetFootballDataMatchesFromAPI()
         {
-            string json = await _httpAPIClient.Get($"{_httpAPIClient._Client.BaseAddress}competitions/{_configuration["Competition"]}/matches/");
+            string json = await _httpAPIClient.Get($"competitions/{_configuration["Competition"]}/matches/");
             return JsonSerializer.Deserialize<FootballDataModel>(json);
         }
 
         private async Task<FootballDataModel> GetFootballDataStandingsFromAPI()
         {
-            string json = await _httpAPIClient.Get($"{_httpAPIClient._Client.BaseAddress}competitions/{_configuration["Competition"]}/standings/");
+            string json = await _httpAPIClient.Get($"competitions/{_configuration["Competition"]}/standings/");
             return JsonSerializer.Deserialize<FootballDataModel>(json);
         }
 
         private async Task<Teams> GetFootballDataTeamsFromAPI()
         {
-            string json = await _httpAPIClient.Get($"{_httpAPIClient._Client.BaseAddress}competitions/{_configuration["Competition"]}/teams/");
+            string json = await _httpAPIClient.Get($"competitions/{_configuration["Competition"]}/teams/");
             return JsonSerializer.Deserialize<Teams>(json);
         }
 
         private async Task<Models.FootballData.Team> GetFootballDataTeamFromAPI(int teamID)
         {
-            string json = await _httpAPIClient.Get($"{_httpAPIClient._Client.BaseAddress}teams/{teamID}");
+            string json = await _httpAPIClient.Get($"teams/{teamID}");
             return JsonSerializer.Deserialize<Models.FootballData.Team>(json);
         }
     }
