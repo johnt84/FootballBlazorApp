@@ -1,0 +1,62 @@
+﻿@using Models.Enums;
+@using Models;
+
+<tr>
+    @switch (ComponentSource)
+    {
+        case Enums.ComponentSource.FixturesAndResults:
+            <td>@GetStageName(FixtureAndResultModel)</td>
+            break;
+        default:
+            break;
+    }
+    <td>
+        @if (FixtureAndResultModel.HomeTeam.TeamID > 0)
+        {
+            <a href="team/@FixtureAndResultModel.HomeTeam.TeamID">@GetTeamName(FixtureAndResultModel.HomeTeam)</a>
+        }
+        else
+        {
+            @GetTeamName(FixtureAndResultModel.HomeTeam)
+        }
+    </td>
+    <td>@GetScoreOrKickOffTime(FixtureAndResultModel)</td>
+    <td>
+        @if (FixtureAndResultModel.AwayTeam.TeamID > 0)
+        {
+            <a href="team/@FixtureAndResultModel.AwayTeam.TeamID">@GetTeamName(FixtureAndResultModel.AwayTeam)</a>
+        }
+        else
+        {
+            @GetTeamName(FixtureAndResultModel.AwayTeam)
+        }
+    </td>
+</tr>
+
+@code {
+    private const string TBD = "TBD";
+
+    private string GetStageNameForDisplay(Enums.Stage stage) => stage.ToString().Replace("_", " ");
+
+    private string GetStageName(Models.FixtureAndResult fixtureAndResult) =>
+                                        fixtureAndResult.Stage == Enums.Stage.Group
+                                        ? fixtureAndResult.GroupOrLeagueTable.Name
+                                        : GetStageNameForDisplay(fixtureAndResult.Stage);
+
+    private bool TeamExists(Team team) => team != null && !string.IsNullOrEmpty(team.Name);
+
+    private string GetTeamName(Team team) => TeamExists(team) ? team.Name : TBD;
+
+    private string GetScore(Models.FixtureAndResult fixtureAndResult) => $"{fixtureAndResult.HomeTeamGoals} - {fixtureAndResult.AwayTeamGoals}";
+
+    private string GetScoreOrKickOffTime(Models.FixtureAndResult fixtureAndResult) =>
+                                    fixtureAndResult.GameStatus == Enums.GameStatus.Scheduled
+                                    ? fixtureAndResult.FixtureDate.ToString("HH:mm")
+                                    : GetScore(fixtureAndResult);
+
+    [Parameter]
+    public Enums.ComponentSource ComponentSource { get; set; }
+
+    [Parameter]
+    public Models.FixtureAndResult FixtureAndResultModel { get; set; }
+}

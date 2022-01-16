@@ -1,0 +1,87 @@
+﻿@using Microsoft.Extensions.Configuration;
+@inject IConfiguration configuration;
+
+@if (Convert.ToBoolean(configuration["HasGroups"].ToString()))
+{
+    <h2 style="padding-bottom: 10px;">@groupOrLeagueTableName</h2>
+}
+else
+{
+    <h1 style="padding-bottom: 10px;">@groupOrLeagueTableName</h1>
+}
+
+<style>
+    table th {
+        text-align: center;
+    }
+
+    table td {
+        text-align: center;
+    }
+
+        table td:first-child {
+            text-align: left;
+        }
+</style>
+
+<table class="table" style="width: 920px; margin-bottom: 20px;">
+    <tr>
+        <th></th>
+        <th>Played</th>
+        <th>Won</th>
+        <th>Drawn</th>
+        <th>Lost</th>
+        <th>Goals For</th>
+        <th>Goals Against</th>
+        <th>Goal Difference</th>
+        <th>Points</th>
+    </tr>
+    @foreach (var groupOrLeagueTableStanding in GroupOrLeagueTableModel.GroupOrLeagueTableStandings)
+    {
+        <tr>
+            <td>
+                <span>
+                    <span style="padding-right: 8px">
+                        <img src="@groupOrLeagueTableStanding.Team.TeamCrestUrl" width="40" height="55" />
+                    </span>
+                    <span>
+                        <a href="team/@groupOrLeagueTableStanding.Team.TeamID">@groupOrLeagueTableStanding.Team.Name</a>
+                    </span>
+                </span>
+            </td>
+            <td>@groupOrLeagueTableStanding.GamesPlayed</td>
+            <td>@groupOrLeagueTableStanding.GamesWon</td>
+            <td>@groupOrLeagueTableStanding.GamesDrawn</td>
+            <td>@groupOrLeagueTableStanding.GamesLost</td>
+            <td>@groupOrLeagueTableStanding.GoalsScored</td>
+            <td>@groupOrLeagueTableStanding.GoalsAgainst</td>
+            <td>@groupOrLeagueTableStanding.GoalDifference</td>
+            <td>@groupOrLeagueTableStanding.PointsTotal</td>
+        </tr>
+    }
+</table>
+
+<div>
+    <button class="toggleFixtureAndResultsVisibilityButton" @onclick="@ToggleVisbilityOfFixtures">@hideOrShow Fixtures</button>
+    @if (FixturesVisible)
+    {
+        <FixturesAndResultsByGroupOrLeagueTable FixturesAndResultsByGroupOrLeagueTableModel="@GroupOrLeagueTableModel.FixturesAndResultsByGroupOrLeagueTable"></FixturesAndResultsByGroupOrLeagueTable>
+    }
+</div>
+
+
+@code {
+    private bool FixturesVisible { get; set; } = false;
+
+    private string hideOrShow => FixturesVisible ? "Hide" : "Show";
+
+    private string groupOrLeagueTableName => $"{(GroupOrLeagueTableModel.IsGroup ? "Group " : string.Empty)} {GroupOrLeagueTableModel.Name}";
+
+    [Parameter]
+    public Models.GroupOrLeagueTableModel GroupOrLeagueTableModel { get; set; }
+
+    private void ToggleVisbilityOfFixtures()
+    {
+        FixturesVisible = !FixturesVisible;
+    }
+}
