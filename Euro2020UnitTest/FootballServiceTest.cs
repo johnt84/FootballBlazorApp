@@ -1,7 +1,7 @@
-using Euro2020BlazorApp.API;
-using Euro2020BlazorApp.Data;
-using Euro2020BlazorApp.Models;
-using Euro2020BlazorApp.Models.FootballData;
+using FootballBlazorApp.API;
+using FootballBlazorApp.Data;
+using FootballBlazorApp.Models;
+using FootballBlazorApp.Models.FootballData;
 using Microsoft.Extensions.Configuration;
 using Microsoft.JSInterop;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Euro2020UnitTest
+namespace FootballBlazorAppUnitTest
 {
     [TestClass]
     public class FootballServiceTest
@@ -37,29 +37,29 @@ namespace Euro2020UnitTest
 
             var mockFootballDataService = new Mock<IFootballDataService>();
             //mockFootballDataService.Setup(x => x.GetFootballDataStandings()).ReturnsAsync(GetTestGroups());
-            mockFootballDataService.Setup(x => x.GetFixturesAndResultsByGroups(GetTestGroups())).ReturnsAsync(GetTestGroups());
-            mockFootballDataService.Setup(x => x.GetGroups()).ReturnsAsync(GetTestGroups());
+            mockFootballDataService.Setup(x => x.GetFixturesAndResultsByGroups(GetTestGroupsOrLeagueTables())).ReturnsAsync(GetTestGroupsOrLeagueTables());
+            mockFootballDataService.Setup(x => x.GetGroupsOrLeagueTable()).ReturnsAsync(GetTestGroupsOrLeagueTables());
 
             var footballDataService = new FootballDataService(httpAPIClient, _mockTimeZoneOffsetService.Object, configuration, _mockFootballDataState.Object);
-            var groups = await footballDataService.GetGroups();
+            var groups = await footballDataService.GetGroupsOrLeagueTable();
 
-            Assert.AreEqual(groups, GetTestGroups());
+            Assert.AreEqual(groups, GetTestGroupsOrLeagueTables());
             //mockFootballDataService.Setup(x => x.GetGroups());
         }
 
-        private List<Group> GetTestGroups()
+        private List<GroupOrLeagueTableModel> GetTestGroupsOrLeagueTables()
         {
-            return new List<Group>()
+            return new List<GroupOrLeagueTableModel>()
             {
-                new Group()
+                new GroupOrLeagueTableModel()
                 {
                     Name = "A"
                 },
-                new Group()
+                new GroupOrLeagueTableModel()
                 {
                     Name = "B"
                 },
-                new Group()
+                new GroupOrLeagueTableModel()
                 {
                     Name = "C"
                 },
