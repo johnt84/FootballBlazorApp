@@ -93,6 +93,8 @@ namespace FootballBlazorApp.Data
 
                 int teamInCacheToUpdateIndex = footballDataState.Teams.IndexOf(teamInCacheToUpdate);
                 footballDataState.Teams[teamInCacheToUpdateIndex] = teamWithSquad;
+
+                await _cacheService.SaveToCacheAsync(footballDataState);
             }
 
             var footballDataMatches = await GetFootballDataMatches();
