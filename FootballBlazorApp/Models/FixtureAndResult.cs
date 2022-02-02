@@ -14,5 +14,6 @@ namespace FootballBlazorApp.Models
         public int HomeTeamGoals { get; set; }
         public int AwayTeamGoals { get; set; }
         public Result Result { get; set; }
+        public int Matchday { get; set; }
     }
 }

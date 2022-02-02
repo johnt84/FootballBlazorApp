@@ -15,27 +15,27 @@ namespace FootballBlazorApp.Data
         private readonly IHttpAPIClient _httpAPIClient;
         private readonly ITimeZoneOffsetService _timeZoneOffsetService;
         private readonly IConfiguration _configuration;
-        private readonly FootballDataState _footballDataState;
+        private readonly ICacheService _cacheService;
 
-        private DateTime GetCompetitionStateDate(DateTime startDate) => !_footballDataState.CompetitionStartDate.HasValue
+        private DateTime GetCompetitionStartDate(FootballDataState footballDataState, DateTime startDate) => !footballDataState.CompetitionStartDate.HasValue
                                                                             ? startDate
-                                                                            : _footballDataState.CompetitionStartDate.Value;
+                                                                            : footballDataState.CompetitionStartDate.Value;
 
-        private bool CacheRequiresRefresh => DateTime.UtcNow > _footballDataState.CompetitionStartDate
-                                            && DateTime.UtcNow > _footballDataState
-                                                        .LastRefreshTime
-                                                        .AddHours(Convert.ToInt32(_configuration["HoursUntilRefreshCache"].ToString()));
+        private bool CacheRequiresRefresh(FootballDataState footballDataState) => DateTime.UtcNow > footballDataState.CompetitionStartDate
+                                                                                    && DateTime.UtcNow > footballDataState
+                                                                                                .LastRefreshTime
+                                                                                                .AddHours(Convert.ToInt32(_configuration["HoursUntilRefreshCache"].ToString()));
 
         bool IsTeamsCached(FootballDataState footballDataState) => footballDataState != null 
                                                                     && footballDataState.Teams != null;
 
         public FootballDataService(IHttpAPIClient httpAPIClient, ITimeZoneOffsetService timeZoneOffsetService
-                                    , IConfiguration configuration, FootballDataState footballDataState)
+                                    , IConfiguration configuration, ICacheService cacheService)
         {
             _httpAPIClient = httpAPIClient;
             _timeZoneOffsetService = timeZoneOffsetService;
             _configuration = configuration;
-            _footballDataState = footballDataState;
+            _cacheService = cacheService;
         }
 
         public async Task<List<GroupOrLeagueTableModel>> GetGroupsOrLeagueTable()
@@ -50,9 +50,11 @@ namespace FootballBlazorApp.Data
 
         public async Task<List<Models.Team>> GetTeams()
         {
-            if (IsTeamsCached(_footballDataState))
+            var footballDataState = await _cacheService.LoadFromCacheAsync();
+
+            if (IsTeamsCached(footballDataState))
             {
-                return _footballDataState.Teams;
+                return footballDataState.Teams;
             }
 
             return await GetTeamsAndUpdateCache();
@@ -62,9 +64,11 @@ namespace FootballBlazorApp.Data
         {
             List<Models.Team> teams = null;
 
-            if (IsTeamsCached(_footballDataState))
+            var footballDataState = await _cacheService.LoadFromCacheAsync();
+
+            if (IsTeamsCached(footballDataState))
             {
-                teams = _footballDataState.Teams.ToList();
+                teams = footballDataState.Teams.ToList();
             }
             else
             {
@@ -83,12 +87,12 @@ namespace FootballBlazorApp.Data
                 var teamService = new TeamService(footballDataTeam);
                 teamWithSquad = teamService.GetTeam();
 
-                var teamInCacheToUpdate = _footballDataState
+                var teamInCacheToUpdate = footballDataState
                                             .Teams
                                             .First(x => x.TeamID == teamID);
 
-                int teamInCacheToUpdateIndex = _footballDataState.Teams.IndexOf(teamInCacheToUpdate);
-                _footballDataState.Teams[teamInCacheToUpdateIndex] = teamWithSquad;
+                int teamInCacheToUpdateIndex = footballDataState.Teams.IndexOf(teamInCacheToUpdate);
+                footballDataState.Teams[teamInCacheToUpdateIndex] = teamWithSquad;
             }
 
             var footballDataMatches = await GetFootballDataMatches();
@@ -117,27 +121,46 @@ namespace FootballBlazorApp.Data
 
         private async Task<FootballDataModel> GetFootballDataMatches()
         {
-            bool footballDataMatchesCached = _footballDataState != null && _footballDataState.FootballDataMatches != null;
+            var footballDataState = await _cacheService.LoadFromCacheAsync();
+            
+            bool footballDataMatchesCached = footballDataState != null && footballDataState.FootballDataMatches != null;
             bool footballDataMatchesCacheRequiresRefresh = !footballDataMatchesCached
-                                                || CacheRequiresRefresh;
+                                                || CacheRequiresRefresh(footballDataState);
 
             FootballDataModel footballDataMatches = null;
 
             if (!footballDataMatchesCacheRequiresRefresh)
             {
-                footballDataMatches = _footballDataState.FootballDataMatches;
+                footballDataMatches = footballDataState.FootballDataMatches;
             }
             else
             {
                 footballDataMatches = await GetFootballDataMatchesFromAPI();
 
-                var startDate = footballDataMatches != null && footballDataMatches.matches != null
-                                ? footballDataMatches.matches.ToList().First().season.startDate
-                                : DateTime.MinValue;
+                var firstFootballMatch = footballDataMatches?.matches?
+                                            .ToList()
+                                            .FirstOrDefault();
 
-                _footballDataState.FootballDataMatches = footballDataMatches;
-                _footballDataState.CompetitionStartDate = GetCompetitionStateDate(startDate);
-                _footballDataState.LastRefreshTime = DateTime.UtcNow;
+                DateTime startDate = DateTime.MinValue;
+                int currentMatchday = 0;
+
+                if (firstFootballMatch != null)
+                {
+                    startDate = firstFootballMatch.season.startDate;
+                    currentMatchday = firstFootballMatch.season.currentMatchday;
+                }
+
+                if(footballDataState == null)
+                {
+                    footballDataState = new FootballDataState();
+                }
+
+                footballDataState.FootballDataMatches = footballDataMatches;
+                footballDataState.CompetitionStartDate = GetCompetitionStartDate(footballDataState, startDate);
+                footballDataState.CurrentMatchday = currentMatchday;
+                footballDataState.LastRefreshTime = DateTime.UtcNow;
+
+                await _cacheService.SaveToCacheAsync(footballDataState);
             }
 
             return footballDataMatches;
@@ -145,22 +168,37 @@ namespace FootballBlazorApp.Data
 
         private async Task<FootballDataModel> GetFootballDataStandings()
         {
-            bool footballDataStandingsCached = _footballDataState != null && _footballDataState.FootballDataStandings != null;
+            var footballDataState = await _cacheService.LoadFromCacheAsync();
+
+            bool footballDataStandingsCached = footballDataState != null && footballDataState.FootballDataStandings != null;
             bool footballDataModelCacheRequiresRefresh = !footballDataStandingsCached
-                                                || CacheRequiresRefresh;
+                                                || CacheRequiresRefresh(footballDataState);
 
             FootballDataModel footballDataStandings = null;
 
             if (!footballDataModelCacheRequiresRefresh)
             {
-                footballDataStandings = _footballDataState.FootballDataStandings;
+                footballDataStandings = footballDataState.FootballDataStandings;
             }
             else
             {
                 footballDataStandings = await GetFootballDataStandingsFromAPI();
-                _footballDataState.FootballDataStandings = footballDataStandings;
-                _footballDataState.CompetitionStartDate = GetCompetitionStateDate(footballDataStandings.season.startDate);
-                _footballDataState.LastRefreshTime = DateTime.UtcNow;
+
+                if (footballDataState == null)
+                {
+                    footballDataState = new FootballDataState();
+                }
+
+                var firstFootballMatch = footballDataStandings?.matches?
+                            .ToList()
+                            .FirstOrDefault();
+
+                footballDataState.FootballDataStandings = footballDataStandings;
+                footballDataState.CompetitionStartDate = GetCompetitionStartDate(footballDataState, footballDataStandings.season.startDate);
+                footballDataState.CurrentMatchday = footballDataStandings.season.currentMatchday;
+                footballDataState.LastRefreshTime = DateTime.UtcNow;
+
+                await _cacheService.SaveToCacheAsync(footballDataState);
             }
 
             return footballDataStandings;
@@ -174,9 +212,16 @@ namespace FootballBlazorApp.Data
 
             var teams = teamService.GetTeams();
 
-            _footballDataState.Teams = teams;
-            _footballDataState.CompetitionStartDate = GetCompetitionStateDate(footballDataTeams.season.startDate);
-            _footballDataState.LastRefreshTime = DateTime.UtcNow;
+            var footballDataState = new FootballDataState()
+            {
+                Teams = teams,
+
+                LastRefreshTime = DateTime.UtcNow
+            };
+
+            footballDataState.CompetitionStartDate = GetCompetitionStartDate(footballDataState, footballDataTeams.season.startDate);
+
+            await _cacheService.SaveToCacheAsync(footballDataState);
 
             return teams;
         }

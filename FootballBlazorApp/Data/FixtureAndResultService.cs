@@ -24,10 +24,11 @@ namespace FootballBlazorApp.Data
             var fixturesAndResults = await GetFixtureAndResults();
 
             return fixturesAndResults
-                        .GroupBy(x => x.FixtureDate.Date)
+                        .GroupBy(x => new { x.FixtureDate.Date, x.Matchday })
                         .Select(x => new FixturesAndResultsByDay()
                         {
-                            FixtureDate = x.Key,
+                            FixtureDate = x.Key.Date,
+                            Matchday = x.Key.Matchday,
                             FixturesAndResults = x.ToList(),
                         })
                         .ToList();
@@ -71,10 +72,11 @@ namespace FootballBlazorApp.Data
                                     .ToList();
 
             var teamsFixturesAndResultsByDays = teamsFixtures
-                                                .GroupBy(x => x.FixtureDate.Date)
+                                                .GroupBy(x => new { x.FixtureDate.Date, x.Matchday })
                                                 .Select(x => new FixturesAndResultsByDay() 
                                                 { 
-                                                    FixtureDate = x.Key,
+                                                    FixtureDate = x.Key.Date,
+                                                    Matchday = x.Key.Matchday,
                                                     FixturesAndResults = x.ToList(), 
                                                 })
                                                 .ToList();
@@ -146,7 +148,8 @@ namespace FootballBlazorApp.Data
                 },
                 HomeTeamGoals = match.score.fullTime.homeTeam.HasValue ? match.score.fullTime.homeTeam.Value : 0,
                 AwayTeamGoals = match.score.fullTime.awayTeam.HasValue ? match.score.fullTime.awayTeam.Value : 0,
-                Result = GetResult(match.score?.winner ?? string.Empty)
+                Result = GetResult(match.score?.winner ?? string.Empty),
+                Matchday = match.matchday,
             };
         }
 

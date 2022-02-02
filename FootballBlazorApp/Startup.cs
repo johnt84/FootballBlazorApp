@@ -25,7 +25,7 @@ namespace FootballBlazorApp
             services.AddHttpClient<IHttpAPIClient, HttpAPIClient>();
             services.AddScoped<ITimeZoneOffsetService, TimeZoneOffsetService>();
             services.AddScoped<IFootballDataService, FootballDataService>();
-            services.AddSingleton<FootballDataState>();
+            services.AddSingleton<ICacheService, CacheService>();   
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
