@@ -28,7 +28,6 @@ namespace FootballBlazorApp.Data
                         .Select(x => new FixturesAndResultsByDay()
                         {
                             FixtureDate = x.Key.Date,
-                            Matchday = x.Key.Matchday,
                             FixturesAndResults = x.ToList(),
                         })
                         .ToList();
@@ -76,7 +75,6 @@ namespace FootballBlazorApp.Data
                                                 .Select(x => new FixturesAndResultsByDay() 
                                                 { 
                                                     FixtureDate = x.Key.Date,
-                                                    Matchday = x.Key.Matchday,
                                                     FixturesAndResults = x.ToList(), 
                                                 })
                                                 .ToList();

@@ -22,16 +22,6 @@ else if (!fixturesAndResultsByDays.Any())
 }
 else
 {
-    <div style="padding-bottom: 20px">
-        <select id="Matchday" name="Matchday" @onchange=@MatchdaySelected>
-            <option value="0">--all--</option>
-            @foreach (var matchday in matchdays)
-            {
-                <option value="@matchday">@matchday</option>
-            }
-        </select>
-    </div>
-    
     @foreach (var fixtureandResultByDay in fixturesAndResultsByDaysFilteredByMatchday)
     {
         <FixturesAndResultsByDay ComponentSource="Enums.ComponentSource.FixturesAndResults" FixturesAndResultsByDayModel="fixtureandResultByDay"></FixturesAndResultsByDay>
@@ -39,8 +29,6 @@ else
 }
 
 @code {
-    private List<int> matchdays;
-    private int selectedMatchday;
     private List<Models.FixturesAndResultsByDay> fixturesAndResultsByDays = null;
     private List<Models.FixturesAndResultsByDay> fixturesAndResultsByDaysFilteredByMatchday = null;
 
@@ -48,23 +36,11 @@ else
 
     private string ErrorMessage { get; set; }
 
-    private List<Models.FixturesAndResultsByDay> GetFixturesAndResultsForMatchday(int matchday) =>
-                                                                fixturesAndResultsByDays
-                                                                    .Where(x => x.Matchday == matchday || matchday == 0)
-                                                                    .ToList();
-
     protected override async Task OnInitializedAsync()
     {
         try
         {
             fixturesAndResultsByDays = await FootballDataService.GetFixturesAndResultsByDays();
-            fixturesAndResultsByDaysFilteredByMatchday = fixturesAndResultsByDays;
-
-            matchdays = fixturesAndResultsByDays
-                            .GroupBy(x => x.Matchday)
-                            .Select(x => x.Key)
-                            .OrderBy(x => x)
-                            .ToList();
 
             isInvalidFixturesAndResults = false;
         }
@@ -78,16 +54,5 @@ else
             isInvalidFixturesAndResults = true;
             ErrorMessage = $"Could not retrieve any fixtures & results";
         }
-    }
-
-    protected void MatchdaySelected(ChangeEventArgs e)
-    {
-        selectedMatchday = Convert.ToInt32(e.Value.ToString());
-
-        fixturesAndResultsByDaysFilteredByMatchday = fixturesAndResultsByDays;
-
-        fixturesAndResultsByDaysFilteredByMatchday = fixturesAndResultsByDaysFilteredByMatchday
-                                                        .Where(x => x.Matchday == selectedMatchday || selectedMatchday == 0)
-                                                        .ToList();
     }
 }
