@@ -137,27 +137,17 @@ namespace FootballBlazorApp.Data
             {
                 footballDataMatches = await GetFootballDataMatchesFromAPI();
 
-                var firstFootballMatch = footballDataMatches?.matches?
-                                            .ToList()
-                                            .FirstOrDefault();
+                var startDate = footballDataMatches != null && footballDataMatches.matches != null
+                                ? footballDataMatches.matches.ToList().First().season.startDate
+                                : DateTime.MinValue;
 
-                DateTime startDate = DateTime.MinValue;
-                int currentMatchday = 0;
-
-                if (firstFootballMatch != null)
-                {
-                    startDate = firstFootballMatch.season.startDate;
-                    currentMatchday = firstFootballMatch.season.currentMatchday;
-                }
-
-                if(footballDataState == null)
+                if (footballDataState == null)
                 {
                     footballDataState = new FootballDataState();
                 }
 
                 footballDataState.FootballDataMatches = footballDataMatches;
                 footballDataState.CompetitionStartDate = GetCompetitionStartDate(footballDataState, startDate);
-                footballDataState.CurrentMatchday = currentMatchday;
                 footballDataState.LastRefreshTime = DateTime.UtcNow;
 
                 await _cacheService.SaveToCacheAsync(footballDataState);
@@ -189,13 +179,8 @@ namespace FootballBlazorApp.Data
                     footballDataState = new FootballDataState();
                 }
 
-                var firstFootballMatch = footballDataStandings?.matches?
-                            .ToList()
-                            .FirstOrDefault();
-
                 footballDataState.FootballDataStandings = footballDataStandings;
                 footballDataState.CompetitionStartDate = GetCompetitionStartDate(footballDataState, footballDataStandings.season.startDate);
-                footballDataState.CurrentMatchday = footballDataStandings.season.currentMatchday;
                 footballDataState.LastRefreshTime = DateTime.UtcNow;
 
                 await _cacheService.SaveToCacheAsync(footballDataState);
