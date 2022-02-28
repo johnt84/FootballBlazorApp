@@ -1,9 +1,5 @@
 ﻿@page "/team/{TeamID:int}"
 
-@using FootballBlazorApp.Models;
-@using FootballBlazorApp.Data;
-@using FootballBlazorApp.Components;
-@using FootballBlazorApp.Models.Enums;
 @inject IFootballDataService FootballDataService;
 
 @if (team == null && !isInvalidTeam)
@@ -54,7 +50,7 @@ else
             <table class="table" style="width: 450px; margin-bottom: 20px;">
                 @foreach (var fixtureandResultByDay in team.FixturesAndResultsByDays)
                 {
-                    <FixturesAndResultsByDay ComponentSource="Enums.ComponentSource.Team" FixturesAndResultsByDayModel="fixtureandResultByDay"></FixturesAndResultsByDay>
+                    <FixturesAndResultsByDayComponent ComponentSource="Enums.ComponentSource.Team" FixturesAndResultsByDayModel="fixtureandResultByDay"></FixturesAndResultsByDayComponent>
                 }
             </table>
         }
@@ -62,7 +58,7 @@ else
 }
 
 @code {
-    private Models.Team team = null;
+    private FootballShared.Models.Team team = null;
 
     private bool fixturesAndResultsExist => team?.FixturesAndResultsByDays != null
                                             && (team?.FixturesAndResultsByDays?.Count ?? 0) > 0;

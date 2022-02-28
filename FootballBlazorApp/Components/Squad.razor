@@ -1,7 +1,4 @@
-﻿@using Models;
-@using Models.Enums;
-
-<h2>Squad</h2>
+﻿<h2>Squad</h2>
 
 <h3>Players</h3>
 
@@ -37,10 +34,10 @@
 
 @code {
     [Parameter]
-    public List<Models.PlayerByPosition> PlayersByPosition { get; set; }
+    public List<FootballShared.Models.PlayerByPosition> PlayersByPosition { get; set; }
 
     [Parameter]
-    public List<Models.Player> CoachingStaff { get; set; }
+    public List<FootballShared.Models.Player> CoachingStaff { get; set; }
 
     private string GetPositionLabel(string position) => $"{position}s";
 

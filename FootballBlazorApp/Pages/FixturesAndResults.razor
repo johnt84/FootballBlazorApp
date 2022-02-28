@@ -1,9 +1,7 @@
 ﻿@page "/fixturesandresults"
 
-@using FootballBlazorApp.Models;
-@using FootballBlazorApp.Data;
 @using FootballBlazorApp.Components;
-@using Models.Enums;
+ 
 @inject IFootballDataService FootballDataService;
 
 <h1 style="padding-bottom: 10px;">Fixtures & Results</h1>
@@ -24,12 +22,12 @@ else
 {
     @foreach (var fixtureandResultByDay in fixturesAndResultsByDays)
     {
-        <FixturesAndResultsByDay ComponentSource="Enums.ComponentSource.FixturesAndResults" FixturesAndResultsByDayModel="fixtureandResultByDay"></FixturesAndResultsByDay>
+        <FixturesAndResultsByDayComponent ComponentSource="Enums.ComponentSource.FixturesAndResults" FixturesAndResultsByDayModel="fixtureandResultByDay"></FixturesAndResultsByDayComponent>
     }
 }
 
 @code {
-    private List<Models.FixturesAndResultsByDay> fixturesAndResultsByDays = null;
+    private List<FootballShared.Models.FixturesAndResultsByDay> fixturesAndResultsByDays = null;
 
     private bool isInvalidFixturesAndResults = false;
 

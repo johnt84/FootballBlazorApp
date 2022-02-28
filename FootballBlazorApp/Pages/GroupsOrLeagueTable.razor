@@ -1,13 +1,11 @@
 ﻿@page "/groupsOrLeagueTable"
 
-@using FootballBlazorApp.Models;
-@using FootballBlazorApp.Data;
-@using FootballBlazorApp.Components;
 @using Microsoft.Extensions.Configuration;
-@inject IFootballDataService FootballDataService;
-@inject IConfiguration configuration;
 
-@if (Convert.ToBoolean(configuration["HasGroups"].ToString()))
+@inject IFootballDataService FootballDataService;
+@inject IConfiguration Configuration;
+
+@if (Convert.ToBoolean(Configuration["HasGroups"].ToString()))
 {
     <h1 style="padding-bottom: 20px;">Groups</h1>
 }
@@ -33,7 +31,7 @@ else
 }
 
 @code {
-    private List<Models.GroupOrLeagueTableModel> groupsOrLeagueTable = null;
+    private List<FootballShared.Models.GroupOrLeagueTableModel> groupsOrLeagueTable = null;
 
     private bool isInvalidGroupsOrLeagueTable = false;
 

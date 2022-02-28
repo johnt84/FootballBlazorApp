@@ -78,7 +78,7 @@ else
     private string groupOrLeagueTableName => $"{(GroupOrLeagueTableModel.IsGroup ? "Group " : string.Empty)} {GroupOrLeagueTableModel.Name}";
 
     [Parameter]
-    public Models.GroupOrLeagueTableModel GroupOrLeagueTableModel { get; set; }
+    public FootballShared.Models.GroupOrLeagueTableModel GroupOrLeagueTableModel { get; set; }
 
     private void ToggleVisbilityOfFixtures()
     {

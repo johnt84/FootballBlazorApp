@@ -1,9 +1,5 @@
 ﻿@page "/playerprofile/{playerid:int}/{teamid:int}"
-
-@using FootballBlazorApp.Models;
-@using FootballBlazorApp.Data;
-@using FootballBlazorApp.Components;
-@using FootballBlazorApp.Models.Enums;
+ 
 @inject IFootballDataService FootballDataService;
 
 @if (isPageLoading)
@@ -53,7 +49,7 @@ else
     [Parameter]
     public int TeamID { get; set; }
 
-    private Models.Team team = null;
+    private FootballShared.Models.Team team = null;
 
     private Player player = null;
 
