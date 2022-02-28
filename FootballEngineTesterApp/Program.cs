@@ -5,17 +5,13 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Linq;
 
 var builder = new ConfigurationBuilder()
                                .SetBasePath($"{Directory.GetCurrentDirectory()}/../../..")
                                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
 var config = builder.Build();
-
-var httpClient = new HttpClient();
-
-httpClient.BaseAddress = new Uri(config["FootballDataAPIUrl"]);
-httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Token", config["PrivateToken"]);
 
 var footballEngineInput = new FootballEngineInput()
 {
@@ -27,6 +23,11 @@ var footballEngineInput = new FootballEngineInput()
     HoursUntilRefreshCache = Convert.ToInt32(config["HoursUntilRefreshCache"].ToString()),
 };
 
+var httpClient = new HttpClient();
+
+httpClient.BaseAddress = new Uri(config["FootballDataAPIUrl"]);
+httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Token", footballEngineInput.APIToken);
+
 var httpAPIClient = new HttpAPIClient(httpClient, footballEngineInput);
 
 var footballDataService = new FootballDataService(httpAPIClient, new FootballDataState(), footballEngineInput);
@@ -37,4 +38,12 @@ var groupsOrLeagueTable = await footballDataService.GetGroupsOrLeagueTable();
 
 var teams = await footballDataService.GetTeams();
 
-var team = await footballDataService.GetTeam(67);
+int newcastleTeamId = teams
+                        .Where(x => x.Name == "Newcastle")
+                        .Select(x => x.TeamID)
+                        .FirstOrDefault();
+
+var team = await footballDataService.GetTeam(newcastleTeamId);
+
+Console.WriteLine("Press any key to continue");
+Console.ReadLine();

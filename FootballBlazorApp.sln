@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FootballBlazorApp", "FootballBlazorApp\FootballBlazorApp.csproj", "{FB8EE6CA-EB7A-4F60-898F-1CA50D61832D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FootballEngineTesterApp", "Tester\FootballEngineTesterApp.csproj", "{0EC128C9-93F8-4CCB-8F66-41DDF09CB046}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FootballEngineTesterApp", "FootballEngineTesterApp\FootballEngineTesterApp.csproj", "{0EC128C9-93F8-4CCB-8F66-41DDF09CB046}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FootballEngineUnitTests", "FootballUnitTest\FootballEngineUnitTests.csproj", "{F6B64A5C-A8DE-4102-BE20-6FD56B5D881A}"
 EndProject
