@@ -15,7 +15,7 @@ namespace FootballEngineUnitTest
     public class FootballServiceTest
     {
         [TestMethod]
-        public async Task GetGroupsTest()
+        public async Task GetGroupsOrLeagueTableTest()
         {
             var httpClient = new HttpClient();
 
@@ -25,7 +25,7 @@ namespace FootballEngineUnitTest
                 Competition = "PL",
                 HasGroups = false,
                 LeagueName = "Premier League",
-                APIToken = "b60bfc0a6a114913ab4dc33a50da95dd",
+                APIToken = "",
                 HoursUntilRefreshCache = 3,
             };
 
