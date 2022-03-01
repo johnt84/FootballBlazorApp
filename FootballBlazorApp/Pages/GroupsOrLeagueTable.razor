@@ -41,7 +41,7 @@ else
     {
         try
         {
-            groupsOrLeagueTable = await FootballDataService.GetGroupsOrLeagueTable();
+            groupsOrLeagueTable = await FootballDataService.GetGroupsOrLeagueTableAsync();
             isInvalidGroupsOrLeagueTable = false;
         }
         catch (Exception ex) when (ex.Message.Contains(Constants.TOO_MANY_REQUESTS_ERROR_CODE.ToString()))

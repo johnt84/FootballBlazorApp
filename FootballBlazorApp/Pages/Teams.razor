@@ -39,7 +39,7 @@ else
     {
         try
         {
-            teams = await FootballDataService.GetTeams();
+            teams = await FootballDataService.GetTeamsAsync();
             isInvalidTeams = false;
         }
         catch (Exception ex) when (ex.Message.Contains(Constants.TOO_MANY_REQUESTS_ERROR_CODE.ToString()))

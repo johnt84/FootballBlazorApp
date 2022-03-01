@@ -1,4 +1,4 @@
-﻿using FootballEngine.API;
+﻿using FootballEngine.API.Interfaces;
 using FootballEngine.Services.Interfaces;
 using FootballShared.Models;
 using FootballShared.Models.FootballData;
@@ -31,27 +31,27 @@ namespace FootballEngine.Services
             _footballEngineInput = footballEngineInput;
         }
 
-        public async Task<List<GroupOrLeagueTableModel>> GetGroupsOrLeagueTable()
+        public async Task<List<GroupOrLeagueTableModel>> GetGroupsOrLeagueTableAsync()
         {
-            var footballDataStandings = await GetFootballDataStandings();
+            var footballDataStandings = await GetFootballDataStandingsAsync();
 
-            var groupOrLeagueTableService = new GroupOrLeagueTableService(footballDataStandings, _footballEngineInput);
-            var groups = groupOrLeagueTableService.GetGroupsOrLeagueTable();
+            var groupOrLeagueTableLogic = new GroupOrLeagueTableLogic(footballDataStandings, _footballEngineInput);
+            var groupsOrLeagueTable = groupOrLeagueTableLogic.GetGroupsOrLeagueTable();
 
-            return await GetFixturesAndResultsByGroups(groups);
+            return await GetFixturesAndResultsByGroupsAsync(groupsOrLeagueTable);
         }
 
-        public async Task<List<FootballShared.Models.Team>> GetTeams()
+        public async Task<List<FootballShared.Models.Team>> GetTeamsAsync()
         {
             if (IsTeamsCached(_footballDataState))
             {
                 return _footballDataState.Teams;
             }
 
-            return await GetTeamsAndUpdateCache();
+            return await GetTeamsAndUpdateCacheAsync();
         }
 
-        public async Task<FootballShared.Models.Team> GetTeam(int teamID)
+        public async Task<FootballShared.Models.Team> GetTeamAsync(int teamID)
         {
             List<FootballShared.Models.Team> teams = null;
 
@@ -61,7 +61,7 @@ namespace FootballEngine.Services
             }
             else
             {
-                teams = await GetTeamsAndUpdateCache();
+                teams = await GetTeamsAndUpdateCacheAsync();
             }
 
             var teamWithSquad = teams
@@ -71,10 +71,10 @@ namespace FootballEngine.Services
 
             if (teamWithSquad == null)
             {
-                var footballDataTeam = await GetFootballDataTeamFromAPI(teamID);
+                var footballDataTeam = await GetFootballDataTeamFromAPIAsync(teamID);
 
-                var teamService = new TeamService(footballDataTeam);
-                teamWithSquad = teamService.GetTeam();
+                var teamLogic = new TeamLogic(footballDataTeam);
+                teamWithSquad = teamLogic.GetTeam();
 
                 var teamInCacheToUpdate = _footballDataState
                                             .Teams
@@ -84,31 +84,31 @@ namespace FootballEngine.Services
                 _footballDataState.Teams[teamInCacheToUpdateIndex] = teamWithSquad;
             }
 
-            var footballDataMatches = await GetFootballDataMatches();
+            var footballDataMatches = await GetFootballDataMatchesAsync();
 
-            var fixtureAndResultService = new FixtureAndResultService(footballDataMatches, _footballEngineInput);
-            return await fixtureAndResultService.GetFixturesAndResultsByTeam(teamWithSquad);
+            var fixtureAndResultLogic = new FixtureAndResultLogic(footballDataMatches, _footballEngineInput);
+            return await fixtureAndResultLogic.GetFixturesAndResultsByTeamAsync(teamWithSquad);
         }
 
-        public async Task<List<FixturesAndResultsByDay>> GetFixturesAndResultsByDays()
+        public async Task<List<FixturesAndResultsByDay>> GetFixturesAndResultsByDaysAsync()
         {
-            var footballDataMatches = await GetFootballDataMatches();
+            var footballDataMatches = await GetFootballDataMatchesAsync();
 
-            var fixtureAndResultService = new FixtureAndResultService(footballDataMatches, _footballEngineInput);
+            var fixtureAndResultLogic = new FixtureAndResultLogic(footballDataMatches, _footballEngineInput);
 
-            return await fixtureAndResultService.GetFixturesAndResultsByDay();
+            return await fixtureAndResultLogic.GetFixturesAndResultsByDayAsync();
         }
 
-        public async Task<List<GroupOrLeagueTableModel>> GetFixturesAndResultsByGroups(List<GroupOrLeagueTableModel> groupsOrLeagueTable)
+        public async Task<List<GroupOrLeagueTableModel>> GetFixturesAndResultsByGroupsAsync(List<GroupOrLeagueTableModel> groupsOrLeagueTable)
         {
-            var footballDataMatches = await GetFootballDataMatches();
+            var footballDataMatches = await GetFootballDataMatchesAsync();
 
-            var fixtureAndResultService = new FixtureAndResultService(footballDataMatches, _footballEngineInput);
+            var fixtureAndResultLogic = new FixtureAndResultLogic(footballDataMatches, _footballEngineInput);
 
-            return await fixtureAndResultService.GetFixturesAndResultsByGroupsOrLeagueTable(groupsOrLeagueTable);
+            return await fixtureAndResultLogic.GetFixturesAndResultsByGroupsOrLeagueTableAsync(groupsOrLeagueTable);
         }
 
-        private async Task<FootballDataModel> GetFootballDataMatches()
+        private async Task<FootballDataModel> GetFootballDataMatchesAsync()
         {
             bool footballDataMatchesCached = _footballDataState != null && _footballDataState.FootballDataMatches != null;
             bool footballDataMatchesCacheRequiresRefresh = !footballDataMatchesCached
@@ -122,7 +122,7 @@ namespace FootballEngine.Services
             }
             else
             {
-                footballDataMatches = await GetFootballDataMatchesFromAPI();
+                footballDataMatches = await GetFootballDataMatchesFromAPIAsync();
 
                 var startDate = footballDataMatches != null && footballDataMatches.matches != null
                                 ? footballDataMatches.matches.ToList().First().season.startDate
@@ -136,7 +136,7 @@ namespace FootballEngine.Services
             return footballDataMatches;
         }
 
-        private async Task<FootballDataModel> GetFootballDataStandings()
+        private async Task<FootballDataModel> GetFootballDataStandingsAsync()
         {
             bool footballDataStandingsCached = _footballDataState != null && _footballDataState.FootballDataStandings != null;
             bool footballDataModelCacheRequiresRefresh = !footballDataStandingsCached
@@ -150,7 +150,7 @@ namespace FootballEngine.Services
             }
             else
             {
-                footballDataStandings = await GetFootballDataStandingsFromAPI();
+                footballDataStandings = await GetFootballDataStandingsFromAPIAsync();
                 _footballDataState.FootballDataStandings = footballDataStandings;
                 _footballDataState.CompetitionStartDate = GetCompetitionStateDate(footballDataStandings.season.startDate);
                 _footballDataState.LastRefreshTime = DateTime.UtcNow;
@@ -159,13 +159,13 @@ namespace FootballEngine.Services
             return footballDataStandings;
         }
 
-        private async Task<List<FootballShared.Models.Team>> GetTeamsAndUpdateCache()
+        private async Task<List<FootballShared.Models.Team>> GetTeamsAndUpdateCacheAsync()
         {
-            var footballDataTeams = await GetFootballDataTeamsFromAPI();
+            var footballDataTeams = await GetFootballDataTeamsFromAPIAsync();
 
-            var teamService = new TeamService(footballDataTeams);
+            var teamLogic = new TeamLogic(footballDataTeams);
 
-            var teams = teamService.GetTeams();
+            var teams = teamLogic.GetTeams();
 
             _footballDataState.Teams = teams;
             _footballDataState.CompetitionStartDate = GetCompetitionStateDate(footballDataTeams.season.startDate);
@@ -174,27 +174,27 @@ namespace FootballEngine.Services
             return teams;
         }
 
-        private async Task<FootballDataModel> GetFootballDataMatchesFromAPI()
+        private async Task<FootballDataModel> GetFootballDataMatchesFromAPIAsync()
         {
-            string json = await _httpAPIClient.Get($"competitions/{_footballEngineInput.Competition}/matches/");
+            string json = await _httpAPIClient.GetAsync($"competitions/{_footballEngineInput.Competition}/matches/");
             return JsonSerializer.Deserialize<FootballDataModel>(json);
         }
 
-        private async Task<FootballDataModel> GetFootballDataStandingsFromAPI()
+        private async Task<FootballDataModel> GetFootballDataStandingsFromAPIAsync()
         {
-            string json = await _httpAPIClient.Get($"competitions/{_footballEngineInput.Competition}/standings/");
+            string json = await _httpAPIClient.GetAsync($"competitions/{_footballEngineInput.Competition}/standings/");
             return JsonSerializer.Deserialize<FootballDataModel>(json);
         }
 
-        private async Task<Teams> GetFootballDataTeamsFromAPI()
+        private async Task<Teams> GetFootballDataTeamsFromAPIAsync()
         {
-            string json = await _httpAPIClient.Get($"competitions/{_footballEngineInput.Competition}/teams/");
+            string json = await _httpAPIClient.GetAsync($"competitions/{_footballEngineInput.Competition}/teams/");
             return JsonSerializer.Deserialize<Teams>(json);
         }
 
-        private async Task<FootballShared.Models.FootballData.Team> GetFootballDataTeamFromAPI(int teamID)
+        private async Task<FootballShared.Models.FootballData.Team> GetFootballDataTeamFromAPIAsync(int teamID)
         {
-            string json = await _httpAPIClient.Get($"teams/{teamID}");
+            string json = await _httpAPIClient.GetAsync($"teams/{teamID}");
             return JsonSerializer.Deserialize<FootballShared.Models.FootballData.Team>(json);
         }
     }

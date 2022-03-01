@@ -1,20 +1,21 @@
-﻿using FootballShared.Models;
+﻿using FootballEngine.Logic.Interfaces;
+using FootballShared.Models;
 using FootballShared.Models.FootballData;
 using static FootballShared.Models.Enums.Enums;
 
 namespace FootballEngine.Services
 {
-    public class TeamService
+    public class TeamLogic : ITeamLogic
     {
         private readonly Teams _teamsFootballDataModel;
         private readonly FootballShared.Models.FootballData.Team _teamFootballDataModel;
 
-        public TeamService(Teams teamsFootballDataModel)
+        public TeamLogic(Teams teamsFootballDataModel)
         {
             _teamsFootballDataModel = teamsFootballDataModel;
         }
 
-        public TeamService(FootballShared.Models.FootballData.Team teamFootballDataModel)
+        public TeamLogic(FootballShared.Models.FootballData.Team teamFootballDataModel)
         {
             _teamFootballDataModel = teamFootballDataModel;
         }

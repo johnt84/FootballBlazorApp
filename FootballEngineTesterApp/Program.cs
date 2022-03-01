@@ -32,18 +32,18 @@ var httpAPIClient = new HttpAPIClient(httpClient, footballEngineInput);
 
 var footballDataService = new FootballDataService(httpAPIClient, new FootballDataState(), footballEngineInput);
 
-var fixturesAndResultsByDays = await footballDataService.GetFixturesAndResultsByDays();
+var fixturesAndResultsByDays = await footballDataService.GetFixturesAndResultsByDaysAsync();
 
-var groupsOrLeagueTable = await footballDataService.GetGroupsOrLeagueTable();
+var groupsOrLeagueTable = await footballDataService.GetGroupsOrLeagueTableAsync();
 
-var teams = await footballDataService.GetTeams();
+var teams = await footballDataService.GetTeamsAsync();
 
 int newcastleTeamId = teams
                         .Where(x => x.Name == "Newcastle")
                         .Select(x => x.TeamID)
                         .FirstOrDefault();
 
-var team = await footballDataService.GetTeam(newcastleTeamId);
+var team = await footballDataService.GetTeamAsync(newcastleTeamId);
 
 Console.WriteLine("Press any key to continue");
 Console.ReadLine();

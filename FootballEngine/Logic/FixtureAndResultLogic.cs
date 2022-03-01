@@ -1,24 +1,24 @@
-﻿using FootballEngine.Services.Interfaces;
+﻿using FootballEngine.Logic.Interfaces;
 using FootballShared.Models;
 using FootballShared.Models.FootballData;
 using static FootballShared.Models.Enums.Enums;
 
 namespace FootballEngine.Services
 {
-    public class FixtureAndResultService
+    public class FixtureAndResultLogic : IFixtureAndResultLogic
     {
         private readonly FootballDataModel _fixturesAndResultsFootballDataModel;
         private readonly FootballEngineInput _footballEngineInput;
 
-        public FixtureAndResultService(FootballDataModel fixturesAndResultsFootballDataModel, FootballEngineInput footballEngineInput)
+        public FixtureAndResultLogic(FootballDataModel fixturesAndResultsFootballDataModel, FootballEngineInput footballEngineInput)
         {
             _fixturesAndResultsFootballDataModel = fixturesAndResultsFootballDataModel;
             _footballEngineInput = footballEngineInput;
         }
 
-        public async Task<List<FixturesAndResultsByDay>> GetFixturesAndResultsByDay()
+        public async Task<List<FixturesAndResultsByDay>> GetFixturesAndResultsByDayAsync()
         {
-            var fixturesAndResults = await GetFixtureAndResults();
+            var fixturesAndResults = await GetFixtureAndResultsAsync();
 
             return fixturesAndResults
                         .GroupBy(x => x.FixtureDate.Date)
@@ -30,9 +30,9 @@ namespace FootballEngine.Services
                         .ToList();
         }
 
-        public async Task<List<GroupOrLeagueTableModel>> GetFixturesAndResultsByGroupsOrLeagueTable(List<GroupOrLeagueTableModel> groups)
+        public async Task<List<GroupOrLeagueTableModel>> GetFixturesAndResultsByGroupsOrLeagueTableAsync(List<GroupOrLeagueTableModel> groups)
         {
-            var fixturesAndResults = await GetFixtureAndResults();
+            var fixturesAndResults = await GetFixtureAndResultsAsync();
 
             var fixturesAndResultsByGroupsOrLeagueTable = fixturesAndResults
                                                             .GroupBy(x => x.GroupOrLeagueTable.Name)
@@ -59,9 +59,9 @@ namespace FootballEngine.Services
             return groups;
         }
 
-        public async Task<FootballShared.Models.Team> GetFixturesAndResultsByTeam(FootballShared.Models.Team team)
+        public async Task<FootballShared.Models.Team> GetFixturesAndResultsByTeamAsync(FootballShared.Models.Team team)
         {
-            var fixturesAndResults = await GetFixtureAndResults();
+            var fixturesAndResults = await GetFixtureAndResultsAsync();
 
             var teamsFixtures = fixturesAndResults
                                     .Where(x => x.HomeTeam.Name == team.Name || x.AwayTeam.Name == team.Name)
@@ -81,7 +81,7 @@ namespace FootballEngine.Services
             return team;
         }
 
-        private async Task<List<FixtureAndResult>> GetFixtureAndResults()
+        private async Task<List<FixtureAndResult>> GetFixtureAndResultsAsync()
         {
             var fixturesAndResults = _fixturesAndResultsFootballDataModel
                                         .matches

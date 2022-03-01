@@ -1,16 +1,17 @@
-﻿using FootballShared.Models;
+﻿using FootballEngine.Logic.Interfaces;
+using FootballShared.Models;
 using FootballShared.Models.FootballData;
 
 namespace FootballEngine.Services
 {
-    public class GroupOrLeagueTableService
+    public class GroupOrLeagueTableLogic : IGroupOrLeagueTableLogic
     {
         private readonly FootballDataModel _groupsFootballDataModel;
         private readonly FootballEngineInput _footballEngineInput;
 
         const string GROUP_ = "GROUP_";
 
-        public GroupOrLeagueTableService(FootballDataModel groupsFootballDataModel, FootballEngineInput footballEngineInput)
+        public GroupOrLeagueTableLogic(FootballDataModel groupsFootballDataModel, FootballEngineInput footballEngineInput)
         {
             _groupsFootballDataModel = groupsFootballDataModel;
             _footballEngineInput = footballEngineInput;

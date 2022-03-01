@@ -1,4 +1,5 @@
-﻿using FootballShared.Models;
+﻿using FootballEngine.API.Interfaces;
+using FootballShared.Models;
 using System.Net.Http.Headers;
 
 namespace FootballEngine.API
@@ -19,7 +20,7 @@ namespace FootballEngine.API
             _Client.DefaultRequestHeaders.Add("X-Auth-Token", _footballEngineInput.APIToken);
         }
 
-        public async Task<string> Get(string url)
+        public async Task<string> GetAsync(string url)
         {
             return await _Client.GetStringAsync(url);
         }

@@ -37,7 +37,7 @@ else
     {
         try
         {
-            fixturesAndResultsByDays = await FootballDataService.GetFixturesAndResultsByDays();
+            fixturesAndResultsByDays = await FootballDataService.GetFixturesAndResultsByDaysAsync();
             isInvalidFixturesAndResults = false;
         }
         catch (Exception ex) when (ex.Message.Contains(Constants.TOO_MANY_REQUESTS_ERROR_CODE.ToString()))

@@ -75,7 +75,7 @@ else
     {
         try
         {
-            team = await FootballDataService.GetTeam(TeamID);
+            team = await FootballDataService.GetTeamAsync(TeamID);
 
             player = team
                         .Squad
