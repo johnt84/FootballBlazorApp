@@ -30,9 +30,7 @@ httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.Aut
 
 var httpAPIClient = new HttpAPIClient(httpClient, footballEngineInput);
 
-var footballDataState = new FootballDataState();
-
-var footballDataService = new FootballDataService(httpAPIClient, footballDataState, footballEngineInput);
+var footballDataService = new FootballDataService(httpAPIClient, new FootballDataState(), footballEngineInput);
 
 var fixturesAndResultsByDays = await footballDataService.GetFixturesAndResultsByDaysAsync();
 
