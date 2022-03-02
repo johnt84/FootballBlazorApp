@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FootballEngine\FootballEngine.csproj" />
+    <ProjectReference Include="..\FootballEngine\FootballDataEngine.csproj" />
     <ProjectReference Include="..\FootballShared\FootballShared.csproj" />
   </ItemGroup>
 

@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FootballEngineTesterApp", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FootballEngineUnitTests", "FootballUnitTest\FootballEngineUnitTests.csproj", "{F6B64A5C-A8DE-4102-BE20-6FD56B5D881A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FootballEngine", "FootballEngine\FootballEngine.csproj", "{AD85D1C8-FB9A-480F-BC64-26E5304EF322}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FootballDataEngine", "FootballEngine\FootballDataEngine.csproj", "{AD85D1C8-FB9A-480F-BC64-26E5304EF322}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FootballShared", "FootballShared\FootballShared.csproj", "{0F6F9500-6A23-4F1D-A655-9818948FB557}"
 EndProject

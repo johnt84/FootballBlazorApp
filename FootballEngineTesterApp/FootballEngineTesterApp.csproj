@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FootballEngine\FootballEngine.csproj" />
+    <ProjectReference Include="..\FootballEngine\FootballDataEngine.csproj" />
     <ProjectReference Include="..\FootballShared\FootballShared.csproj" />
   </ItemGroup>
 

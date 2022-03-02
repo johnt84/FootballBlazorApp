@@ -12,5 +12,6 @@ namespace FootballShared.Models
         public FootballDataModel FootballDataStandings { get; set; }
         public List<Models.Team> Teams { get; set; }
         public DateTime LastRefreshTime { get; set; }
+        public bool IsCacheRefreshed { get; set; } = false;
     }
 }

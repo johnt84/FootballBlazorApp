@@ -12,7 +12,7 @@ namespace FootballEngine.Services
         private readonly FootballDataState _footballDataState;
         private readonly FootballEngineInput _footballEngineInput;
 
-        private DateTime GetCompetitionStateDate(DateTime startDate) => !_footballDataState.CompetitionStartDate.HasValue
+        private DateTime GetCompetitionStartDate(DateTime startDate) => !_footballDataState.CompetitionStartDate.HasValue
                                                                             ? startDate
                                                                             : _footballDataState.CompetitionStartDate.Value;
 
@@ -129,8 +129,8 @@ namespace FootballEngine.Services
                                 : DateTime.MinValue;
 
                 _footballDataState.FootballDataMatches = footballDataMatches;
-                _footballDataState.CompetitionStartDate = GetCompetitionStateDate(startDate);
-                _footballDataState.LastRefreshTime = DateTime.UtcNow;
+                _footballDataState.CompetitionStartDate = GetCompetitionStartDate(startDate);
+                MarkCacheAsRefreshed();
             }
 
             return footballDataMatches;
@@ -152,8 +152,8 @@ namespace FootballEngine.Services
             {
                 footballDataStandings = await GetFootballDataStandingsFromAPIAsync();
                 _footballDataState.FootballDataStandings = footballDataStandings;
-                _footballDataState.CompetitionStartDate = GetCompetitionStateDate(footballDataStandings.season.startDate);
-                _footballDataState.LastRefreshTime = DateTime.UtcNow;
+                _footballDataState.CompetitionStartDate = GetCompetitionStartDate(footballDataStandings.season.startDate);
+                MarkCacheAsRefreshed();
             }
 
             return footballDataStandings;
@@ -168,8 +168,8 @@ namespace FootballEngine.Services
             var teams = teamLogic.GetTeams();
 
             _footballDataState.Teams = teams;
-            _footballDataState.CompetitionStartDate = GetCompetitionStateDate(footballDataTeams.season.startDate);
-            _footballDataState.LastRefreshTime = DateTime.UtcNow;
+            _footballDataState.CompetitionStartDate = GetCompetitionStartDate(footballDataTeams.season.startDate);
+            MarkCacheAsRefreshed();
 
             return teams;
         }
@@ -196,6 +196,12 @@ namespace FootballEngine.Services
         {
             string json = await _httpAPIClient.GetAsync($"teams/{teamID}");
             return JsonSerializer.Deserialize<FootballShared.Models.FootballData.Team>(json);
+        }
+        
+        private void MarkCacheAsRefreshed()
+        {
+            _footballDataState.LastRefreshTime = DateTime.UtcNow;
+            _footballDataState.IsCacheRefreshed = true;
         }
     }
 }

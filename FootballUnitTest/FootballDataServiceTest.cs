@@ -1,50 +1,37 @@
 using FootballEngine.API.Interfaces;
 using FootballEngine.Services;
 using FootballShared.Models;
+using FootballShared.Models.FootballData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FootballEngineUnitTest
 {
     [TestClass]
-    public class FootballServiceTest
+    public class FootballDataServiceTest
     {
-        FootballDataService footballDataService;
+        private FootballEngineInput footballEngineInput;
 
-        int teamId = 0;
+        private FootballDataState footballDataState;
 
-        [TestMethod]
-        public async Task GetGroupsOrLeagueTableAsyncTest()
-        {
-            SetupTests();
+        private Mock<IHttpAPIClient> mockHttpAPIClient;
 
-            var groupsOrLeagueTable = await footballDataService.GetGroupsOrLeagueTableAsync();
-        }
+        private string footballDataMatchesJson = string.Empty;
 
-        [TestMethod]
-        public async Task GetTeamsAsyncTest()
-        {
-            SetupTests();
+        private string footballDataStandingsJson = string.Empty;
 
-            var teams = await footballDataService.GetTeamsAsync();
-        }
+        private string footballDataTeamsJson = string.Empty;
 
-        [TestMethod]
-        public async Task GetTeamAsyncTest()
-        {
-            int newcastleTeamId = 67;
-
-            teamId = newcastleTeamId;
-
-            SetupTests();
-
-            var team = await footballDataService.GetTeamAsync(newcastleTeamId);
-        }
+        private int teamId = 0;
 
         private void SetupTests()
         {
-            var footballEngineInput = new FootballEngineInput()
+            footballEngineInput = new FootballEngineInput()
             {
                 FootballDataAPIUrl = "https://api.testfootballdata.com/",
                 Competition = "PL",
@@ -54,7 +41,7 @@ namespace FootballEngineUnitTest
                 HoursUntilRefreshCache = 3,
             };
 
-            string footballDataTeamsJson = @"{
+            footballDataTeamsJson = @"{
    ""count"":20,
    ""filters"":{
       
@@ -461,7 +448,7 @@ namespace FootballEngineUnitTest
    ]
 }";
 
-            string footballDataMatchesJson = @"
+            footballDataMatchesJson = @"
 {
    ""count"":380,
    ""filters"":{
@@ -28615,7 +28602,7 @@ namespace FootballEngineUnitTest
    ]
 }";
 
-            string footballDataStandingsJson = @"{
+            footballDataStandingsJson = @"{
    ""filters"":{
       
    },
@@ -29314,7 +29301,7 @@ namespace FootballEngineUnitTest
    ""lastUpdated"":""2022-02-10T19:22:56Z""
 }";
 
-            var mockHttpAPIClient = new Mock<IHttpAPIClient>();
+            mockHttpAPIClient = new Mock<IHttpAPIClient>();
 
             mockHttpAPIClient.Setup(x => x.GetAsync($"competitions/{footballEngineInput.Competition}/teams/")).ReturnsAsync(footballDataTeamsJson);
 
@@ -29323,8 +29310,618 @@ namespace FootballEngineUnitTest
             mockHttpAPIClient.Setup(x => x.GetAsync($"competitions/{footballEngineInput.Competition}/standings/")).ReturnsAsync(footballDataStandingsJson);
 
             mockHttpAPIClient.Setup(x => x.GetAsync($"teams/{teamId}")).ReturnsAsync(footballDataTeamJson);
+        }
 
-            footballDataService = new FootballDataService(mockHttpAPIClient.Object, new FootballDataState(), footballEngineInput);
+        [TestClass]
+        public class GetGroupsOrLeagueTableAsync : FootballDataServiceTest
+        {
+            [TestMethod]
+            public async Task WhenGroupsOrLeagueTableFootballDataNeverCached_ThenStandingsAndMatchesReturnedFromAPIAndCacheRefreshed()
+            {
+                SetupTests();
+
+                footballDataState = new FootballDataState();
+
+                var footballDataService = new FootballDataService(mockHttpAPIClient.Object, footballDataState, footballEngineInput);
+
+                var groupsOrLeagueTable = await footballDataService.GetGroupsOrLeagueTableAsync();
+
+                Assert.IsNotNull(groupsOrLeagueTable);
+
+                var firstGroupOrLeagueTable = groupsOrLeagueTable.FirstOrDefault();
+
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/standings/"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
+
+                Assert.IsNotNull(firstGroupOrLeagueTable);
+                Assert.AreEqual("Premier League Table", firstGroupOrLeagueTable.Name);
+                Assert.AreEqual(20, firstGroupOrLeagueTable.GroupOrLeagueTableStandings.Count);
+                Assert.IsTrue(footballDataState.IsCacheRefreshed);
+            }
+
+            [TestMethod]
+            public async Task WhenGroupsOrLeagueTableFootballDataNotNullButFootballDataStandingsIsNull_ThenStandingsAndMatchesReturnedFromAPIAndCacheRefreshed()
+            {
+                SetupTests();
+
+                footballDataState = new FootballDataState()
+                {
+                    FootballDataStandings = null,
+                };
+
+                var footballDataService = new FootballDataService(mockHttpAPIClient.Object, footballDataState, footballEngineInput);
+
+                var groupsOrLeagueTable = await footballDataService.GetGroupsOrLeagueTableAsync();
+
+                Assert.IsNotNull(groupsOrLeagueTable);
+
+                var firstGroupOrLeagueTable = groupsOrLeagueTable.FirstOrDefault();
+
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/standings/"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
+
+                Assert.IsNotNull(firstGroupOrLeagueTable);
+                Assert.AreEqual("Premier League Table", firstGroupOrLeagueTable.Name);
+                Assert.AreEqual(20, firstGroupOrLeagueTable.GroupOrLeagueTableStandings.Count);
+                Assert.IsTrue(footballDataState.IsCacheRefreshed);
+            }
+
+            [TestMethod]
+            public async Task WhenGroupsOrLeagueTableFootballDataCachedMoreThanOrEqualToNumberOfHoursToRefreshTime_ThenStandingsReturnedFromAPIButMatchesReturnedFromCacheAfterCacheRefresh()
+            {
+                SetupTests();
+
+                var footballDataStandings = JsonSerializer.Deserialize<FootballDataModel>(footballDataStandingsJson);
+
+                var footballDataMatches = JsonSerializer.Deserialize<FootballDataModel>(footballDataMatchesJson);
+
+                footballDataState = new FootballDataState()
+                {
+                    FootballDataStandings = footballDataStandings,
+                    FootballDataMatches = footballDataMatches,
+                    CompetitionStartDate = footballDataStandings.season.startDate,
+                    LastRefreshTime = DateTime.UtcNow.AddHours(-footballEngineInput.HoursUntilRefreshCache),
+                };
+
+                var footballDataService = new FootballDataService(mockHttpAPIClient.Object, footballDataState, footballEngineInput);
+
+                var groupsOrLeagueTable = await footballDataService.GetGroupsOrLeagueTableAsync();
+
+                Assert.IsNotNull(groupsOrLeagueTable);
+
+                var firstGroupOrLeagueTable = groupsOrLeagueTable.FirstOrDefault();
+
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/standings/"), Times.Once());
+
+                Assert.IsNotNull(firstGroupOrLeagueTable);
+                Assert.AreEqual("Premier League Table", firstGroupOrLeagueTable.Name);
+                Assert.AreEqual(20, firstGroupOrLeagueTable.GroupOrLeagueTableStandings.Count);
+                Assert.IsTrue(footballDataState.IsCacheRefreshed);
+            }
+
+            [TestMethod]
+            public async Task WhenGroupsOrLeagueTableFootballDataStandingsAndMatchesCachedLessThanNumberOfHoursToRefreshTime_ThenStandingsAndMatchesReturnedFromCache()
+            {
+                SetupTests();
+
+                var footballDataStandings = JsonSerializer.Deserialize<FootballDataModel>(footballDataStandingsJson);
+
+                var footballDataMatches = JsonSerializer.Deserialize<FootballDataModel>(footballDataMatchesJson);
+
+                footballDataState = new FootballDataState()
+                {
+                    FootballDataStandings = footballDataStandings,
+                    FootballDataMatches = footballDataMatches,
+                    CompetitionStartDate = footballDataStandings.season.startDate,
+                    LastRefreshTime = DateTime.UtcNow.AddHours(-footballEngineInput.HoursUntilRefreshCache + 0.0001),
+                };
+
+                var footballDataService = new FootballDataService(mockHttpAPIClient.Object, footballDataState, footballEngineInput);
+
+                var groupsOrLeagueTable = await footballDataService.GetGroupsOrLeagueTableAsync();
+
+                Assert.IsNotNull(groupsOrLeagueTable);
+
+                var firstGroupOrLeagueTable = groupsOrLeagueTable.FirstOrDefault();
+
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/standings/"), Times.Never);
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Never());
+
+                Assert.IsNotNull(firstGroupOrLeagueTable);
+                Assert.AreEqual("Premier League Table", firstGroupOrLeagueTable.Name);
+                Assert.AreEqual(20, firstGroupOrLeagueTable.GroupOrLeagueTableStandings.Count);
+                Assert.IsFalse(footballDataState.IsCacheRefreshed);
+            }
+
+            [TestMethod]
+            public async Task WhenOnlyGroupsOrLeagueTableFootballDataStandingsCached_ThenStandingsReturnedFromCacheButMatchesReturnedFromAPI()
+            {
+                SetupTests();
+
+                var footballDataStandings = JsonSerializer.Deserialize<FootballDataModel>(footballDataStandingsJson);
+
+                footballDataState = new FootballDataState()
+                {
+                    FootballDataStandings = footballDataStandings,
+                    FootballDataMatches = null,
+                    CompetitionStartDate = footballDataStandings.season.startDate,
+                    LastRefreshTime = DateTime.UtcNow,
+                };
+
+                var footballDataService = new FootballDataService(mockHttpAPIClient.Object, footballDataState, footballEngineInput);
+
+                var groupsOrLeagueTable = await footballDataService.GetGroupsOrLeagueTableAsync();
+
+                Assert.IsNotNull(groupsOrLeagueTable);
+
+                var firstGroupOrLeagueTable = groupsOrLeagueTable.FirstOrDefault();
+
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/standings/"), Times.Never());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
+
+                Assert.IsNotNull(firstGroupOrLeagueTable);
+                Assert.AreEqual("Premier League Table", firstGroupOrLeagueTable.Name);
+                Assert.AreEqual(20, firstGroupOrLeagueTable.GroupOrLeagueTableStandings.Count);
+                Assert.IsTrue(footballDataState.IsCacheRefreshed);
+            }
+
+            [TestMethod]
+            public async Task WhenOnlyGroupsOrLeagueTableFootballDataMatchesCached_ThenMatchesReturnedFromCacheButStandingsReturnedFromAPI()
+            {
+                SetupTests();
+
+                var footballDataMatches = JsonSerializer.Deserialize<FootballDataModel>(footballDataMatchesJson);
+
+                footballDataState = new FootballDataState()
+                {
+                    FootballDataStandings = null,
+                    FootballDataMatches = footballDataMatches,
+                    LastRefreshTime = DateTime.UtcNow,
+                };
+
+                var footballDataService = new FootballDataService(mockHttpAPIClient.Object, footballDataState, footballEngineInput);
+
+                var groupsOrLeagueTable = await footballDataService.GetGroupsOrLeagueTableAsync();
+
+                Assert.IsNotNull(groupsOrLeagueTable);
+
+                var firstGroupOrLeagueTable = groupsOrLeagueTable.FirstOrDefault();
+
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/standings/"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Never());
+
+                Assert.IsNotNull(firstGroupOrLeagueTable);
+                Assert.AreEqual("Premier League Table", firstGroupOrLeagueTable.Name);
+                Assert.AreEqual(20, firstGroupOrLeagueTable.GroupOrLeagueTableStandings.Count);
+                Assert.IsTrue(footballDataState.IsCacheRefreshed);
+            }
+        }
+
+        [TestClass]
+        public class GetTeamsAsync : FootballDataServiceTest
+        {
+            [TestMethod]
+            public async Task WhenTeamsNeverCached_ThenTeamsReturnedFromAPIAndCacheRefreshed()
+            {
+                SetupTests();
+
+                footballDataState = new FootballDataState();
+
+                var footballDataService = new FootballDataService(mockHttpAPIClient.Object, footballDataState, footballEngineInput);
+
+                var teams = await footballDataService.GetTeamsAsync();
+
+                Assert.IsNotNull(teams);
+
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Once());
+
+                Assert.AreEqual(20, teams.Count);
+
+                var firstTeam = teams.FirstOrDefault();
+
+                Assert.IsNotNull(firstTeam);
+                Assert.AreEqual("Arsenal", firstTeam.Name);
+                Assert.IsTrue(footballDataState.IsCacheRefreshed);
+            }
+
+            [TestMethod]
+            public async Task WhenTeamsFootballDataStateNotNullButTeamsCacheIsNull_ThenTeamsReturnedFromAPIAndCacheRefreshed()
+            {
+                SetupTests();
+
+                footballDataState = new FootballDataState()
+                {
+                    Teams = null,
+                };
+
+                var footballDataService = new FootballDataService(mockHttpAPIClient.Object, footballDataState, footballEngineInput);
+
+                var teams = await footballDataService.GetTeamsAsync();
+
+                Assert.IsNotNull(teams);
+
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Once());
+
+                Assert.AreEqual(20, teams.Count);
+
+                var firstTeam = teams.FirstOrDefault();
+
+                Assert.IsNotNull(firstTeam);
+                Assert.AreEqual("Arsenal", firstTeam.Name);
+                Assert.IsTrue(footballDataState.IsCacheRefreshed);
+            }
+
+            [TestMethod]
+            public async Task WhenTeamsCached_ThenTeamsReturnedFromCache()
+            {
+                SetupTests();
+
+                var footballDataTeams = JsonSerializer.Deserialize<Teams>(footballDataTeamsJson);
+
+                var testTeams = footballDataTeams
+                            .teams
+                            .ToList()
+                            .Select(x => new FootballShared.Models.Team()
+                            {
+                                TeamID = x.id,
+                                Name = x.shortName,
+                                TeamCrestUrl = x.crestUrl,
+                            })
+                            .OrderBy(x => x.Name)
+                            .ToList();
+
+                footballDataState = new FootballDataState()
+                {
+                    Teams = testTeams,
+                };
+
+                var footballDataService = new FootballDataService(mockHttpAPIClient.Object, footballDataState, footballEngineInput);
+
+                var teams = await footballDataService.GetTeamsAsync();
+
+                Assert.IsNotNull(teams);
+
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Never());
+
+                Assert.AreEqual(20, teams.Count);
+
+                var firstTeam = teams.FirstOrDefault();
+
+                Assert.IsNotNull(firstTeam);
+                Assert.AreEqual("Arsenal", firstTeam.Name);
+                Assert.IsFalse(footballDataState.IsCacheRefreshed);
+            }
+        }
+
+        [TestClass]
+        public class GetTeamAsync : FootballDataServiceTest
+        {
+            int newcastleTeamId = 67;
+
+            [TestMethod]
+            public async Task WhenTeamsNeverCached_ThenTeamsAndTeamSquadAndMatchesReturnedFromAPIAndCacheRefreshed()
+            {
+                teamId = newcastleTeamId;
+
+                SetupTests();
+
+                footballDataState = new FootballDataState();
+
+                var footballDataService = new FootballDataService(mockHttpAPIClient.Object, footballDataState, footballEngineInput);
+
+                var team = await footballDataService.GetTeamAsync(newcastleTeamId);
+
+                Assert.IsNotNull(team);
+
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"teams/{newcastleTeamId}"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
+
+                Assert.AreEqual("Newcastle", team.Name);
+                Assert.IsTrue(footballDataState.IsCacheRefreshed);
+            }
+
+            [TestMethod]
+            public async Task WhenTeamFootballDataStateNotNullButTeamsCacheIsNull_ThenTeamsAndTeamSquadAndMatchesReturnedFromAPIAndCacheRefreshed()
+            {
+                teamId = newcastleTeamId;
+
+                SetupTests();
+
+                footballDataState = new FootballDataState()
+                {
+                    Teams = null,
+                };
+
+                var footballDataService = new FootballDataService(mockHttpAPIClient.Object, footballDataState, footballEngineInput);
+
+                var team = await footballDataService.GetTeamAsync(newcastleTeamId);
+
+                Assert.IsNotNull(team);
+
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"teams/{newcastleTeamId}"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
+
+                Assert.AreEqual("Newcastle", team.Name);
+                Assert.IsTrue(footballDataState.IsCacheRefreshed);
+            }
+
+            [TestMethod]
+            public async Task WhenTeamsCachedButTeamSquadAndMatchesNotCached_ThenTeamsReturnedFromCacheButTeamSquadAndMatchesReturnedFromAPI()
+            {
+                teamId = newcastleTeamId;
+
+                SetupTests();
+
+                var footballDataTeams = JsonSerializer.Deserialize<Teams>(footballDataTeamsJson);
+
+                var testTeams = footballDataTeams
+                            .teams
+                            .Where(x => x.id == newcastleTeamId)
+                            .ToList()
+                            .Select(x => new FootballShared.Models.Team()
+                            {
+                                TeamID = x.id,
+                                Name = x.shortName,
+                                TeamCrestUrl = x.crestUrl,
+                            })
+                            .OrderBy(x => x.Name)
+                            .ToList();
+
+                footballDataState = new FootballDataState()
+                {
+                    Teams = testTeams,
+                };
+
+                var footballDataService = new FootballDataService(mockHttpAPIClient.Object, footballDataState, footballEngineInput);
+
+                var team = await footballDataService.GetTeamAsync(newcastleTeamId);
+
+                Assert.IsNotNull(team);
+
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Never());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"teams/{newcastleTeamId}"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
+
+                Assert.AreEqual("Newcastle", team.Name);
+                Assert.IsTrue(footballDataState.IsCacheRefreshed);
+            }
+
+            [TestMethod]
+            public async Task WhenTeamsAndTeamSquadCachedButMatchesAreNotCached_ThenTeamsAndTeamSquadReturnedFromCacheButMatchesReturnedFromAPI()
+            {
+                teamId = newcastleTeamId;
+
+                SetupTests();
+
+                var footballDataTeams = JsonSerializer.Deserialize<Teams>(footballDataTeamsJson);
+
+                var testTeams = footballDataTeams
+                            .teams
+                            .Where(x => x.id == newcastleTeamId)
+                            .ToList()
+                            .Select(x => new FootballShared.Models.Team()
+                            {
+                                TeamID = x.id,
+                                Name = x.shortName,
+                                TeamCrestUrl = x.crestUrl,
+                                Squad = new List<Player>()
+                                {
+                                    new Player()
+                                    {
+                                        PlayerID = 8446,
+                                        Name = "Allan Saint-Maximin",
+                                        Position = "Attacker",
+                                        TeamID = 67,
+                                    },
+                                    new Player()
+                                    {
+                                        PlayerID = 3312,
+                                        Name = "Kieran Trippier",
+                                        Position = "Defender",
+                                        TeamID = 67,
+                                    },
+                                }
+                            })
+                            .OrderBy(x => x.Name)
+                            .ToList();
+
+                footballDataState = new FootballDataState()
+                {
+                    Teams = testTeams,
+                };
+
+                var footballDataService = new FootballDataService(mockHttpAPIClient.Object, footballDataState, footballEngineInput);
+
+                var team = await footballDataService.GetTeamAsync(newcastleTeamId);
+
+                Assert.IsNotNull(team);
+
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Never());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"teams/{newcastleTeamId}"), Times.Never());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
+
+                Assert.AreEqual("Newcastle", team.Name);
+                Assert.IsTrue(footballDataState.IsCacheRefreshed);
+            }
+
+            [TestMethod]
+            public async Task WhenTeamsAndTeamSquadAndMatchesCached_ThenTeamsAndTeamSquadAndMatchesReturnedFromCache()
+            {
+                teamId = newcastleTeamId;
+
+                SetupTests();
+
+                var footballDataTeams = JsonSerializer.Deserialize<Teams>(footballDataTeamsJson);
+
+                var testTeams = footballDataTeams
+                            .teams
+                            .Where(x => x.id == newcastleTeamId)
+                            .ToList()
+                            .Select(x => new FootballShared.Models.Team()
+                            {
+                                TeamID = x.id,
+                                Name = x.shortName,
+                                TeamCrestUrl = x.crestUrl,
+                                Squad = new List<Player>()
+                                {
+                                    new Player()
+                                    {
+                                        PlayerID = 8446,
+                                        Name = "Allan Saint-Maximin",
+                                        Position = "Attacker",
+                                        TeamID = 67,
+                                    },
+                                    new Player()
+                                    {
+                                        PlayerID = 3312,
+                                        Name = "Kieran Trippier",
+                                        Position = "Defender",
+                                        TeamID = 67,
+                                    },
+                                }
+                            })
+                            .OrderBy(x => x.Name)
+                            .ToList();
+
+                var footballDataMatches = JsonSerializer.Deserialize<FootballDataModel>(footballDataMatchesJson);
+
+                footballDataState = new FootballDataState()
+                {
+                    Teams = testTeams,
+                    FootballDataMatches = footballDataMatches,
+                };
+
+                var footballDataService = new FootballDataService(mockHttpAPIClient.Object, footballDataState, footballEngineInput);
+
+                var team = await footballDataService.GetTeamAsync(newcastleTeamId);
+
+                Assert.IsNotNull(team);
+
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Never());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"teams/{newcastleTeamId}"), Times.Never());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Never());
+
+                Assert.AreEqual("Newcastle", team.Name);
+                Assert.IsFalse(footballDataState.IsCacheRefreshed);
+            }
+        }
+
+        [TestClass]
+        public class GetFixturesAndResultsByDaysAsync : FootballDataServiceTest
+        {
+            [TestMethod]
+            public async Task WhenFixturesNeverCached_ThenFootbalDataFixturesReturnedFromAPIAndCacheRefreshed()
+            {
+                SetupTests();
+
+                footballDataState = new FootballDataState();
+
+                var footballDataService = new FootballDataService(mockHttpAPIClient.Object, footballDataState, footballEngineInput);
+
+                var fixturesAndResultsByDays = await footballDataService.GetFixturesAndResultsByDaysAsync();
+
+                Assert.IsNotNull(fixturesAndResultsByDays);
+
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
+
+                Assert.AreEqual(106, fixturesAndResultsByDays.Count);
+
+                var firstFixture = fixturesAndResultsByDays.FirstOrDefault();
+
+                Assert.IsNotNull(firstFixture);
+                Assert.AreEqual(new DateTime(2021, 08, 13), firstFixture.FixtureDate);
+                Assert.IsTrue(footballDataState.IsCacheRefreshed);
+            }
+
+            public async Task WhenFixturesFootballDataStateNotNullButFootballDataMatchesCacheIsNull_ThenFootbalDataFixturesReturnedFromAPIAndCacheRefreshed()
+            {
+                SetupTests();
+
+                footballDataState = new FootballDataState()
+                {
+                    FootballDataMatches = null,
+                };
+
+                var footballDataService = new FootballDataService(mockHttpAPIClient.Object, footballDataState, footballEngineInput);
+
+                var fixturesAndResultsByDays = await footballDataService.GetFixturesAndResultsByDaysAsync();
+
+                Assert.IsNotNull(fixturesAndResultsByDays);
+
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
+
+                Assert.AreEqual(106, fixturesAndResultsByDays.Count);
+
+                var firstFixture = fixturesAndResultsByDays.FirstOrDefault();
+
+                Assert.IsNotNull(firstFixture);
+                Assert.AreEqual(new DateTime(2021, 08, 13), firstFixture.FixtureDate);
+                Assert.IsTrue(footballDataState.IsCacheRefreshed);
+            }
+
+            [TestMethod]
+            public async Task WhenFixturesCachedMoreThanOrEqualToNumberOfHoursToRefreshTime_ThenFixturesReturnedFromAPIAndCacheRefreshed()
+            {
+                SetupTests();
+
+                var footballDataMatches = JsonSerializer.Deserialize<FootballDataModel>(footballDataMatchesJson);
+
+                footballDataState = new FootballDataState()
+                {
+                    FootballDataMatches = footballDataMatches,
+                    CompetitionStartDate = footballDataMatches.matches.ToList().First().season.startDate,
+                    LastRefreshTime = DateTime.UtcNow.AddHours(-footballEngineInput.HoursUntilRefreshCache),
+                };
+
+                var footballDataService = new FootballDataService(mockHttpAPIClient.Object, footballDataState, footballEngineInput);
+
+                var fixturesAndResultsByDays = await footballDataService.GetFixturesAndResultsByDaysAsync();
+
+                Assert.IsNotNull(fixturesAndResultsByDays);
+
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
+
+                Assert.AreEqual(106, fixturesAndResultsByDays.Count);
+
+                var firstFixture = fixturesAndResultsByDays.FirstOrDefault();
+
+                Assert.IsNotNull(firstFixture);
+                Assert.AreEqual(new DateTime(2021, 08, 13), firstFixture.FixtureDate);
+                Assert.IsTrue(footballDataState.IsCacheRefreshed);
+            }
+
+            [TestMethod]
+            public async Task WhenFixturesCachedLessThanNumberOfHoursToRefreshTime_ThenFixturesReturnedFromCache()
+            {
+                SetupTests();
+
+                var footballDataMatches = JsonSerializer.Deserialize<FootballDataModel>(footballDataMatchesJson);
+
+                footballDataState = new FootballDataState()
+                {
+                    FootballDataMatches = footballDataMatches,
+                    CompetitionStartDate = footballDataMatches.matches.ToList().First().season.startDate,
+                    LastRefreshTime = DateTime.UtcNow.AddHours(-footballEngineInput.HoursUntilRefreshCache + 0.0001),
+                };
+
+                var footballDataService = new FootballDataService(mockHttpAPIClient.Object, footballDataState, footballEngineInput);
+
+                var fixturesAndResultsByDays = await footballDataService.GetFixturesAndResultsByDaysAsync();
+
+                Assert.IsNotNull(fixturesAndResultsByDays);
+
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Never());
+
+                Assert.AreEqual(106, fixturesAndResultsByDays.Count);
+
+                var firstFixture = fixturesAndResultsByDays.FirstOrDefault();
+
+                Assert.IsNotNull(firstFixture);
+                Assert.AreEqual(new DateTime(2021, 08, 13), firstFixture.FixtureDate);
+                Assert.IsFalse(footballDataState.IsCacheRefreshed);
+            }
         }
     }
 }
