@@ -3,6 +3,9 @@ on:
   push:
     branches:
     - master
+    paths:
+    - 'FootballBlazorApp/**'
+    - 'FootballEngine/**'
 env:
   AZURE_WEBAPP_NAME: PremierLeagueBlazorApp
   AZURE_WEBAPP_PACKAGE_PATH: FootballBlazorApp/publish
@@ -24,7 +27,7 @@ jobs:
     - name: Build
       run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
     - name: Test
-      run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
+      run: dotnet test "${{ env.TEST_DIRECTORY }}"
     - name: Publish
       run: dotnet publish "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
     - name: Deploy to Azure WebApp

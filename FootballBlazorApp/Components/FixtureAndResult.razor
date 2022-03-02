@@ -1,7 +1,4 @@
-﻿@using Models.Enums;
-@using Models;
-
-<tr>
+﻿<tr>
     @switch (ComponentSource)
     {
         case Enums.ComponentSource.FixturesAndResults:
@@ -36,9 +33,9 @@
 @code {
     private const string TBD = "TBD";
 
-    private string GetStageNameForDisplay(Enums.Stage stage) => stage.ToString().Replace("_", " ");
+    private string GetStageNameForDisplay(FootballShared.Models.Enums.Enums.Stage stage) => stage.ToString().Replace("_", " ");
 
-    private string GetStageName(Models.FixtureAndResult fixtureAndResult) =>
+    private string GetStageName(FootballShared.Models.FixtureAndResult fixtureAndResult) =>
                                         fixtureAndResult.Stage == Enums.Stage.Group
                                         ? fixtureAndResult.GroupOrLeagueTable.Name
                                         : GetStageNameForDisplay(fixtureAndResult.Stage);
@@ -47,9 +44,9 @@
 
     private string GetTeamName(Team team) => TeamExists(team) ? team.Name : TBD;
 
-    private string GetScore(Models.FixtureAndResult fixtureAndResult) => $"{fixtureAndResult.HomeTeamGoals} - {fixtureAndResult.AwayTeamGoals}";
+    private string GetScore(FootballShared.Models.FixtureAndResult fixtureAndResult) => $"{fixtureAndResult.HomeTeamGoals} - {fixtureAndResult.AwayTeamGoals}";
 
-    private string GetScoreOrKickOffTime(Models.FixtureAndResult fixtureAndResult) =>
+    private string GetScoreOrKickOffTime(FootballShared.Models.FixtureAndResult fixtureAndResult) =>
                                     fixtureAndResult.GameStatus == Enums.GameStatus.Scheduled
                                     ? fixtureAndResult.FixtureDate.ToString("HH:mm")
                                     : GetScore(fixtureAndResult);
@@ -58,5 +55,5 @@
     public Enums.ComponentSource ComponentSource { get; set; }
 
     [Parameter]
-    public Models.FixtureAndResult FixtureAndResultModel { get; set; }
+    public FootballShared.Models.FixtureAndResult FixtureAndResultModel { get; set; }
 }

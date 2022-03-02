@@ -1,13 +1,11 @@
 ﻿@page "/groupsOrLeagueTable"
 
-@using FootballBlazorApp.Models;
-@using FootballBlazorApp.Data;
-@using FootballBlazorApp.Components;
 @using Microsoft.Extensions.Configuration;
-@inject IFootballDataService FootballDataService;
-@inject IConfiguration configuration;
 
-@if (Convert.ToBoolean(configuration["HasGroups"].ToString()))
+@inject IFootballDataService FootballDataService;
+@inject IConfiguration Configuration;
+
+@if (Convert.ToBoolean(Configuration["HasGroups"].ToString()))
 {
     <h1 style="padding-bottom: 20px;">Groups</h1>
 }
@@ -29,32 +27,5 @@ else
     @foreach (var groupOrLeagueTable in groupsOrLeagueTable)
     {
         <GroupOrLeagueTable GroupOrLeagueTableModel="groupOrLeagueTable"></GroupOrLeagueTable>
-    }
-}
-
-@code {
-    private List<Models.GroupOrLeagueTableModel> groupsOrLeagueTable = null;
-
-    private bool isInvalidGroupsOrLeagueTable = false;
-
-    private string ErrorMessage { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            groupsOrLeagueTable = await FootballDataService.GetGroupsOrLeagueTable();
-            isInvalidGroupsOrLeagueTable = false;
-        }
-        catch (Exception ex) when (ex.Message.Contains(Constants.TOO_MANY_REQUESTS_ERROR_CODE.ToString()))
-        {
-            isInvalidGroupsOrLeagueTable = true;
-            ErrorMessage = Constants.TOO_MANY_REQUESTS_ERROR_MESSAGE;
-        }
-        catch (Exception)
-        {
-            isInvalidGroupsOrLeagueTable = true;
-            ErrorMessage = $"Could not retrieve any groups or league table";
-        }
     }
 }

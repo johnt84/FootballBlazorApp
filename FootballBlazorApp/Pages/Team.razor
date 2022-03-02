@@ -1,9 +1,5 @@
 ﻿@page "/team/{TeamID:int}"
 
-@using FootballBlazorApp.Models;
-@using FootballBlazorApp.Data;
-@using FootballBlazorApp.Components;
-@using FootballBlazorApp.Models.Enums;
 @inject IFootballDataService FootballDataService;
 
 @if (team == null && !isInvalidTeam)
@@ -54,51 +50,9 @@ else
             <table class="table" style="width: 450px; margin-bottom: 20px;">
                 @foreach (var fixtureandResultByDay in team.FixturesAndResultsByDays)
                 {
-                    <FixturesAndResultsByDay ComponentSource="Enums.ComponentSource.Team" FixturesAndResultsByDayModel="fixtureandResultByDay"></FixturesAndResultsByDay>
+                    <FixturesAndResultsByDayComponent ComponentSource="Enums.ComponentSource.Team" FixturesAndResultsByDayModel="fixtureandResultByDay"></FixturesAndResultsByDayComponent>
                 }
             </table>
         }
-    }
-}
-
-@code {
-    private Models.Team team = null;
-
-    private bool fixturesAndResultsExist => team?.FixturesAndResultsByDays != null
-                                            && (team?.FixturesAndResultsByDays?.Count ?? 0) > 0;
-
-    private bool FixturesVisible { get; set; } = false;
-
-    private string hideOrShow => FixturesVisible ? "Hide" : "Show";
-
-    private bool isInvalidTeam = false;
-
-    private string ErrorMessage { get; set; }
-
-    [Parameter]
-    public int TeamID { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            team = await FootballDataService.GetTeam(TeamID);
-            isInvalidTeam = false;
-        }
-        catch (Exception ex) when (ex.Message.Contains(Constants.TOO_MANY_REQUESTS_ERROR_CODE.ToString()))
-        {
-            isInvalidTeam = true;
-            ErrorMessage = Constants.TOO_MANY_REQUESTS_ERROR_MESSAGE;
-        }
-        catch (Exception)
-        {
-            isInvalidTeam = true;
-            ErrorMessage = $"Could not retrieve a team with team id of {TeamID}";
-        }
-    }
-
-    private void ToggleVisbilityOfFixtures()
-    {
-        FixturesVisible = !FixturesVisible;
     }
 }
