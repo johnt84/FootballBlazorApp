@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using System.Threading;
 
-namespace FootballBlazorAppAuotmationTest
+namespace FootballBlazorAppAutomationTest
 {
     [TestClass]
     public class AutomatedUITests
