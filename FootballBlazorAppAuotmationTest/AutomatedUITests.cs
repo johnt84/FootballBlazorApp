@@ -1,20 +1,23 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System.Collections.ObjectModel;
+using System;
+using System.IO;
+using System.Threading;
 
 namespace FootballBlazorAppAuotmationTest
 {
     [TestClass]
     public class AutomatedUITests
     {
-        //const string FOOTBALL_BLAZOR_APP_URL = "https://premierleagueblazorapp.azurewebsites.net/";
-        const string FOOTBALL_BLAZOR_APP_URL = "https://localhost:5001/";
+        IConfigurationRoot config = null;
+        
         const string GROUPS_OR_LEAGUE_TABLE_PAGE = "groupsOrLeagueTable";
-        const int NUMBER_OF_TEAMS_IN_LEAGUE = 20;
-        const string GROUPS_OR_LEAGUE_TABLE_HEADING = "Premier League Table";
         const string FIXTURES_AND_RESULTS_PAGE = "fixturesandresults";
         const string FIXTURES_AND_RESULTS_HEADING = "Fixtures & Results";
+        const string TEAMS_PAGE = "teams";
+        const string TEAMS_HEADING = "Teams";
 
         ChromeDriver driver = null;
 
@@ -23,17 +26,17 @@ namespace FootballBlazorAppAuotmationTest
         {
             Initialise();
 
-            driver.Navigate().GoToUrl(FOOTBALL_BLAZOR_APP_URL + GROUPS_OR_LEAGUE_TABLE_PAGE);
+            driver.Navigate().GoToUrl(config["FootballBlazorAppUrl"] + GROUPS_OR_LEAGUE_TABLE_PAGE);
 
             var firstH1Heading = driver.FindElement(By.XPath("//h1"));
 
-            Assert.AreEqual(GROUPS_OR_LEAGUE_TABLE_HEADING, firstH1Heading.Text);
+            Assert.AreEqual(config["GroupsOrLeagueTableHeading"], firstH1Heading.Text);
 
             int numberOfRowsInTable = driver.FindElements(By.XPath("//tr")).Count;
 
-            Assert.AreEqual(NUMBER_OF_TEAMS_IN_LEAGUE + 1, numberOfRowsInTable);
+            Assert.AreEqual(Convert.ToInt32(config["NumberOfTeamsInLeague"]) + 1, numberOfRowsInTable);
 
-            System.Threading.Thread.Sleep(2000);
+            Thread.Sleep(2000);
 
             driver.Quit();
         }
@@ -43,7 +46,7 @@ namespace FootballBlazorAppAuotmationTest
         {
             Initialise();
 
-            driver.Navigate().GoToUrl(FOOTBALL_BLAZOR_APP_URL + FIXTURES_AND_RESULTS_PAGE);
+            driver.Navigate().GoToUrl(config["FootballBlazorAppUrl"] + FIXTURES_AND_RESULTS_PAGE);
 
             var firstH1Heading = driver.FindElement(By.XPath("//h1"));
 
@@ -53,13 +56,92 @@ namespace FootballBlazorAppAuotmationTest
 
             Assert.IsTrue(numberOfRowsInTable > 0);
 
-            System.Threading.Thread.Sleep(2000);
+            Thread.Sleep(2000);
+
+            driver.Quit();
+        }
+
+        [TestMethod]
+        public void NavigateToTeamsPage()
+        {
+            Initialise();
+
+            driver.Navigate().GoToUrl(config["FootballBlazorAppUrl"] + TEAMS_PAGE);
+
+            var firstH1Heading = driver.FindElement(By.XPath("//h1"));
+
+            Assert.AreEqual(TEAMS_HEADING, firstH1Heading.Text);
+
+            int numberOfItemsInList = driver.FindElements(By.XPath("//li")).Count;
+
+            Assert.IsTrue(numberOfItemsInList > 0);
+
+            Thread.Sleep(2000);
+
+            driver.Quit();
+        }
+
+        [TestMethod]
+        public void NavigateToTeamPage()
+        {
+            Initialise();
+
+            driver.Navigate().GoToUrl(config["FootballBlazorAppUrl"] + TEAMS_PAGE);
+
+            var firstTeamHyperlink = driver.FindElement(By.CssSelector("[href*='team/']"));
+
+            string firstTeamUrl = firstTeamHyperlink.GetAttribute("href");
+            string firstTeamName = firstTeamHyperlink.Text;
+
+            firstTeamHyperlink.Click();
+
+            Assert.AreEqual(firstTeamUrl, driver.Url);
+
+            var firstH1TeamHeading = driver.FindElement(By.XPath("//h1"));
+
+            Assert.AreEqual(firstTeamName, firstH1TeamHeading.Text);
+
+            Thread.Sleep(2000);
+
+            driver.Quit();
+        }
+
+        [TestMethod]
+        public void NavigateToPlayerPage()
+        {
+            Initialise();
+
+            driver.Navigate().GoToUrl(config["FootballBlazorAppUrl"] + TEAMS_PAGE);
+
+            var firstTeamHyperlink = driver.FindElement(By.CssSelector("[href*='team/']"));
+
+            firstTeamHyperlink.Click();
+
+            var firstPlayerHyperlink = driver.FindElement(By.CssSelector("[href*='playerprofile/']"));
+
+            string firstPlayerUrl = firstPlayerHyperlink.GetAttribute("href");
+            string firstPlayerName = firstPlayerHyperlink.Text;
+
+            firstPlayerHyperlink.Click();
+
+            Assert.AreEqual(firstPlayerUrl, driver.Url);
+
+            var firstH1PlayerHeading = driver.FindElement(By.XPath("//h1"));
+
+            Assert.AreEqual(firstPlayerName, firstH1PlayerHeading.Text);
+
+            Thread.Sleep(2000);
 
             driver.Quit();
         }
 
         private void Initialise()
         {
+            config = new ConfigurationBuilder()
+                .SetBasePath($"{Directory.GetCurrentDirectory()}/../../..")
+                .AddJsonFile("appsettings.json")
+                .Build();
+
             driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
         }
