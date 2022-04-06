@@ -12,4 +12,4 @@ Utilises the REST API called <a href="https://www.football-data.org/">Football D
 * Data coming from the Football Data API is currently cached for a configurable number of hours (currently 3) into a class called FootballDataState which is an injected singleton class
 * Contains 2 testing projects
   - A unit test app which uses MS Test .Net 6 and utilises the Moq 4.16 library to unit test the football data service
-  - An automated UI testing app to test the Football Blazor Server App which utilises Selenium WebDriver
+  - An automated UI testing app to test the Football Blazor Server App which utilises Selenium WebDriver .Net 5
