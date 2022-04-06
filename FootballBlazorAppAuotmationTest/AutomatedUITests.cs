@@ -36,7 +36,7 @@ namespace FootballBlazorAppAuotmationTest
 
             Assert.AreEqual(Convert.ToInt32(config["NumberOfTeamsInLeague"]) + 1, numberOfRowsInTable);
 
-            Thread.Sleep(2000);
+            Thread.Sleep(4000);
 
             driver.Quit();
         }
@@ -56,7 +56,7 @@ namespace FootballBlazorAppAuotmationTest
 
             Assert.IsTrue(numberOfRowsInTable > 0);
 
-            Thread.Sleep(2000);
+            Thread.Sleep(4000);
 
             driver.Quit();
         }
@@ -76,7 +76,7 @@ namespace FootballBlazorAppAuotmationTest
 
             Assert.IsTrue(numberOfItemsInList > 0);
 
-            Thread.Sleep(2000);
+            Thread.Sleep(4000);
 
             driver.Quit();
         }
@@ -88,6 +88,8 @@ namespace FootballBlazorAppAuotmationTest
 
             driver.Navigate().GoToUrl(config["FootballBlazorAppUrl"] + TEAMS_PAGE);
 
+            Thread.Sleep(2000);
+
             var firstTeamHyperlink = driver.FindElement(By.CssSelector("[href*='team/']"));
 
             string firstTeamUrl = firstTeamHyperlink.GetAttribute("href");
@@ -97,11 +99,13 @@ namespace FootballBlazorAppAuotmationTest
 
             Assert.AreEqual(firstTeamUrl, driver.Url);
 
+            Thread.Sleep(2000);
+
             var firstH1TeamHeading = driver.FindElement(By.XPath("//h1"));
 
             Assert.AreEqual(firstTeamName, firstH1TeamHeading.Text);
 
-            Thread.Sleep(2000);
+            Thread.Sleep(4000);
 
             driver.Quit();
         }
@@ -129,8 +133,6 @@ namespace FootballBlazorAppAuotmationTest
             var firstH1PlayerHeading = driver.FindElement(By.XPath("//h1"));
 
             Assert.AreEqual(firstPlayerName, firstH1PlayerHeading.Text);
-
-            Thread.Sleep(2000);
 
             driver.Quit();
         }
