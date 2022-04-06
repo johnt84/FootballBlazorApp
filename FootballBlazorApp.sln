@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FootballDataEngine", "Footb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FootballShared", "FootballShared\FootballShared.csproj", "{0F6F9500-6A23-4F1D-A655-9818948FB557}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballBlazorAppAutomationUITests", "FootballBlazorAppAuotmationTest\FootballBlazorAppAutomationUITests.csproj", "{41C10457-8E07-4AD9-A393-35D7C6933A1E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{0F6F9500-6A23-4F1D-A655-9818948FB557}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F6F9500-6A23-4F1D-A655-9818948FB557}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F6F9500-6A23-4F1D-A655-9818948FB557}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41C10457-8E07-4AD9-A393-35D7C6933A1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41C10457-8E07-4AD9-A393-35D7C6933A1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41C10457-8E07-4AD9-A393-35D7C6933A1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41C10457-8E07-4AD9-A393-35D7C6933A1E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
