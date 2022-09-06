@@ -23,16 +23,6 @@ namespace FootballBlazorApp.Pages
 
         private string ErrorMessage { get; set; }
 
-        private bool isPlayer => player.SquadRole == Enums.SquadRole.Player;
-
-        private string positionOrRoleLabel => isPlayer ? "Position" : "Role";
-
-        private string SquadRoleForDisplay(Enums.SquadRole squadRole) => squadRole.ToString().Replace("_", " ");
-
-        private string positionOrRoleForDisplay => isPlayer
-                                                    ? player.Position
-                                                    : SquadRoleForDisplay(player.SquadRole);
-
         private bool isTeamOrPlayerNotSet => team == null || player == null;
 
         private bool isPageLoading => isTeamOrPlayerNotSet && !isInvalidTeam;
