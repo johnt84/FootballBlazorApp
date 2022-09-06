@@ -2,6 +2,7 @@
 {
     public class GroupOrLeagueTableStanding
     {
+        public int Position { get; set; }
         public Team Team { get; set; }
         public int GamesPlayed { get; set; }
         public int GamesWon { get; set; }

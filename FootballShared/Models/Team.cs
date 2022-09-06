@@ -7,7 +7,6 @@ namespace FootballShared.Models
     {
         public int TeamID { get; set; }
         public string Name { get; set; }
-        public string ShortName { get; set; }
         public string TeamCrestUrl { get; set; }
         public int YearFounded { get; set; }
         public string Website { get; set; }
@@ -18,5 +17,6 @@ namespace FootballShared.Models
         public Coach Coach { get; set; }
         public Stage StageReached { get; set; }
         public List<FixturesAndResultsByDay> FixturesAndResultsByDays { get; set; }
+        public int CurrentLeaguePosition { get; set; }
     }
 }

@@ -14,5 +14,7 @@ namespace FootballShared.Models
         public int Age { get; set; }
         public int SquadSortOrder { get; set; }
         public int TeamID { get; set; }
+        public string TeamName { get; set; }
+        public int TeamCurrentPosition { get; set; }
     }
 }
