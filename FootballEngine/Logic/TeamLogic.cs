@@ -62,7 +62,7 @@ namespace FootballEngine.Services
                     .GroupBy(x => x.Position)
                     .Select(x => new PlayerByPosition()
                     {
-                        Position = TidySquadPosition(x.Key),
+                        Position = x.Key,
                         SortOrder = GetSquadSortOrder(x.Key),
                         Players = x.ToList(),
                     })
@@ -76,7 +76,7 @@ namespace FootballEngine.Services
             {
                 PlayerID = squad.id,
                 Name = squad.name,
-                Position = squad.position,
+                Position = TidySquadPosition(squad.position),
                 DateOfBirth = squad.dateOfBirth,
                 Nationality = squad.nationality,
                 Age = CalculateAge(squad.dateOfBirth),
@@ -125,20 +125,18 @@ namespace FootballEngine.Services
         {
             int squadSortOrder = (int)PlayerPosition.Goalkeeper;
 
-            string positionForDisplay = position.Replace("_", " ");
-
-            switch (positionForDisplay)
+            switch (position)
             {
                 case "Goalkeeper":
                     squadSortOrder = (int)PlayerPosition.Goalkeeper;
                     break;
-                case "Defence":
+                case "Defender":
                     squadSortOrder = (int)PlayerPosition.Defender;
                     break;
-                case "Midfield":
+                case "Midfielder":
                     squadSortOrder = (int)PlayerPosition.Midfielder;
                     break;
-                case "Offence":
+                case "Attacker":
                     squadSortOrder = (int)PlayerPosition.Attacker;
                     break;
                 default:
