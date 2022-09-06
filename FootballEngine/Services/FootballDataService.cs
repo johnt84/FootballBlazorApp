@@ -87,6 +87,11 @@ namespace FootballEngine.Services
 
         public async Task<List<GroupOrLeagueTableModel>> GetFixturesAndResultsByGroupsAsync(List<GroupOrLeagueTableModel> groupsOrLeagueTable)
         {
+            if (!groupsOrLeagueTable?.FirstOrDefault().IsGroup ?? false)
+            {
+                return groupsOrLeagueTable;
+            }
+
             var footballDataMatches = await GetFootballDataMatchesAsync();
 
             var fixtureAndResultLogic = new FixtureAndResultLogic(footballDataMatches, _footballEngineInput);
