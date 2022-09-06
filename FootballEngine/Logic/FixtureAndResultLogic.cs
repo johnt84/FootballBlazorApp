@@ -64,7 +64,7 @@ namespace FootballEngine.Services
             var fixturesAndResults = await GetFixtureAndResultsAsync();
 
             var teamsFixtures = fixturesAndResults
-                                    .Where(x => x.HomeTeam.ShortName == team.Name || x.AwayTeam.ShortName == team.Name)
+                                    .Where(x => x.HomeTeam.Name == team.Name || x.AwayTeam.Name == team.Name)
                                     .ToList();
 
             var teamsFixturesAndResultsByDays = teamsFixtures
@@ -126,14 +126,12 @@ namespace FootballEngine.Services
                 HomeTeam = new FootballShared.Models.Team()
                 {
                     TeamID = match.homeTeam.id.HasValue ? match.homeTeam.id.Value : 0,
-                    Name = match.homeTeam.name,
-                    ShortName = match.homeTeam.shortName,
+                    Name = match.homeTeam.shortName,
                 },
                 AwayTeam = new FootballShared.Models.Team()
                 {
                     TeamID = match.awayTeam.id.HasValue ? match.awayTeam.id.Value : 0,
-                    Name = match.awayTeam.name,
-                    ShortName = match.homeTeam.shortName,
+                    Name = match.awayTeam.shortName,
                 },
                 FixtureDate = match.utcDate.AddMinutes(-timeZoneOffsetInMinutes),
                 Stage = GetStage(match.stage),

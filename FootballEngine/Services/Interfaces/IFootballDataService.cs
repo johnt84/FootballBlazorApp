@@ -9,5 +9,7 @@ namespace FootballEngine.Services.Interfaces
         public Task<FootballShared.Models.Team> GetTeamAsync(int teamID);
         public Task<List<FixturesAndResultsByDay>> GetFixturesAndResultsByDaysAsync();
         public Task<List<GroupOrLeagueTableModel>> GetFixturesAndResultsByGroupsAsync(List<GroupOrLeagueTableModel> groups);
+        public Task<List<FootballShared.Models.Player>> GetPlayersAsync();
+        public Task<List<FootballShared.Models.Player>> PlayerSearchAsync(PlayerSearchCriteria playerSearchCriteria);
     }
 }

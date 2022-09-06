@@ -36,7 +36,7 @@ namespace FootballEngine.Services
                             HomeStadium = x.venue,
                             Squad = x.squad
                                     .ToList()
-                                    .Select(y => GetPlayerFromSquad(y, x.id))
+                                    .Select(y => GetPlayerFromSquad(y, x.id, x.shortName))
                                     .ToList(),
                             Coach = new FootballShared.Models.Coach() { 
                                 CoachID = x.coach.id,
@@ -70,7 +70,7 @@ namespace FootballEngine.Services
                     .ToList();
         }
 
-        private Player GetPlayerFromSquad(Squad squad, int TeamID)
+        private Player GetPlayerFromSquad(Squad squad, int teamID, string teamName)
         {
             return new Player()
             {
@@ -80,7 +80,8 @@ namespace FootballEngine.Services
                 DateOfBirth = squad.dateOfBirth,
                 Nationality = squad.nationality,
                 Age = CalculateAge(squad.dateOfBirth),
-                TeamID = TeamID,
+                TeamID = teamID,
+                TeamName = teamName,
             };
         }
 

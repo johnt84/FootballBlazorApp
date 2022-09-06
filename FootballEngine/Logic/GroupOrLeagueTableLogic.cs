@@ -32,22 +32,23 @@ namespace FootballEngine.Services
             {
                 Name = _footballEngineInput.HasGroups ? standing.group?.Replace(GROUP_, string.Empty) : $"{_footballEngineInput.LeagueName} Table",
                 IsGroup = _footballEngineInput.HasGroups,
-                GroupOrLeagueTableStandings = standing.table.ToList().Select(y => new GroupOrLeagueTableStanding()
+                GroupOrLeagueTableStandings = standing.table.ToList().Select(x => new GroupOrLeagueTableStanding()
                 {
+                    Position = x.position,
                     Team = new FootballShared.Models.Team()
                     {
-                        TeamID = y.team.id,
-                        Name = y.team.name,
-                        TeamCrestUrl = y.team.crest,
+                        TeamID = x.team.id,
+                        Name = x.team.shortName,
+                        TeamCrestUrl = x.team.crest,
                     },
-                    GamesPlayed = y.playedGames,
-                    GamesWon = y.won,
-                    GamesDrawn = y.draw,
-                    GamesLost = y.lost,
-                    GoalsScored = y.goalsFor,
-                    GoalsAgainst = y.goalsAgainst,
-                    GoalDifference = y.goalDifference,
-                    PointsTotal = y.points,
+                    GamesPlayed = x.playedGames,
+                    GamesWon = x.won,
+                    GamesDrawn = x.draw,
+                    GamesLost = x.lost,
+                    GoalsScored = x.goalsFor,
+                    GoalsAgainst = x.goalsAgainst,
+                    GoalDifference = x.goalDifference,
+                    PointsTotal = x.points,
                 })
                 .ToList(),
             };

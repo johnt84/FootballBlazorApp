@@ -925,11 +925,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":402,
-            ""name"":""Brentford FC""
+            ""shortName"":""Brentford""
          },
          ""awayTeam"":{
             ""id"":57,
-            ""name"":""Arsenal FC""
+            ""shortName"":""Arsenal""
          },
          ""referees"":[
             {
@@ -1009,11 +1009,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":66,
-            ""name"":""Manchester United FC""
+            ""shortName"":""Manchester United""
          },
          ""awayTeam"":{
             ""id"":341,
-            ""name"":""Leeds United FC""
+            ""shortName"":""Leeds United FC""
          },
          ""referees"":[
             {
@@ -1093,11 +1093,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":346,
-            ""name"":""Watford FC""
+            ""shortName"":""Watford FC""
          },
          ""awayTeam"":{
             ""id"":58,
-            ""name"":""Aston Villa FC""
+            ""shortName"":""Aston Villa FC""
          },
          ""referees"":[
             {
@@ -1177,11 +1177,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":338,
-            ""name"":""Leicester City FC""
+            ""shortName"":""Leicester City FC""
          },
          ""awayTeam"":{
             ""id"":76,
-            ""name"":""Wolverhampton Wanderers FC""
+            ""shortName"":""Wolverhampton Wanderers FC""
          },
          ""referees"":[
             {
@@ -1261,11 +1261,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":62,
-            ""name"":""Everton FC""
+            ""shortName"":""Everton FC""
          },
          ""awayTeam"":{
             ""id"":340,
-            ""name"":""Southampton FC""
+            ""shortName"":""Southampton FC""
          },
          ""referees"":[
             {
@@ -1345,11 +1345,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":61,
-            ""name"":""Chelsea FC""
+            ""shortName"":""Chelsea FC""
          },
          ""awayTeam"":{
             ""id"":354,
-            ""name"":""Crystal Palace FC""
+            ""shortName"":""Crystal Palace FC""
          },
          ""referees"":[
             {
@@ -1429,11 +1429,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":328,
-            ""name"":""Burnley FC""
+            ""shortName"":""Burnley FC""
          },
          ""awayTeam"":{
             ""id"":397,
-            ""name"":""Brighton & Hove Albion FC""
+            ""shortName"":""Brighton & Hove Albion FC""
          },
          ""referees"":[
             {
@@ -1513,11 +1513,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":68,
-            ""name"":""Norwich City FC""
+            ""shortName"":""Norwich City FC""
          },
          ""awayTeam"":{
             ""id"":64,
-            ""name"":""Liverpool FC""
+            ""shortName"":""Liverpool FC""
          },
          ""referees"":[
             {
@@ -1597,11 +1597,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":67,
-            ""name"":""Newcastle United FC""
+            ""shortName"":""Newcastle United FC""
          },
          ""awayTeam"":{
             ""id"":563,
-            ""name"":""West Ham United FC""
+            ""shortName"":""West Ham United FC""
          },
          ""referees"":[
             {
@@ -1681,11 +1681,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":73,
-            ""name"":""Tottenham Hotspur FC""
+            ""shortName"":""Tottenham Hotspur FC""
          },
          ""awayTeam"":{
             ""id"":65,
-            ""name"":""Manchester City FC""
+            ""shortName"":""Manchester City FC""
          },
          ""referees"":[
             {
@@ -1765,11 +1765,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":64,
-            ""name"":""Liverpool FC""
+            ""shortName"":""Liverpool FC""
          },
          ""awayTeam"":{
             ""id"":328,
-            ""name"":""Burnley FC""
+            ""shortName"":""Burnley FC""
          },
          ""referees"":[
             {
@@ -1849,11 +1849,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":65,
-            ""name"":""Manchester City FC""
+            ""shortName"":""Manchester City FC""
          },
          ""awayTeam"":{
             ""id"":68,
-            ""name"":""Norwich City FC""
+            ""shortName"":""Norwich City FC""
          },
          ""referees"":[
             {
@@ -1933,11 +1933,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":341,
-            ""name"":""Leeds United FC""
+            ""shortName"":""Leeds United FC""
          },
          ""awayTeam"":{
             ""id"":62,
-            ""name"":""Everton FC""
+            ""shortName"":""Everton FC""
          },
          ""referees"":[
             {
@@ -2017,11 +2017,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":354,
-            ""name"":""Crystal Palace FC""
+            ""shortName"":""Crystal Palace FC""
          },
          ""awayTeam"":{
             ""id"":402,
-            ""name"":""Brentford FC""
+            ""shortName"":""Brentford FC""
          },
          ""referees"":[
             {
@@ -2101,11 +2101,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":58,
-            ""name"":""Aston Villa FC""
+            ""shortName"":""Aston Villa FC""
          },
          ""awayTeam"":{
             ""id"":67,
-            ""name"":""Newcastle United FC""
+            ""shortName"":""Newcastle United FC""
          },
          ""referees"":[
             {
@@ -2185,11 +2185,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":397,
-            ""name"":""Brighton & Hove Albion FC""
+            ""shortName"":""Brighton & Hove Albion FC""
          },
          ""awayTeam"":{
             ""id"":346,
-            ""name"":""Watford FC""
+            ""shortName"":""Watford FC""
          },
          ""referees"":[
             {
@@ -2269,11 +2269,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":76,
-            ""name"":""Wolverhampton Wanderers FC""
+            ""shortName"":""Wolverhampton Wanderers FC""
          },
          ""awayTeam"":{
             ""id"":73,
-            ""name"":""Tottenham Hotspur FC""
+            ""shortName"":""Tottenham Hotspur FC""
          },
          ""referees"":[
             {
@@ -2353,11 +2353,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":340,
-            ""name"":""Southampton FC""
+            ""shortName"":""Southampton FC""
          },
          ""awayTeam"":{
             ""id"":66,
-            ""name"":""Manchester United FC""
+            ""shortName"":""Manchester United FC""
          },
          ""referees"":[
             {
@@ -2437,11 +2437,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":57,
-            ""name"":""Arsenal FC""
+            ""shortName"":""Arsenal FC""
          },
          ""awayTeam"":{
             ""id"":61,
-            ""name"":""Chelsea FC""
+            ""shortName"":""Chelsea FC""
          },
          ""referees"":[
             {
@@ -2521,11 +2521,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":563,
-            ""name"":""West Ham United FC""
+            ""shortName"":""West Ham United FC""
          },
          ""awayTeam"":{
             ""id"":338,
-            ""name"":""Leicester City FC""
+            ""shortName"":""Leicester City FC""
          },
          ""referees"":[
             {
@@ -2611,11 +2611,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":65,
-            ""name"":""Manchester City FC""
+            ""shortName"":""Manchester City FC""
          },
          ""awayTeam"":{
             ""id"":57,
-            ""name"":""Arsenal FC""
+            ""shortName"":""Arsenal FC""
          },
          ""referees"":[
             {
@@ -2695,11 +2695,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":563,
-            ""name"":""West Ham United FC""
+            ""shortName"":""West Ham United FC""
          },
          ""awayTeam"":{
             ""id"":354,
-            ""name"":""Crystal Palace FC""
+            ""shortName"":""Crystal Palace FC""
          },
          ""referees"":[
             {
@@ -2779,11 +2779,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":68,
-            ""name"":""Norwich City FC""
+            ""shortName"":""Norwich City FC""
          },
          ""awayTeam"":{
             ""id"":338,
-            ""name"":""Leicester City FC""
+            ""shortName"":""Leicester City FC""
          },
          ""referees"":[
             {
@@ -2863,11 +2863,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":67,
-            ""name"":""Newcastle United FC""
+            ""shortName"":""Newcastle United FC""
          },
          ""awayTeam"":{
             ""id"":340,
-            ""name"":""Southampton FC""
+            ""shortName"":""Southampton FC""
          },
          ""referees"":[
             {
@@ -2947,11 +2947,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":397,
-            ""name"":""Brighton & Hove Albion FC""
+            ""shortName"":""Brighton & Hove Albion FC""
          },
          ""awayTeam"":{
             ""id"":62,
-            ""name"":""Everton FC""
+            ""shortName"":""Everton FC""
          },
          ""referees"":[
             {
@@ -3031,11 +3031,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":58,
-            ""name"":""Aston Villa FC""
+            ""shortName"":""Aston Villa FC""
          },
          ""awayTeam"":{
             ""id"":402,
-            ""name"":""Brentford FC""
+            ""shortName"":""Brentford FC""
          },
          ""referees"":[
             {
@@ -3115,11 +3115,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":64,
-            ""name"":""Liverpool FC""
+            ""shortName"":""Liverpool FC""
          },
          ""awayTeam"":{
             ""id"":61,
-            ""name"":""Chelsea FC""
+            ""shortName"":""Chelsea FC""
          },
          ""referees"":[
             {
@@ -3199,11 +3199,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":73,
-            ""name"":""Tottenham Hotspur FC""
+            ""shortName"":""Tottenham Hotspur FC""
          },
          ""awayTeam"":{
             ""id"":346,
-            ""name"":""Watford FC""
+            ""shortName"":""Watford FC""
          },
          ""referees"":[
             {
@@ -3283,11 +3283,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":328,
-            ""name"":""Burnley FC""
+            ""shortName"":""Burnley FC""
          },
          ""awayTeam"":{
             ""id"":341,
-            ""name"":""Leeds United FC""
+            ""shortName"":""Leeds United FC""
          },
          ""referees"":[
             {
@@ -3367,7 +3367,7 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":76,
-            ""name"":""Wolverhampton Wanderers FC""
+            ""shortName"":""Wolverhampton Wanderers FC""
          },
          ""awayTeam"":{
             ""id"":66,
@@ -3451,11 +3451,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":354,
-            ""name"":""Crystal Palace FC""
+            ""shortName"":""Crystal Palace FC""
          },
          ""awayTeam"":{
             ""id"":73,
-            ""name"":""Tottenham Hotspur FC""
+            ""shortName"":""Tottenham Hotspur FC""
          },
          ""referees"":[
             {
@@ -3535,11 +3535,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":346,
-            ""name"":""Watford FC""
+            ""shortName"":""Watford FC""
          },
          ""awayTeam"":{
             ""id"":76,
-            ""name"":""Wolverhampton Wanderers FC""
+            ""shortName"":""Wolverhampton Wanderers FC""
          },
          ""referees"":[
             {
@@ -3619,11 +3619,11 @@ namespace FootballEngineUnitTest
          },
          ""homeTeam"":{
             ""id"":340,
-            ""name"":""Southampton FC""
+            ""shortName"":""Southampton FC""
          },
          ""awayTeam"":{
             ""id"":563,
-            ""name"":""West Ham United FC""
+            ""shortName"":""West Ham United FC""
          },
          ""referees"":[
             {
@@ -29695,7 +29695,6 @@ namespace FootballEngineUnitTest
                             {
                                 TeamID = x.id,
                                 Name = x.shortName,
-                                ShortName = x.shortName,
                                 TeamCrestUrl = x.crest,
                                 Squad = x.squad
                                             .ToList()
@@ -29864,7 +29863,7 @@ namespace FootballEngineUnitTest
 
                 mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
 
-                Assert.AreEqual(106, fixturesAndResultsByDays.Count);
+                Assert.AreEqual(9, fixturesAndResultsByDays.Count);
 
                 var firstFixture = fixturesAndResultsByDays.FirstOrDefault();
 
@@ -29921,7 +29920,7 @@ namespace FootballEngineUnitTest
 
                 mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
 
-                Assert.AreEqual(106, fixturesAndResultsByDays.Count);
+                Assert.AreEqual(9, fixturesAndResultsByDays.Count);
 
                 var firstFixture = fixturesAndResultsByDays.FirstOrDefault();
 
@@ -29952,7 +29951,7 @@ namespace FootballEngineUnitTest
 
                 mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Never());
 
-                Assert.AreEqual(106, fixturesAndResultsByDays.Count);
+                Assert.AreEqual(9, fixturesAndResultsByDays.Count);
 
                 var firstFixture = fixturesAndResultsByDays.FirstOrDefault();
 

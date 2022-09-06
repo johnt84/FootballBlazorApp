@@ -99,6 +99,78 @@ namespace FootballEngine.Services
             return await fixtureAndResultLogic.GetFixturesAndResultsByGroupsOrLeagueTableAsync(groupsOrLeagueTable);
         }
 
+        public async Task<List<FootballShared.Models.Player>> PlayerSearchAsync(PlayerSearchCriteria playerSearchCriteria)
+        {
+            var players = await GetPlayersAsync();
+
+            if (playerSearchCriteria != null)
+            {
+                players = players
+                            .Where(x => ((playerSearchCriteria.PlayerAgeMinimum.HasValue && x.Age >= playerSearchCriteria.PlayerAgeMinimum.Value) || (!playerSearchCriteria.PlayerAgeMinimum.HasValue && x.Age == x.Age))
+                                && ((playerSearchCriteria.PlayerAgeMaximum.HasValue && x.Age <= playerSearchCriteria.PlayerAgeMaximum.Value) || (!playerSearchCriteria.PlayerAgeMaximum.HasValue && x.Age == x.Age))
+                                && ((!string.IsNullOrWhiteSpace(playerSearchCriteria.PlayerCountry) && x.Nationality.ToLower().Contains(playerSearchCriteria.PlayerCountry.ToLower())) || (string.IsNullOrWhiteSpace(playerSearchCriteria.PlayerCountry) && x.Nationality == x.Nationality))
+                                && ((!string.IsNullOrWhiteSpace(playerSearchCriteria.PlayerPosition) && x.Position.ToLower().Contains(playerSearchCriteria.PlayerPosition.ToLower())) || (string.IsNullOrWhiteSpace(playerSearchCriteria.PlayerPosition) && x.Position == x.Position))
+                                && ((!string.IsNullOrWhiteSpace(playerSearchCriteria.PlayerName) && x.Name.ToLower().Contains(playerSearchCriteria.PlayerName.ToLower())) || (string.IsNullOrWhiteSpace(playerSearchCriteria.PlayerName) && x.Name == x.Name))
+                                && ((!string.IsNullOrWhiteSpace(playerSearchCriteria.TeamName) && x.TeamName.ToLower().Contains(playerSearchCriteria.TeamName.ToLower())) || (string.IsNullOrWhiteSpace(playerSearchCriteria.TeamName) && x.TeamName == x.TeamName))
+                                && ((playerSearchCriteria.TeamPositionMinimum.HasValue && x.TeamCurrentPosition >= playerSearchCriteria.TeamPositionMinimum.Value) || (!playerSearchCriteria.TeamPositionMinimum.HasValue && x.TeamCurrentPosition == x.TeamCurrentPosition))
+                                && ((playerSearchCriteria.TeamPositionMaximum.HasValue && x.TeamCurrentPosition <= playerSearchCriteria.TeamPositionMaximum.Value) || (!playerSearchCriteria.TeamPositionMaximum.HasValue && x.TeamCurrentPosition == x.TeamCurrentPosition)))
+                            .ToList();
+            }
+
+            return players;
+        }
+
+        public async Task<List<FootballShared.Models.Player>> GetPlayersAsync()
+        {
+            var groupsOrLeagueTable = await GetGroupsOrLeagueTableAsync();
+
+            var teams = await GetTeamsAsync();
+
+            var players = new List<FootballShared.Models.Player>();
+
+            List<(string, int)> teamPositions = new List<(string, int)>();
+
+            foreach (var team in teams)
+            {
+                foreach(var groupOrLeagueTable in groupsOrLeagueTable)
+                {
+                    foreach(var groupOrLeagueTableStanding in groupOrLeagueTable.GroupOrLeagueTableStandings)
+                    {
+                        if(team.Name == groupOrLeagueTableStanding.Team.Name)
+                        {
+                            teamPositions.Add((team.Name, groupOrLeagueTableStanding.Position));
+                        }
+                    }
+                }
+            }
+
+            foreach (var team in teams)
+            {
+                var teamPosition = teamPositions
+                                    .Where(x => x.Item1 == team.Name)
+                                    .FirstOrDefault();
+
+                if (teamPosition.Item1 != null)
+                {
+                    team.CurrentLeaguePosition = teamPosition.Item2;
+                }
+            }
+
+            foreach (var team in teams)
+            {
+                foreach(var player in team.Squad)
+                {
+                    player.TeamCurrentPosition = team.CurrentLeaguePosition;
+                }
+
+                players = players
+                            .Union(team.Squad)
+                            .ToList();
+            }
+
+            return players;
+        }
+
         private async Task<FootballDataModel> GetFootballDataMatchesAsync()
         {
             bool footballDataMatchesCached = _footballDataState != null && _footballDataState.FootballDataMatches != null;
