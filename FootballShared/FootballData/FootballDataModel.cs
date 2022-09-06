@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FootballShared.Models.FootballData
+﻿namespace FootballShared.Models.FootballData
 {
     public class FootballDataModel
     {
@@ -92,22 +90,31 @@ namespace FootballShared.Models.FootballData
 
     public class Team
     {
-        public int id { get; set; }
         public Area area { get; set; }
-        public Activecompetition[] activeCompetitions { get; set; }
+        public int id { get; set; }
         public string name { get; set; }
         public string shortName { get; set; }
         public string tla { get; set; }
-        public string crestUrl { get; set; }
+        public string crest { get; set; }
         public string address { get; set; }
-        public string phone { get; set; }
         public string website { get; set; }
-        public string email { get; set; }
         public int founded { get; set; }
         public string clubColors { get; set; }
         public string venue { get; set; }
+
+        public Coach coach { get; set; }
         public Squad[] squad { get; set; }
         public DateTime lastUpdated { get; set; }
+    }
+
+    public class Coach
+    {
+        public int id { get; set; }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string name { get; set; }
+        public DateTime dateOfBirth { get; set; }
+        public string nationality { get; set; }
     }
 
     public class Odds
@@ -127,20 +134,20 @@ namespace FootballShared.Models.FootballData
 
     public class Fulltime
     {
-        public int? homeTeam { get; set; }
-        public int? awayTeam { get; set; }
+        public int? home { get; set; }
+        public int? away { get; set; }
     }
 
     public class Halftime
     {
-        public int? homeTeam { get; set; }
-        public int? awayTeam { get; set; }
+        public int? home { get; set; }
+        public int? away { get; set; }
     }
 
     public class Extratime
     {
-        public int? homeTeam { get; set; }
-        public int? awayTeam { get; set; }
+        public int? home { get; set; }
+        public int? away { get; set; }
     }
 
     public class Penalties
@@ -153,12 +160,14 @@ namespace FootballShared.Models.FootballData
     {
         public int? id { get; set; }
         public string name { get; set; }
+        public string shortName { get; set; }
     }
 
     public class Awayteam
     {
         public int? id { get; set; }
         public string name { get; set; }
+        public string shortName { get; set; }
     }
 
     public class Activecompetition
@@ -177,9 +186,6 @@ namespace FootballShared.Models.FootballData
         public string name { get; set; }
         public string position { get; set; }
         public DateTime dateOfBirth { get; set; }
-        public string countryOfBirth { get; set; }
         public string nationality { get; set; }
-        public int? shirtNumber { get; set; }
-        public string role { get; set; }
     }
 }

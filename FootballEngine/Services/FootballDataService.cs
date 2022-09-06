@@ -69,24 +69,10 @@ namespace FootballEngine.Services
                                         && x.Squad != null && x.Squad.Count > 0)
                                 .FirstOrDefault();
 
-            if (teamWithSquad == null)
-            {
-                var footballDataTeam = await GetFootballDataTeamFromAPIAsync(teamID);
-
-                var teamLogic = new TeamLogic(footballDataTeam);
-                teamWithSquad = teamLogic.GetTeam();
-
-                var teamInCacheToUpdate = _footballDataState
-                                            .Teams
-                                            .First(x => x.TeamID == teamID);
-
-                int teamInCacheToUpdateIndex = _footballDataState.Teams.IndexOf(teamInCacheToUpdate);
-                _footballDataState.Teams[teamInCacheToUpdateIndex] = teamWithSquad;
-            }
-
             var footballDataMatches = await GetFootballDataMatchesAsync();
 
             var fixtureAndResultLogic = new FixtureAndResultLogic(footballDataMatches, _footballEngineInput);
+
             return await fixtureAndResultLogic.GetFixturesAndResultsByTeamAsync(teamWithSquad);
         }
 
@@ -151,6 +137,12 @@ namespace FootballEngine.Services
             else
             {
                 footballDataStandings = await GetFootballDataStandingsFromAPIAsync();
+
+                footballDataStandings.standings = footballDataStandings
+                                                    .standings
+                                                    .Where(x => x.type == "TOTAL")
+                                                    .ToArray();
+
                 _footballDataState.FootballDataStandings = footballDataStandings;
                 _footballDataState.CompetitionStartDate = GetCompetitionStartDate(footballDataStandings.season.startDate);
                 MarkCacheAsRefreshed();
@@ -190,12 +182,6 @@ namespace FootballEngine.Services
         {
             string json = await _httpAPIClient.GetAsync($"competitions/{_footballEngineInput.Competition}/teams/");
             return JsonSerializer.Deserialize<Teams>(json);
-        }
-
-        private async Task<FootballShared.Models.FootballData.Team> GetFootballDataTeamFromAPIAsync(int teamID)
-        {
-            string json = await _httpAPIClient.GetAsync($"teams/{teamID}");
-            return JsonSerializer.Deserialize<FootballShared.Models.FootballData.Team>(json);
         }
         
         private void MarkCacheAsRefreshed()

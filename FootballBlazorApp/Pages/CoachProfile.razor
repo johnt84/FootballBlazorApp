@@ -1,5 +1,5 @@
-﻿@page "/playerprofile/{playerid:int}/{teamid:int}"
- 
+﻿@page "/coachprofile/{coachid:int}/{teamid:int}"
+
 @inject IFootballDataService FootballDataService;
 
 @if (isPageLoading)
@@ -14,26 +14,26 @@ else if (team.TeamID == 0)
 {
     <ErrorMessage Error="The team could not be found"></ErrorMessage>
 }
-else if (player.PlayerID == 0)
+else if (coach.CoachID == 0)
 {
-    <ErrorMessage Error="The player could not be found"></ErrorMessage>
+    <ErrorMessage Error="The coach could not be found"></ErrorMessage>
 }
 else
 {
-    <h1 style="padding-bottom: 20px;">@player.Name</h1>
+    <h1 style="padding-bottom: 20px;">@coach.Name</h1>
 
     <table class="table" style="width:780px; margin-bottom:10px;">
         <tr>
-            <th>@positionOrRoleLabel</th>
+            <th>Name</th>
             <th>Age</th>
             <th>Date of birth</th>
             <th>Nationality</th>
         </tr>
         <tr>
-            <td>@positionOrRoleForDisplay</td>
-            <td>@player.Age</td>
-            <td>@player.DateOfBirth.ToString("dd MMM yyyy")</td>
-            <td>@player.Nationality</td>
+            <td>@coach.Name</td>
+            <td>@coach.Age</td>
+            <td>@coach.DateOfBirth.ToString("dd MMM yyyy")</td>
+            <td>@coach.Nationality</td>
         </tr>
     </table>
 
