@@ -22,52 +22,37 @@ namespace FootballEngine.Services
 
         public List<FootballShared.Models.Team> GetTeams()
         {
-            return _teamsFootballDataModel
+            var teams =  _teamsFootballDataModel
                         .teams
                         .ToList()
                         .Select(x => new FootballShared.Models.Team()
                         {
                             TeamID = x.id,
                             Name = x.shortName,
-                            TeamCrestUrl = x.crestUrl,
+                            TeamCrestUrl = x.crest,
+                            YearFounded = x.founded,
+                            Website = x.website,
+                            TeamColours = x.clubColors,
+                            HomeStadium = x.venue,
+                            Squad = x.squad
+                                    .ToList()
+                                    .Select(x => GetPlayerFromSquad(x))
+                                    .ToList(),
+                            Coach = new FootballShared.Models.Coach() { 
+                                CoachID = x.coach.id,
+                                Name = x.coach.name,
+                                DateOfBirth = x.coach.dateOfBirth,
+                                Nationality = x.coach.nationality,
+                                Age = CalculateAge(x.coach.dateOfBirth),
+                                TeamID = x.id,
+                            },
                         })
                         .OrderBy(x => x.Name)
                         .ToList();
-        }
 
-        public FootballShared.Models.Team GetTeam()
-        {
-            var team = new FootballShared.Models.Team()
-            {
-                TeamID = _teamFootballDataModel.id,
-                Name = _teamFootballDataModel.shortName,
-                TeamCrestUrl = _teamFootballDataModel.crestUrl,
-                YearFounded = _teamFootballDataModel.founded,
-                Website = _teamFootballDataModel.website,
-                TeamColours = _teamFootballDataModel.clubColors,
-                HomeStadium = _teamFootballDataModel.venue,
-                Squad = _teamFootballDataModel
-                            .squad
-                            .ToList()
-                            .Select(x => GetPlayerFromSquad(x, _teamFootballDataModel.id))
-                            .ToList(),
-            };
+            teams.ForEach(x => x.SquadByPosition = GetPlayersByPosition(x.Squad));
 
-            team.CoachingStaff = GetCoachingStaff(team.Squad);
-            team.SquadByPosition = GetPlayersByPosition(team.Squad);
-
-            return team;
-        }
-
-        private List<Player> GetCoachingStaff(List<Player> squad)
-        {
-            var coachingStaff =  squad
-                                .Where(x => x.SquadRole != SquadRole.Player)
-                                .ToList();
-
-            coachingStaff.ForEach(x => x.SquadSortOrder = GetSquadSortOrder(x.SquadRole.ToString()));
-
-            return coachingStaff.OrderBy(x => x.SquadSortOrder).ToList();
+            return teams;
         }
 
         private List<PlayerByPosition> GetPlayersByPosition(List<Player> squad)
@@ -85,44 +70,19 @@ namespace FootballEngine.Services
                     .ToList();
         }
 
-        private Player GetPlayerFromSquad(Squad squad, int teamID)
+        private Player GetPlayerFromSquad(Squad squad)
         {
             return new Player()
             {
                 PlayerID = squad.id,
-                SquadRole = GetSquadRole(squad.role),
                 Name = squad.name,
                 Position = squad.position,
                 DateOfBirth = squad.dateOfBirth,
-                CountryOfBirth = squad.countryOfBirth,
                 Nationality = squad.nationality,
-                ShirtNumber = squad.shirtNumber,
                 Age = CalculateAge(squad.dateOfBirth),
-                TeamID = teamID,
             };
         }
 
-        private SquadRole GetSquadRole(string role)
-        {
-            var squadRole = SquadRole.Player;
-
-            switch (role)
-            {
-                case "PLAYER":
-                    squadRole = SquadRole.Player;
-                    break;
-                case "COACH":
-                    squadRole = SquadRole.Coach;
-                    break;
-                case "ASSISTANT_COACH":
-                    squadRole = SquadRole.Assistant_Coach;
-                    break;
-                default:
-                    break;
-            }
-
-            return squadRole;
-        }
 
         private int CalculateAge(DateTime dateOfBirth)
         {
@@ -152,12 +112,6 @@ namespace FootballEngine.Services
                     break;
                 case "Attacker":
                     squadSortOrder = (int)PlayerPosition.Attacker;
-                    break;
-                case "Coach":
-                    squadSortOrder = (int)SquadRole.Coach;
-                    break;
-                case "Assistant Coach":
-                    squadSortOrder = (int)SquadRole.Assistant_Coach;
                     break;
                 default:
                     break;

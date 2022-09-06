@@ -64,7 +64,7 @@ namespace FootballEngine.Services
             var fixturesAndResults = await GetFixtureAndResultsAsync();
 
             var teamsFixtures = fixturesAndResults
-                                    .Where(x => x.HomeTeam.Name == team.Name || x.AwayTeam.Name == team.Name)
+                                    .Where(x => x.HomeTeam.ShortName == team.Name || x.AwayTeam.ShortName == team.Name)
                                     .ToList();
 
             var teamsFixturesAndResultsByDays = teamsFixtures
@@ -127,11 +127,13 @@ namespace FootballEngine.Services
                 {
                     TeamID = match.homeTeam.id.HasValue ? match.homeTeam.id.Value : 0,
                     Name = match.homeTeam.name,
+                    ShortName = match.homeTeam.shortName,
                 },
                 AwayTeam = new FootballShared.Models.Team()
                 {
                     TeamID = match.awayTeam.id.HasValue ? match.awayTeam.id.Value : 0,
                     Name = match.awayTeam.name,
+                    ShortName = match.homeTeam.shortName,
                 },
                 FixtureDate = match.utcDate.AddMinutes(-timeZoneOffsetInMinutes),
                 Stage = GetStage(match.stage),
@@ -139,8 +141,8 @@ namespace FootballEngine.Services
                 {
                     Name = match.group,
                 },
-                HomeTeamGoals = match.score.fullTime.homeTeam.HasValue ? match.score.fullTime.homeTeam.Value : 0,
-                AwayTeamGoals = match.score.fullTime.awayTeam.HasValue ? match.score.fullTime.awayTeam.Value : 0,
+                HomeTeamGoals = match.score.fullTime.home.HasValue ? match.score.fullTime.home.Value : 0,
+                AwayTeamGoals = match.score.fullTime.away.HasValue ? match.score.fullTime.away.Value : 0,
                 Result = GetResult(match.score?.winner ?? string.Empty)
             };
         }

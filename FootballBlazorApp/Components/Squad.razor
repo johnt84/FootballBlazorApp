@@ -16,20 +16,15 @@
     }
 }
 
-@if (CoachingStaff != null && CoachingStaff.Count > 0)
+@if (Coach != null && Coach.CoachID > 0)
 {
-    <h3 class="playerPositionHeader">Coaching Staff</h3>
+    <h3 class="playerPositionHeader">Coach</h3>
 
-    @foreach (var coach in CoachingStaff)
-    {
-        <h4>@GetCoachingRoleLabel(coach.SquadRole)</h4>
-
-        <div class="playersContainer">
-            <ul>
-                <PlayerTile Player="coach"></PlayerTile>
-            </ul>
-        </div>
-    }
+    <div class="playersContainer">
+        <ul>
+            <CoachTile Coach="Coach"></CoachTile>
+        </ul>
+    </div>
 }
 
 @code {
@@ -37,7 +32,7 @@
     public List<FootballShared.Models.PlayerByPosition> PlayersByPosition { get; set; }
 
     [Parameter]
-    public List<FootballShared.Models.Player> CoachingStaff { get; set; }
+    public Coach Coach { get; set; }
 
     private string GetPositionLabel(string position) => $"{position}s";
 

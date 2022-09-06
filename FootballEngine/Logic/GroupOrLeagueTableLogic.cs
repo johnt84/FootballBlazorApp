@@ -38,7 +38,7 @@ namespace FootballEngine.Services
                     {
                         TeamID = y.team.id,
                         Name = y.team.name,
-                        TeamCrestUrl = y.team.crestUrl,
+                        TeamCrestUrl = y.team.crest,
                     },
                     GamesPlayed = y.playedGames,
                     GamesWon = y.won,

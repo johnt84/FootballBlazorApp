@@ -74,7 +74,7 @@ namespace FootballEngineUnitTest
          ""name"":""Arsenal FC"",
          ""shortName"":""Arsenal"",
          ""tla"":""ARS"",
-         ""crestUrl"":""https://crests.football-data.org/57.png"",
+         ""crest"":""https://crests.football-data.org/57.png"",
          ""address"":""75 Drayton Park London N5 1BU"",
          ""phone"":""+44 (020) 76195003"",
          ""website"":""http://www.arsenal.com"",
@@ -82,6 +82,27 @@ namespace FootballEngineUnitTest
          ""founded"":1886,
          ""clubColors"":""Red / White"",
          ""venue"":""Emirates Stadium"",
+         ""coach"":{
+                    ""id"":11619,
+                    ""firstName"":""Mikel"",
+                    ""lastName"":null,
+                    ""name"":""Arteta"",
+                    ""dateOfBirth"":""1982-03-26"",
+                    ""nationality"":""Spain"",
+                    ""contract"":{
+                       ""start"":null,
+                       ""until"":null
+                    }
+                 },
+         ""squad"":[
+            {
+               ""id"":99813,
+               ""name"":""Bukayo Saka"",
+               ""position"":""Offence"",
+               ""dateOfBirth"":""2001-09-05"",
+               ""nationality"":""England""
+            }
+         ],
          ""lastUpdated"":""2022-02-10T19:48:56Z""
       },
       {
@@ -93,7 +114,7 @@ namespace FootballEngineUnitTest
          ""name"":""Aston Villa FC"",
          ""shortName"":""Aston Villa"",
          ""tla"":""AST"",
-         ""crestUrl"":""https://crests.football-data.org/58.svg"",
+         ""crest"":""https://crests.football-data.org/58.svg"",
          ""address"":""Villa Park Birmingham B6 6HE"",
          ""phone"":""+44 (0121) 3272299"",
          ""website"":""http://www.avfc.co.uk"",
@@ -101,6 +122,27 @@ namespace FootballEngineUnitTest
          ""founded"":1872,
          ""clubColors"":""Claret / Sky Blue"",
          ""venue"":""Villa Park"",
+         ""coach"":{
+                    ""id"":71303,
+                    ""firstName"":""Steven"",
+                    ""lastName"":""Gerrard"",
+                    ""name"":""Steven Gerrard"",
+                    ""dateOfBirth"":""1980-05-30"",
+                    ""nationality"":""England"",
+                    ""contract"":{
+                       ""start"":null,
+                       ""until"":null
+                    }
+                 },
+         ""squad"":[
+            {
+               ""id"":99813,
+               ""name"":""Lucas Digne"",
+               ""position"":""Defence"",
+               ""dateOfBirth"":""1993-07-20"",
+               ""nationality"":""France""
+           }
+        ],
          ""lastUpdated"":""2021-03-03T09:46:16Z""
       },
       {
@@ -112,7 +154,7 @@ namespace FootballEngineUnitTest
          ""name"":""Chelsea FC"",
          ""shortName"":""Chelsea"",
          ""tla"":""CHE"",
-         ""crestUrl"":""https://crests.football-data.org/61.png"",
+         ""crest"":""https://crests.football-data.org/61.png"",
          ""address"":""Fulham Road London SW6 1HS"",
          ""phone"":""+44 (0871) 9841955"",
          ""website"":""http://www.chelseafc.com"",
@@ -120,6 +162,27 @@ namespace FootballEngineUnitTest
          ""founded"":1905,
          ""clubColors"":""Royal Blue / White"",
          ""venue"":""Stamford Bridge"",
+         ""coach"":{
+            ""id"":72766,
+            ""firstName"":""Thomas"",
+            ""lastName"":null,
+            ""name"":""Thomas Tuchel"",
+            ""dateOfBirth"":""1973-08-29"",
+            ""nationality"":""Germany"",
+            ""contract"":{
+               ""start"":null,
+               ""until"":null
+            }
+         },
+        ""squad"":[
+            {
+               ""id"":805,
+               ""name"":""Edouard Mendy"",
+               ""position"":""Goalkeeper"",
+               ""dateOfBirth"":""1992-03-01"",
+               ""nationality"":""Senegal""
+            }
+        ],
          ""lastUpdated"":""2022-02-10T19:24:40Z""
       },
       {
@@ -131,7 +194,7 @@ namespace FootballEngineUnitTest
          ""name"":""Everton FC"",
          ""shortName"":""Everton"",
          ""tla"":""EVE"",
-         ""crestUrl"":""https://crests.football-data.org/62.png"",
+         ""crest"":""https://crests.football-data.org/62.png"",
          ""address"":""Goodison Park Liverpool L4 4EL"",
          ""phone"":""+44 (0871) 6631878"",
          ""website"":""http://www.evertonfc.com"",
@@ -139,6 +202,27 @@ namespace FootballEngineUnitTest
          ""founded"":1878,
          ""clubColors"":""Blue / White"",
          ""venue"":""Goodison Park"",
+         ""coach"":{
+                    ""id"":11619,
+                    ""firstName"":""Frank"",
+                    ""lastName"":""Lampard"",
+                    ""name"":""Frank Lampard"",
+                    ""dateOfBirth"":""1978-06-20"",
+                    ""nationality"":""england"",
+                    ""contract"":{
+                       ""start"":null,
+                       ""until"":null
+                    }
+                 },
+         ""squad"":[
+            {
+               ""id"":138174,
+               ""name"":""Nathan Patterson"",
+               ""position"":""Defence"",
+               ""dateOfBirth"":""2001-10-16"",
+               ""nationality"":""Scotland""
+            }
+        ],
          ""lastUpdated"":""2022-02-10T19:47:42Z""
       },
       {
@@ -150,7 +234,7 @@ namespace FootballEngineUnitTest
          ""name"":""Liverpool FC"",
          ""shortName"":""Liverpool"",
          ""tla"":""LIV"",
-         ""crestUrl"":""https://crests.football-data.org/64.png"",
+         ""crest"":""https://crests.football-data.org/64.png"",
          ""address"":""Anfield Road Liverpool L4 0TH"",
          ""phone"":""+44 (0844) 4993000"",
          ""website"":""http://www.liverpoolfc.tv"",
@@ -158,6 +242,27 @@ namespace FootballEngineUnitTest
          ""founded"":1892,
          ""clubColors"":""Red / White"",
          ""venue"":""Anfield"",
+         ""coach"":{
+                    ""id"":11619,
+                    ""firstName"":""Jürgen"",
+                    ""lastName"":""Klopp"",
+                    ""name"":""Jürgen Klopp"",
+                    ""dateOfBirth"":""1967-06-16"",
+                    ""nationality"":""Germany"",
+                    ""contract"":{
+                       ""start"":null,
+                       ""until"":null
+                    }
+                 },
+         ""squad"":[
+            {
+               ""id"":7868,
+               ""name"":""Andrew Robertson"",
+               ""position"":""Defence"",
+               ""dateOfBirth"":""1994-03-11"",
+               ""nationality"":""Scotland""
+            }
+        ],
          ""lastUpdated"":""2022-02-10T19:30:22Z""
       },
       {
@@ -169,7 +274,7 @@ namespace FootballEngineUnitTest
          ""name"":""Manchester City FC"",
          ""shortName"":""Man City"",
          ""tla"":""MCI"",
-         ""crestUrl"":""https://crests.football-data.org/65.png"",
+         ""crest"":""https://crests.football-data.org/65.png"",
          ""address"":""SportCity Manchester M11 3FF"",
          ""phone"":""+44 (0870) 0621894"",
          ""website"":""https://www.mancity.com"",
@@ -177,6 +282,27 @@ namespace FootballEngineUnitTest
          ""founded"":1880,
          ""clubColors"":""Sky Blue / White"",
          ""venue"":""Etihad Stadium"",
+        ""coach"":{
+                    ""id"":11619,
+                    ""firstName"":""Pep"",
+                    ""lastName"":null,
+                    ""name"":""Pep Guardiola"",
+                    ""dateOfBirth"":""1971-01-18"",
+                    ""nationality"":""Spain"",
+                    ""contract"":{
+                       ""start"":null,
+                       ""until"":null
+                    }
+                 },
+         ""squad"":[
+             {
+               ""id"":3654,
+               ""name"":""Kevin De Bruyne"",
+               ""position"":""Midfield"",
+               ""dateOfBirth"":""1991-06-28"",
+               ""nationality"":""Belgium""
+            }
+        ],
          ""lastUpdated"":""2022-02-10T19:48:37Z""
       },
       {
@@ -188,7 +314,7 @@ namespace FootballEngineUnitTest
          ""name"":""Manchester United FC"",
          ""shortName"":""Man United"",
          ""tla"":""MUN"",
-         ""crestUrl"":""https://crests.football-data.org/66.png"",
+         ""crest"":""https://crests.football-data.org/66.png"",
          ""address"":""Sir Matt Busby Way Manchester M16 0RA"",
          ""phone"":""+44 (0161) 8688000"",
          ""website"":""http://www.manutd.com"",
@@ -196,6 +322,27 @@ namespace FootballEngineUnitTest
          ""founded"":1878,
          ""clubColors"":""Red / White"",
          ""venue"":""Old Trafford"",
+        ""coach"":{
+                    ""id"":9584,
+                    ""firstName"":""Erik"",
+                    ""lastName"":null,
+                    ""name"":""Erik ten Hag"",
+                    ""dateOfBirth"":""1970-02-02"",
+                    ""nationality"":""Netherlands"",
+                    ""contract"":{
+                       ""start"":null,
+                       ""until"":null
+                    }
+                 },
+         ""squad"":[
+            {
+               ""id"":3459,
+               ""name"":""Christian Eriksen"",
+               ""position"":""Midfield"",
+               ""dateOfBirth"":""1992-02-14"",
+               ""nationality"":""Denmark""
+           }
+        ],
          ""lastUpdated"":""2022-02-10T19:27:46Z""
       },
       {
@@ -207,7 +354,7 @@ namespace FootballEngineUnitTest
          ""name"":""Newcastle United FC"",
          ""shortName"":""Newcastle"",
          ""tla"":""NEW"",
-         ""crestUrl"":""https://crests.football-data.org/67.png"",
+         ""crest"":""https://crests.football-data.org/67.png"",
          ""address"":""Sports Direct Arena Newcastle upon Tyne NE1 4ST"",
          ""phone"":null,
          ""website"":""http://www.nufc.co.uk"",
@@ -215,6 +362,27 @@ namespace FootballEngineUnitTest
          ""founded"":1881,
          ""clubColors"":""Black / White"",
          ""venue"":""St. James' Park"",
+         ""coach"":{
+            ""id"":11594,
+            ""firstName"":""Eddie"",
+            ""lastName"":null,
+            ""name"":""Eddie Howe"",
+            ""dateOfBirth"":""1977-11-29"",
+            ""nationality"":""England"",
+            ""contract"":{
+               ""start"":null,
+               ""until"":null
+            }
+         },
+         ""squad"":[
+           {
+               ""id"":8446,
+               ""name"":""Allan Saint-Maximin"",
+               ""position"":""Offence"",
+               ""dateOfBirth"":""1997-03-12"",
+               ""nationality"":""France""
+           }
+        ],
          ""lastUpdated"":""2022-02-10T19:22:56Z""
       },
       {
@@ -226,7 +394,7 @@ namespace FootballEngineUnitTest
          ""name"":""Norwich City FC"",
          ""shortName"":""Norwich"",
          ""tla"":""NOR"",
-         ""crestUrl"":""https://upload.wikimedia.org/wikipedia/en/8/8c/Norwich_City.svg"",
+         ""crest"":""https://upload.wikimedia.org/wikipedia/en/8/8c/Norwich_City.svg"",
          ""address"":""Carrow Road Norwich NR1 1JE"",
          ""phone"":null,
          ""website"":""http://www.canaries.co.uk"",
@@ -234,6 +402,27 @@ namespace FootballEngineUnitTest
          ""founded"":1902,
          ""clubColors"":""Yellow / Green"",
          ""venue"":""Carrow Road"",
+         ""coach"":{
+                    ""id"":11619,
+                    ""firstName"":""Mikel"",
+                    ""lastName"":null,
+                    ""name"":""Arteta"",
+                    ""dateOfBirth"":""1982-03-26"",
+                    ""nationality"":""Spain"",
+                    ""contract"":{
+                       ""start"":null,
+                       ""until"":null
+                    }
+                 },
+         ""squad"":[
+            {
+               ""id"":99813,
+               ""name"":""Bukayo Saka"",
+               ""position"":""Offence"",
+               ""dateOfBirth"":""2001-09-05"",
+               ""nationality"":""England""
+            }
+        ],
          ""lastUpdated"":""2021-04-20T18:23:20Z""
       },
       {
@@ -245,7 +434,7 @@ namespace FootballEngineUnitTest
          ""name"":""Tottenham Hotspur FC"",
          ""shortName"":""Tottenham"",
          ""tla"":""TOT"",
-         ""crestUrl"":""https://crests.football-data.org/73.svg"",
+         ""crest"":""https://crests.football-data.org/73.svg"",
          ""address"":""Bill Nicholson Way, 748 High Road London N17 0AP"",
          ""phone"":""+44 (0844) 4995000"",
          ""website"":""http://www.tottenhamhotspur.com"",
@@ -253,6 +442,27 @@ namespace FootballEngineUnitTest
          ""founded"":1882,
          ""clubColors"":""Navy Blue / White"",
          ""venue"":""Tottenham Hotspur Stadium"",
+        ""coach"":{
+            ""id"":11583,
+            ""firstName"":""Antonio"",
+            ""lastName"":""Conte"",
+            ""name"":""Antonio Conte"",
+            ""dateOfBirth"":""1969-07-31"",
+            ""nationality"":""Italy"",
+            ""contract"":{
+               ""start"":null,
+               ""until"":null
+            }
+         },
+         ""squad"":[
+                 {
+                       ""id"":8004,
+                       ""name"":""Harry Kane"",
+                       ""position"":""Offence"",
+                       ""dateOfBirth"":""1993-07-28"",
+                       ""nationality"":""England""
+                    }
+        ],
          ""lastUpdated"":""2020-11-20T07:12:32Z""
       },
       {
@@ -264,7 +474,7 @@ namespace FootballEngineUnitTest
          ""name"":""Wolverhampton Wanderers FC"",
          ""shortName"":""Wolverhampton"",
          ""tla"":""WOL"",
-         ""crestUrl"":""https://crests.football-data.org/76.svg"",
+         ""crest"":""https://crests.football-data.org/76.svg"",
          ""address"":""Waterloo Road Wolverhampton WV1 4QR"",
          ""phone"":""+44 (0871) 2222220"",
          ""website"":""http://www.wolves.co.uk"",
@@ -272,6 +482,27 @@ namespace FootballEngineUnitTest
          ""founded"":1877,
          ""clubColors"":""Black / Gold"",
          ""venue"":""Molineux Stadium"",
+        ""coach"":{
+            ""id"":80460,
+            ""firstName"":""Bruno Miguel Silva do"",
+            ""lastName"":null,
+            ""name"":""Bruno Lage"",
+            ""dateOfBirth"":""1976-05-12"",
+            ""nationality"":""Portugal"",
+            ""contract"":{
+               ""start"":null,
+               ""until"":null
+            }
+         },
+         ""squad"":[
+            {
+               ""id"":3249,
+               ""name"":""João Moutinho"",
+               ""position"":""Midfield"",
+               ""dateOfBirth"":""1986-09-08"",
+               ""nationality"":""Portugal""
+            }
+        ],
          ""lastUpdated"":""2021-04-09T02:25:24Z""
       },
       {
@@ -283,7 +514,7 @@ namespace FootballEngineUnitTest
          ""name"":""Burnley FC"",
          ""shortName"":""Burnley"",
          ""tla"":""BUR"",
-         ""crestUrl"":""https://crests.football-data.org/328.png"",
+         ""crest"":""https://crests.football-data.org/328.png"",
          ""address"":""Harry Potts Way Burnley BB10 4BX"",
          ""phone"":""+44 (0871) 2211882"",
          ""website"":""http://www.burnleyfootballclub.com"",
@@ -291,6 +522,27 @@ namespace FootballEngineUnitTest
          ""founded"":1881,
          ""clubColors"":""Claret / Sky Blue"",
          ""venue"":""Turf Moor"",
+        ""coach"":{
+                    ""id"":11619,
+                    ""firstName"":""Mikel"",
+                    ""lastName"":null,
+                    ""name"":""Arteta"",
+                    ""dateOfBirth"":""1982-03-26"",
+                    ""nationality"":""Spain"",
+                    ""contract"":{
+                       ""start"":null,
+                       ""until"":null
+                    }
+                 },
+         ""squad"":[
+            {
+               ""id"":99813,
+               ""name"":""Bukayo Saka"",
+               ""position"":""Offence"",
+               ""dateOfBirth"":""2001-09-05"",
+               ""nationality"":""England""
+            }
+        ],
          ""lastUpdated"":""2022-02-10T19:24:11Z""
       },
       {
@@ -302,7 +554,7 @@ namespace FootballEngineUnitTest
          ""name"":""Leicester City FC"",
          ""shortName"":""Leicester City"",
          ""tla"":""LEI"",
-         ""crestUrl"":""https://crests.football-data.org/338.png"",
+         ""crest"":""https://crests.football-data.org/338.png"",
          ""address"":""The Walkers Stadium, Filbert Way Leicester LE2 7FL"",
          ""phone"":""+44 (0844) 8156000"",
          ""website"":""http://www.lcfc.com"",
@@ -310,6 +562,27 @@ namespace FootballEngineUnitTest
          ""founded"":1884,
          ""clubColors"":""Royal Blue / White"",
          ""venue"":""King Power Stadium"",
+       ""coach"":{
+            ""id"":15624,
+            ""firstName"":""Brendan"",
+            ""lastName"":null,
+            ""name"":""Brendan Rodgers"",
+            ""dateOfBirth"":""1973-02-19"",
+            ""nationality"":""Northern Ireland"",
+            ""contract"":{
+               ""start"":null,
+               ""until"":null
+            }
+         },
+         ""squad"":[
+           {
+               ""id"":3992,
+               ""name"":""James Maddison"",
+               ""position"":""Midfield"",
+               ""dateOfBirth"":""1996-11-23"",
+               ""nationality"":""England""
+            }
+        ],
          ""lastUpdated"":""2022-02-10T19:48:23Z""
       },
       {
@@ -321,7 +594,7 @@ namespace FootballEngineUnitTest
          ""name"":""Southampton FC"",
          ""shortName"":""Southampton"",
          ""tla"":""SOU"",
-         ""crestUrl"":""https://crests.football-data.org/340.png"",
+         ""crest"":""https://crests.football-data.org/340.png"",
          ""address"":""Britannia Road Southampton SO14 5FP"",
          ""phone"":null,
          ""website"":""http://www.saintsfc.co.uk"",
@@ -329,6 +602,27 @@ namespace FootballEngineUnitTest
          ""founded"":1885,
          ""clubColors"":""Red / White / Black"",
          ""venue"":""St. Mary's Stadium"",
+        ""coach"":{
+            ""id"":43924,
+            ""firstName"":""Ralph"",
+            ""lastName"":null,
+            ""name"":""Ralph Hasenhüttl"",
+            ""dateOfBirth"":""1967-08-09"",
+            ""nationality"":""Austria"",
+            ""contract"":{
+               ""start"":null,
+               ""until"":null
+            }
+         },
+         ""squad"":[
+            {
+               ""id"":6318,
+               ""name"":""Joe Aribo"",
+               ""position"":""Midfield"",
+               ""dateOfBirth"":""1996-07-21"",
+               ""nationality"":""Nigeria""
+            }
+        ],
          ""lastUpdated"":""2022-02-10T19:48:04Z""
       },
       {
@@ -340,7 +634,7 @@ namespace FootballEngineUnitTest
          ""name"":""Leeds United FC"",
          ""shortName"":""Leeds United"",
          ""tla"":""LEE"",
-         ""crestUrl"":""https://crests.football-data.org/341.png"",
+         ""crest"":""https://crests.football-data.org/341.png"",
          ""address"":""Elland Road Leeds LS11 0ES"",
          ""phone"":""+44 (0871) 3341919"",
          ""website"":""http://www.leedsunited.com"",
@@ -348,6 +642,27 @@ namespace FootballEngineUnitTest
          ""founded"":1904,
          ""clubColors"":""White / Blue"",
          ""venue"":""Elland Road"",
+       ""coach"":{
+            ""id"":59069,
+            ""firstName"":""Jesse"",
+            ""lastName"":null,
+            ""name"":""Jesse Marsch"",
+            ""dateOfBirth"":""1973-11-08"",
+            ""nationality"":""United States"",
+            ""contract"":{
+               ""start"":null,
+               ""until"":null
+            }
+         },
+         ""squad"":[
+            {
+               ""id"":4135,
+               ""name"":""Liam Cooper"",
+               ""position"":""Defence"",
+               ""dateOfBirth"":""1991-08-30"",
+               ""nationality"":""Scotland""
+            }
+        ],
          ""lastUpdated"":""2022-02-10T19:27:14Z""
       },
       {
@@ -359,7 +674,7 @@ namespace FootballEngineUnitTest
          ""name"":""Watford FC"",
          ""shortName"":""Watford"",
          ""tla"":""WAT"",
-         ""crestUrl"":""https://crests.football-data.org/346.svg"",
+         ""crest"":""https://crests.football-data.org/346.svg"",
          ""address"":""Vicarage Road Watford WD18 0ER"",
          ""phone"":null,
          ""website"":""http://www.watfordfc.com"",
@@ -367,6 +682,27 @@ namespace FootballEngineUnitTest
          ""founded"":1881,
          ""clubColors"":""Yellow / Black"",
          ""venue"":""Vicarage Road Stadium"",
+        ""coach"":{
+                    ""id"":11619,
+                    ""firstName"":""Mikel"",
+                    ""lastName"":null,
+                    ""name"":""Arteta"",
+                    ""dateOfBirth"":""1982-03-26"",
+                    ""nationality"":""Spain"",
+                    ""contract"":{
+                       ""start"":null,
+                       ""until"":null
+                    }
+                 },
+         ""squad"":[
+            {
+               ""id"":99813,
+               ""name"":""Bukayo Saka"",
+               ""position"":""Offence"",
+               ""dateOfBirth"":""2001-09-05"",
+               ""nationality"":""England""
+           }
+        ],
          ""lastUpdated"":""2020-11-26T02:16:48Z""
       },
       {
@@ -378,7 +714,7 @@ namespace FootballEngineUnitTest
          ""name"":""Crystal Palace FC"",
          ""shortName"":""Crystal Palace"",
          ""tla"":""CRY"",
-         ""crestUrl"":""https://crests.football-data.org/354.png"",
+         ""crest"":""https://crests.football-data.org/354.png"",
          ""address"":""Whitehorse Lane London SE25 6PU"",
          ""phone"":""+44 (020) 87686000"",
          ""website"":""http://www.cpfc.co.uk"",
@@ -386,6 +722,27 @@ namespace FootballEngineUnitTest
          ""founded"":1905,
          ""clubColors"":""Red / Blue"",
          ""venue"":""Selhurst Park"",
+        ""coach"":{
+                    ""id"":11619,
+                    ""firstName"":""Mikel"",
+                    ""lastName"":null,
+                    ""name"":""Arteta"",
+                    ""dateOfBirth"":""1982-03-26"",
+                    ""nationality"":""Spain"",
+                    ""contract"":{
+                       ""start"":null,
+                       ""until"":null
+                    }
+                 },
+         ""squad"":[
+            {
+               ""id"":99813,
+               ""name"":""Bukayo Saka"",
+               ""position"":""Offence"",
+               ""dateOfBirth"":""2001-09-05"",
+               ""nationality"":""England""
+            }
+        ],
          ""lastUpdated"":""2022-02-10T19:22:36Z""
       },
       {
@@ -397,7 +754,7 @@ namespace FootballEngineUnitTest
          ""name"":""Brighton & Hove Albion FC"",
          ""shortName"":""Brighton Hove"",
          ""tla"":""BHA"",
-         ""crestUrl"":""https://crests.football-data.org/397.svg"",
+         ""crest"":""https://crests.football-data.org/397.svg"",
          ""address"":""44 North Road Brighton & Hove BN1 1YR"",
          ""phone"":""+44 (01273) 878288"",
          ""website"":""http://www.seagulls.co.uk"",
@@ -405,6 +762,27 @@ namespace FootballEngineUnitTest
          ""founded"":1898,
          ""clubColors"":""Blue / White"",
          ""venue"":""The American Express Community Stadium"",
+        ""coach"":{
+                    ""id"":11619,
+                    ""firstName"":""Mikel"",
+                    ""lastName"":null,
+                    ""name"":""Arteta"",
+                    ""dateOfBirth"":""1982-03-26"",
+                    ""nationality"":""Spain"",
+                    ""contract"":{
+                       ""start"":null,
+                       ""until"":null
+                    }
+                 },
+         ""squad"":[
+            {
+               ""id"":99813,
+               ""name"":""Bukayo Saka"",
+               ""position"":""Offence"",
+               ""dateOfBirth"":""2001-09-05"",
+               ""nationality"":""England""
+            }
+        ],
          ""lastUpdated"":""2021-04-12T13:10:44Z""
       },
       {
@@ -416,7 +794,7 @@ namespace FootballEngineUnitTest
          ""name"":""Brentford FC"",
          ""shortName"":""Brentford"",
          ""tla"":""BRF"",
-         ""crestUrl"":""https://crests.football-data.org/402.png"",
+         ""crest"":""https://crests.football-data.org/402.png"",
          ""address"":""Braemar Road Brentford TW8 0NT"",
          ""phone"":null,
          ""website"":""http://www.brentfordfc.co.uk"",
@@ -424,6 +802,27 @@ namespace FootballEngineUnitTest
          ""founded"":1889,
          ""clubColors"":""Red / White / Black"",
          ""venue"":""Griffin Park"",
+        ""coach"":{
+                    ""id"":11619,
+                    ""firstName"":""Mikel"",
+                    ""lastName"":null,
+                    ""name"":""Arteta"",
+                    ""dateOfBirth"":""1982-03-26"",
+                    ""nationality"":""Spain"",
+                    ""contract"":{
+                       ""start"":null,
+                       ""until"":null
+                    }
+                 },
+         ""squad"":[
+            {
+               ""id"":99813,
+               ""name"":""Bukayo Saka"",
+               ""position"":""Offence"",
+               ""dateOfBirth"":""2001-09-05"",
+               ""nationality"":""England""
+            }
+        ],
          ""lastUpdated"":""2022-02-10T19:22:16Z""
       },
       {
@@ -435,7 +834,7 @@ namespace FootballEngineUnitTest
          ""name"":""West Ham United FC"",
          ""shortName"":""West Ham"",
          ""tla"":""WHU"",
-         ""crestUrl"":""https://crests.football-data.org/563.png"",
+         ""crest"":""https://crests.football-data.org/563.png"",
          ""address"":""Queen Elizabeth Olympic Park, London London E20 2ST"",
          ""phone"":""+44 (020) 85482794"",
          ""website"":""http://www.whufc.com"",
@@ -443,6 +842,27 @@ namespace FootballEngineUnitTest
          ""founded"":1895,
          ""clubColors"":""Claret / Sky Blue"",
          ""venue"":""London Stadium"",
+        ""coach"":{
+                    ""id"":11619,
+                    ""firstName"":""Mikel"",
+                    ""lastName"":null,
+                    ""name"":""Arteta"",
+                    ""dateOfBirth"":""1982-03-26"",
+                    ""nationality"":""Spain"",
+                    ""contract"":{
+                       ""start"":null,
+                       ""until"":null
+                    }
+                 },
+         ""squad"":[
+            {
+               ""id"":99813,
+               ""name"":""Bukayo Saka"",
+               ""position"":""Offence"",
+               ""dateOfBirth"":""2001-09-05"",
+               ""nationality"":""England""
+            }
+        ],
          ""lastUpdated"":""2022-02-19T08:09:25Z""
       }
    ]
@@ -28635,7 +29055,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":65,
                   ""name"":""Manchester City FC"",
-                  ""crestUrl"":""https://crests.football-data.org/65.png""
+                  ""crest"":""https://crests.football-data.org/65.png""
                },
                ""playedGames"":27,
                ""form"":null,
@@ -28652,7 +29072,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":64,
                   ""name"":""Liverpool FC"",
-                  ""crestUrl"":""https://crests.football-data.org/64.png""
+                  ""crest"":""https://crests.football-data.org/64.png""
                },
                ""playedGames"":26,
                ""form"":null,
@@ -28669,7 +29089,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":61,
                   ""name"":""Chelsea FC"",
-                  ""crestUrl"":""https://crests.football-data.org/61.png""
+                  ""crest"":""https://crests.football-data.org/61.png""
                },
                ""playedGames"":25,
                ""form"":null,
@@ -28686,7 +29106,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":66,
                   ""name"":""Manchester United FC"",
-                  ""crestUrl"":""https://crests.football-data.org/66.png""
+                  ""crest"":""https://crests.football-data.org/66.png""
                },
                ""playedGames"":27,
                ""form"":null,
@@ -28703,7 +29123,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":563,
                   ""name"":""West Ham United FC"",
-                  ""crestUrl"":""https://crests.football-data.org/563.png""
+                  ""crest"":""https://crests.football-data.org/563.png""
                },
                ""playedGames"":27,
                ""form"":null,
@@ -28720,7 +29140,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":57,
                   ""name"":""Arsenal FC"",
-                  ""crestUrl"":""https://crests.football-data.org/57.png""
+                  ""crest"":""https://crests.football-data.org/57.png""
                },
                ""playedGames"":24,
                ""form"":null,
@@ -28737,7 +29157,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":73,
                   ""name"":""Tottenham Hotspur FC"",
-                  ""crestUrl"":""https://crests.football-data.org/73.svg""
+                  ""crest"":""https://crests.football-data.org/73.svg""
                },
                ""playedGames"":25,
                ""form"":null,
@@ -28754,7 +29174,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":76,
                   ""name"":""Wolverhampton Wanderers FC"",
-                  ""crestUrl"":""https://crests.football-data.org/76.svg""
+                  ""crest"":""https://crests.football-data.org/76.svg""
                },
                ""playedGames"":26,
                ""form"":null,
@@ -28771,7 +29191,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":340,
                   ""name"":""Southampton FC"",
-                  ""crestUrl"":""https://crests.football-data.org/340.png""
+                  ""crest"":""https://crests.football-data.org/340.png""
                },
                ""playedGames"":26,
                ""form"":null,
@@ -28788,7 +29208,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":397,
                   ""name"":""Brighton & Hove Albion FC"",
-                  ""crestUrl"":""https://crests.football-data.org/397.svg""
+                  ""crest"":""https://crests.football-data.org/397.svg""
                },
                ""playedGames"":26,
                ""form"":null,
@@ -28805,7 +29225,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":354,
                   ""name"":""Crystal Palace FC"",
-                  ""crestUrl"":""https://crests.football-data.org/354.png""
+                  ""crest"":""https://crests.football-data.org/354.png""
                },
                ""playedGames"":27,
                ""form"":null,
@@ -28822,7 +29242,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":58,
                   ""name"":""Aston Villa FC"",
-                  ""crestUrl"":""https://crests.football-data.org/58.svg""
+                  ""crest"":""https://crests.football-data.org/58.svg""
                },
                ""playedGames"":25,
                ""form"":null,
@@ -28839,7 +29259,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":338,
                   ""name"":""Leicester City FC"",
-                  ""crestUrl"":""https://crests.football-data.org/338.png""
+                  ""crest"":""https://crests.football-data.org/338.png""
                },
                ""playedGames"":23,
                ""form"":null,
@@ -28856,7 +29276,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":67,
                   ""name"":""Newcastle United FC"",
-                  ""crestUrl"":""https://crests.football-data.org/67.png""
+                  ""crest"":""https://crests.football-data.org/67.png""
                },
                ""playedGames"":25,
                ""form"":null,
@@ -28873,7 +29293,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":402,
                   ""name"":""Brentford FC"",
-                  ""crestUrl"":""https://crests.football-data.org/402.png""
+                  ""crest"":""https://crests.football-data.org/402.png""
                },
                ""playedGames"":27,
                ""form"":null,
@@ -28890,7 +29310,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":341,
                   ""name"":""Leeds United FC"",
-                  ""crestUrl"":""https://crests.football-data.org/341.png""
+                  ""crest"":""https://crests.football-data.org/341.png""
                },
                ""playedGames"":26,
                ""form"":null,
@@ -28907,7 +29327,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":62,
                   ""name"":""Everton FC"",
-                  ""crestUrl"":""https://crests.football-data.org/62.png""
+                  ""crest"":""https://crests.football-data.org/62.png""
                },
                ""playedGames"":24,
                ""form"":null,
@@ -28924,7 +29344,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":328,
                   ""name"":""Burnley FC"",
-                  ""crestUrl"":""https://crests.football-data.org/328.png""
+                  ""crest"":""https://crests.football-data.org/328.png""
                },
                ""playedGames"":24,
                ""form"":null,
@@ -28941,7 +29361,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":346,
                   ""name"":""Watford FC"",
-                  ""crestUrl"":""https://crests.football-data.org/346.svg""
+                  ""crest"":""https://crests.football-data.org/346.svg""
                },
                ""playedGames"":26,
                ""form"":null,
@@ -28958,7 +29378,7 @@ namespace FootballEngineUnitTest
                ""team"":{
                   ""id"":68,
                   ""name"":""Norwich City FC"",
-                  ""crestUrl"":""https://upload.wikimedia.org/wikipedia/en/8/8c/Norwich_City.svg""
+                  ""crest"":""https://upload.wikimedia.org/wikipedia/en/8/8c/Norwich_City.svg""
                },
                ""playedGames"":26,
                ""form"":null,
@@ -28975,332 +29395,6 @@ namespace FootballEngineUnitTest
    ]
 }";
 
-            string footballDataTeamJson = @"{
-   ""id"":67,
-   ""area"":{
-      ""id"":2072,
-      ""name"":""England""
-   },
-   ""activeCompetitions"":[
-      {
-         ""id"":2021,
-         ""area"":{
-            ""id"":2072,
-            ""name"":""England""
-         },
-         ""name"":""Premier League"",
-         ""code"":""PL"",
-         ""plan"":""TIER_ONE"",
-         ""lastUpdated"":""2021-04-17T02:20:14Z""
-      },
-      {
-         ""id"":2139,
-         ""area"":{
-            ""id"":2072,
-            ""name"":""England""
-         },
-         ""name"":""Football League Cup"",
-         ""code"":""FLC"",
-         ""plan"":""TIER_THREE"",
-         ""lastUpdated"":""2021-01-07T02:40:01Z""
-      }
-   ],
-   ""name"":""Newcastle United FC"",
-   ""shortName"":""Newcastle"",
-   ""tla"":""NEW"",
-   ""crestUrl"":""https://crests.football-data.org/67.png"",
-   ""address"":""Sports Direct Arena Newcastle upon Tyne NE1 4ST"",
-   ""phone"":null,
-   ""website"":""http://www.nufc.co.uk"",
-   ""email"":""admin@nufc.co.uk"",
-   ""founded"":1881,
-   ""clubColors"":""Black / White"",
-   ""venue"":""St. James' Park"",
-   ""squad"":[
-      {
-         ""id"":88,
-         ""name"":""Fabian Schär"",
-         ""position"":""Defender"",
-         ""dateOfBirth"":""1991-12-20T00:00:00Z"",
-         ""countryOfBirth"":""Switzerland"",
-         ""nationality"":""Switzerland"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":1684,
-         ""name"":""Bruno Guimarães"",
-         ""position"":""Midfielder"",
-         ""dateOfBirth"":""1997-11-16T00:00:00Z"",
-         ""countryOfBirth"":""Brazil"",
-         ""nationality"":""Brazil"",
-         ""shirtNumber"":39,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":1868,
-         ""name"":""Emil Krafth"",
-         ""position"":""Defender"",
-         ""dateOfBirth"":""1994-08-02T00:00:00Z"",
-         ""countryOfBirth"":""Sweden"",
-         ""nationality"":""Sweden"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":3312,
-         ""name"":""Kieran Trippier"",
-         ""position"":""Defender"",
-         ""dateOfBirth"":""1990-09-19T00:00:00Z"",
-         ""countryOfBirth"":""England"",
-         ""nationality"":""England"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":3962,
-         ""name"":""Matt Targett"",
-         ""position"":""Defender"",
-         ""dateOfBirth"":""1995-09-18T00:00:00Z"",
-         ""countryOfBirth"":""England"",
-         ""nationality"":""England"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":3998,
-         ""name"":""Jamal Lewis"",
-         ""position"":""Defender"",
-         ""dateOfBirth"":""1998-01-25T00:00:00Z"",
-         ""countryOfBirth"":""England"",
-         ""nationality"":""Northern Ireland"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":4870,
-         ""name"":""Dan Burn"",
-         ""position"":""Defender"",
-         ""dateOfBirth"":""1992-05-09T00:00:00Z"",
-         ""countryOfBirth"":""England"",
-         ""nationality"":""England"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":4955,
-         ""name"":""Sean Longstaff"",
-         ""position"":""Midfielder"",
-         ""dateOfBirth"":""1997-10-30T00:00:00Z"",
-         ""countryOfBirth"":""England"",
-         ""nationality"":""England"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":5048,
-         ""name"":""Mark Gillespie"",
-         ""position"":""Goalkeeper"",
-         ""dateOfBirth"":""1992-03-27T00:00:00Z"",
-         ""countryOfBirth"":""England"",
-         ""nationality"":""England"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":7798,
-         ""name"":""Joe Willock"",
-         ""position"":""Midfielder"",
-         ""dateOfBirth"":""1999-08-20T00:00:00Z"",
-         ""countryOfBirth"":""England"",
-         ""nationality"":""England"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":7913,
-         ""name"":""Karl Darlow"",
-         ""position"":""Goalkeeper"",
-         ""dateOfBirth"":""1990-10-08T00:00:00Z"",
-         ""countryOfBirth"":""England"",
-         ""nationality"":""England"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":7914,
-         ""name"":""Martin Dúbravka"",
-         ""position"":""Goalkeeper"",
-         ""dateOfBirth"":""1989-01-15T00:00:00Z"",
-         ""countryOfBirth"":""Slovakia"",
-         ""nationality"":""Slovakia"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":7917,
-         ""name"":""Paul Dummett"",
-         ""position"":""Defender"",
-         ""dateOfBirth"":""1991-09-26T00:00:00Z"",
-         ""countryOfBirth"":""England"",
-         ""nationality"":""Wales"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":7919,
-         ""name"":""Jamaal Lascelles"",
-         ""position"":""Defender"",
-         ""dateOfBirth"":""1993-11-11T00:00:00Z"",
-         ""countryOfBirth"":""England"",
-         ""nationality"":""England"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":7922,
-         ""name"":""Isaac Hayden"",
-         ""position"":""Midfielder"",
-         ""dateOfBirth"":""1995-03-22T00:00:00Z"",
-         ""countryOfBirth"":""England"",
-         ""nationality"":""England"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":7923,
-         ""name"":""Ciaran Clark"",
-         ""position"":""Defender"",
-         ""dateOfBirth"":""1989-09-26T00:00:00Z"",
-         ""countryOfBirth"":""England"",
-         ""nationality"":""Ireland"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":7928,
-         ""name"":""Javier Manquillo"",
-         ""position"":""Defender"",
-         ""dateOfBirth"":""1994-05-05T00:00:00Z"",
-         ""countryOfBirth"":""Spain"",
-         ""nationality"":""Spain"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":7929,
-         ""name"":""Jonjo Shelvey"",
-         ""position"":""Midfielder"",
-         ""dateOfBirth"":""1992-02-27T00:00:00Z"",
-         ""countryOfBirth"":""England"",
-         ""nationality"":""England"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":7930,
-         ""name"":""Matt Ritchie"",
-         ""position"":""Midfielder"",
-         ""dateOfBirth"":""1989-09-10T00:00:00Z"",
-         ""countryOfBirth"":""England"",
-         ""nationality"":""Scotland"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":7934,
-         ""name"":""Jacob Murphy"",
-         ""position"":""Midfielder"",
-         ""dateOfBirth"":""1995-02-24T00:00:00Z"",
-         ""countryOfBirth"":""England"",
-         ""nationality"":""England"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":7937,
-         ""name"":""Dwight Gayle"",
-         ""position"":""Attacker"",
-         ""dateOfBirth"":""1990-10-20T00:00:00Z"",
-         ""countryOfBirth"":""England"",
-         ""nationality"":""England"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":7968,
-         ""name"":""Federico Fernández"",
-         ""position"":""Defender"",
-         ""dateOfBirth"":""1989-02-21T00:00:00Z"",
-         ""countryOfBirth"":""Argentina"",
-         ""nationality"":""Argentina"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":8057,
-         ""name"":""Chris Wood"",
-         ""position"":""Attacker"",
-         ""dateOfBirth"":""1991-12-07T00:00:00Z"",
-         ""countryOfBirth"":""New Zealand"",
-         ""nationality"":""New Zealand"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":8247,
-         ""name"":""Ryan Fraser"",
-         ""position"":""Midfielder"",
-         ""dateOfBirth"":""1994-02-24T00:00:00Z"",
-         ""countryOfBirth"":""Scotland"",
-         ""nationality"":""Scotland"",
-         ""shirtNumber"":24,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":8251,
-         ""name"":""Callum Wilson"",
-         ""position"":""Attacker"",
-         ""dateOfBirth"":""1992-02-27T00:00:00Z"",
-         ""countryOfBirth"":""England"",
-         ""nationality"":""England"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":8446,
-         ""name"":""Allan Saint-Maximin"",
-         ""position"":""Attacker"",
-         ""dateOfBirth"":""1997-03-12T00:00:00Z"",
-         ""countryOfBirth"":""France"",
-         ""nationality"":""France"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":10653,
-         ""name"":""Joelinton"",
-         ""position"":""Attacker"",
-         ""dateOfBirth"":""1996-08-14T00:00:00Z"",
-         ""countryOfBirth"":""Brazil"",
-         ""nationality"":""Brazil"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      },
-      {
-         ""id"":76861,
-         ""name"":""Miguel Almirón"",
-         ""position"":""Midfielder"",
-         ""dateOfBirth"":""1994-02-10T00:00:00Z"",
-         ""countryOfBirth"":""Paraguay"",
-         ""nationality"":""Paraguay"",
-         ""shirtNumber"":null,
-         ""role"":""PLAYER""
-      }
-   ],
-   ""lastUpdated"":""2022-02-10T19:22:56Z""
-}";
-
             mockHttpAPIClient = new Mock<IHttpAPIClient>();
 
             mockHttpAPIClient.Setup(x => x.GetAsync($"competitions/{footballEngineInput.Competition}/teams/")).ReturnsAsync(footballDataTeamsJson);
@@ -29308,8 +29402,6 @@ namespace FootballEngineUnitTest
             mockHttpAPIClient.Setup(x => x.GetAsync($"competitions/{footballEngineInput.Competition}/matches/")).ReturnsAsync(footballDataMatchesJson);
 
             mockHttpAPIClient.Setup(x => x.GetAsync($"competitions/{footballEngineInput.Competition}/standings/")).ReturnsAsync(footballDataStandingsJson);
-
-            mockHttpAPIClient.Setup(x => x.GetAsync($"teams/{teamId}")).ReturnsAsync(footballDataTeamJson);
         }
 
         [TestClass]
@@ -29565,7 +29657,7 @@ namespace FootballEngineUnitTest
                             {
                                 TeamID = x.id,
                                 Name = x.shortName,
-                                TeamCrestUrl = x.crestUrl,
+                                TeamCrestUrl = x.crest,
                             })
                             .OrderBy(x => x.Name)
                             .ToList();
@@ -29614,7 +29706,6 @@ namespace FootballEngineUnitTest
                 Assert.IsNotNull(team);
 
                 mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Once());
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"teams/{newcastleTeamId}"), Times.Once());
                 mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
 
                 Assert.AreEqual("Newcastle", team.Name);
@@ -29640,7 +29731,6 @@ namespace FootballEngineUnitTest
                 Assert.IsNotNull(team);
 
                 mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Once());
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"teams/{newcastleTeamId}"), Times.Once());
                 mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
 
                 Assert.AreEqual("Newcastle", team.Name);
@@ -29664,7 +29754,15 @@ namespace FootballEngineUnitTest
                             {
                                 TeamID = x.id,
                                 Name = x.shortName,
-                                TeamCrestUrl = x.crestUrl,
+                                ShortName = x.shortName,
+                                TeamCrestUrl = x.crest,
+                                Squad = x.squad
+                                            .ToList()
+                                            .Select(x => new Player()
+                                            {
+                                                Name = x.name 
+                                            })
+                                            .ToList(),
                             })
                             .OrderBy(x => x.Name)
                             .ToList();
@@ -29681,7 +29779,6 @@ namespace FootballEngineUnitTest
                 Assert.IsNotNull(team);
 
                 mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Never());
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"teams/{newcastleTeamId}"), Times.Once());
                 mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
 
                 Assert.AreEqual("Newcastle", team.Name);
@@ -29705,7 +29802,7 @@ namespace FootballEngineUnitTest
                             {
                                 TeamID = x.id,
                                 Name = x.shortName,
-                                TeamCrestUrl = x.crestUrl,
+                                TeamCrestUrl = x.crest,
                                 Squad = new List<Player>()
                                 {
                                     new Player()
@@ -29763,7 +29860,7 @@ namespace FootballEngineUnitTest
                             {
                                 TeamID = x.id,
                                 Name = x.shortName,
-                                TeamCrestUrl = x.crestUrl,
+                                TeamCrestUrl = x.crest,
                                 Squad = new List<Player>()
                                 {
                                     new Player()
