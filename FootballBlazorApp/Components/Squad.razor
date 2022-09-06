@@ -36,9 +36,6 @@
 
     private string GetPositionLabel(string position) => $"{position}s";
 
-    private string GetCoachingRoleLabel(Enums.SquadRole coachingRole) =>
-                                coachingRole.ToString().Replace("_", " ");
-
     private List<Player> GetPlayersOrderedByName(List<Player> players)
     {
         return players.OrderBy(x => x.Name).ToList();

@@ -36,7 +36,7 @@ namespace FootballEngine.Services
                             HomeStadium = x.venue,
                             Squad = x.squad
                                     .ToList()
-                                    .Select(x => GetPlayerFromSquad(x))
+                                    .Select(y => GetPlayerFromSquad(y, x.id))
                                     .ToList(),
                             Coach = new FootballShared.Models.Coach() { 
                                 CoachID = x.coach.id,
@@ -62,7 +62,7 @@ namespace FootballEngine.Services
                     .GroupBy(x => x.Position)
                     .Select(x => new PlayerByPosition()
                     {
-                        Position = x.Key,
+                        Position = TidySquadPosition(x.Key),
                         SortOrder = GetSquadSortOrder(x.Key),
                         Players = x.ToList(),
                     })
@@ -70,7 +70,7 @@ namespace FootballEngine.Services
                     .ToList();
         }
 
-        private Player GetPlayerFromSquad(Squad squad)
+        private Player GetPlayerFromSquad(Squad squad, int TeamID)
         {
             return new Player()
             {
@@ -80,6 +80,7 @@ namespace FootballEngine.Services
                 DateOfBirth = squad.dateOfBirth,
                 Nationality = squad.nationality,
                 Age = CalculateAge(squad.dateOfBirth),
+                TeamID = TeamID,
             };
         }
 
@@ -93,6 +94,33 @@ namespace FootballEngine.Services
                                 : age;
         }
 
+        private string TidySquadPosition(string position)
+        {
+            string tidySquadPosition = string.Empty;
+
+            string positionForDisplay = position.Replace("_", " ");
+
+            switch (positionForDisplay)
+            {
+                case "Goalkeeper":
+                    tidySquadPosition = PlayerPosition.Goalkeeper.ToString();
+                    break;
+                case "Defence":
+                    tidySquadPosition = PlayerPosition.Defender.ToString();
+                    break;
+                case "Midfield":
+                    tidySquadPosition = PlayerPosition.Midfielder.ToString();
+                    break;
+                case "Offence":
+                    tidySquadPosition = PlayerPosition.Attacker.ToString();
+                    break;
+                default:
+                    break;
+            }
+
+            return tidySquadPosition;
+        }
+
         private int GetSquadSortOrder(string position)
         {
             int squadSortOrder = (int)PlayerPosition.Goalkeeper;
@@ -104,13 +132,13 @@ namespace FootballEngine.Services
                 case "Goalkeeper":
                     squadSortOrder = (int)PlayerPosition.Goalkeeper;
                     break;
-                case "Defender":
+                case "Defence":
                     squadSortOrder = (int)PlayerPosition.Defender;
                     break;
-                case "Midfielder":
+                case "Midfield":
                     squadSortOrder = (int)PlayerPosition.Midfielder;
                     break;
-                case "Attacker":
+                case "Offence":
                     squadSortOrder = (int)PlayerPosition.Attacker;
                     break;
                 default:
