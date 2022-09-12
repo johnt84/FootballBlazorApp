@@ -57,7 +57,13 @@
                 Player Position:
             </td>
             <td>
-                <input type="text" placeholder="Player Position" @bind-value="@playerSearchCriteria.PlayerPosition" />
+                <InputSelect placeholder="Player Position" @bind-Value="@playerSearchCriteria.PlayerPosition" class="form-control">
+                    <option value="">All</option>
+                    @foreach (var playerPosition in playerPositions)
+                    {
+                        <option value="@playerPosition">@playerPosition</option>
+                    }
+                </InputSelect>
             </td>
         </tr>
         <tr>

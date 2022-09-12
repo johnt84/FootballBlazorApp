@@ -45,6 +45,7 @@ namespace FootballEngine.Services
                                 Nationality = x.coach.nationality,
                                 Age = CalculateAge(x.coach.dateOfBirth),
                                 TeamID = x.id,
+                                TeamName = x.shortName,
                             },
                         })
                         .OrderBy(x => x.Name)
