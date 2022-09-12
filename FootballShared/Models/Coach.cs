@@ -8,5 +8,6 @@
         public string Nationality { get; set; }
         public int Age { get; set; }
         public int TeamID { get; set; }
+        public string TeamName { get; set; }
     }
 }
