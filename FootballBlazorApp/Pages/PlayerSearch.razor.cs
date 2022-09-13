@@ -28,6 +28,9 @@ namespace FootballBlazorApp.Pages
             "Attacker",
         };
 
+        private string GetPlayerDateOfBirth(Player player) => player.DateOfBirth.HasValue
+                                                                ? player.DateOfBirth.Value.ToString("dd MMM yyyy")
+                                                                : string.Empty;
         protected override async Task OnInitializedAsync()
         {
             await SearchPlayersAsync();

@@ -27,6 +27,10 @@ namespace FootballBlazorApp.Pages
 
         private bool isPageLoading => isTeamOrPlayerNotSet && !isInvalidTeam;
 
+        private string playerDateOfBirth => player.DateOfBirth.HasValue
+                                    ? player.DateOfBirth.Value.ToString("dd MMM yyyy")
+                                    : string.Empty;
+
         protected override async Task OnInitializedAsync()
         {
             try

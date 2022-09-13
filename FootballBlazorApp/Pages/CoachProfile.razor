@@ -14,7 +14,7 @@ else if (team.TeamID == 0)
 {
     <ErrorMessage Error="The team could not be found"></ErrorMessage>
 }
-else if (coach.CoachID == 0)
+else if (coach.CoachID.HasValue && coach.CoachID.Value == 0)
 {
     <ErrorMessage Error="The coach could not be found"></ErrorMessage>
 }
@@ -32,7 +32,7 @@ else
         <tr>
             <td>@coach.TeamName</td>
             <td>@coach.Age</td>
-            <td>@coach.DateOfBirth.ToString("dd MMM yyyy")</td>
+            <td>@coachDateOfBirth</td>
             <td>@coach.Nationality</td>
         </tr>
     </table>
