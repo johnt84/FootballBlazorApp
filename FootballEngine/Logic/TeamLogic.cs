@@ -87,10 +87,15 @@ namespace FootballEngine.Services
         }
 
 
-        private int CalculateAge(DateTime dateOfBirth)
+        private int CalculateAge(DateTime? dateOfBirth)
         {
+            if (!dateOfBirth.HasValue)
+            {
+                return 0;
+            }
+            
             var today = DateTime.Today;
-            int age = today.Year - dateOfBirth.Year;
+            int age = today.Year - dateOfBirth.Value.Year;
             return dateOfBirth > today.AddYears(-age) 
                                 ? age - 1 
                                 : age;
@@ -98,6 +103,11 @@ namespace FootballEngine.Services
 
         private string TidySquadPosition(string position)
         {
+            if(string.IsNullOrWhiteSpace(position))
+            {
+                return string.Empty;
+            }
+            
             string tidySquadPosition = string.Empty;
 
             string positionForDisplay = position.Replace("_", " ");

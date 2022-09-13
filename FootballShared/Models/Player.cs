@@ -9,7 +9,7 @@ namespace FootballShared.Models
         public SquadRole SquadRole { get; set; }
         public string Name { get; set; }
         public string Position { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public string Nationality { get; set; }
         public int Age { get; set; }
         public int SquadSortOrder { get; set; }
