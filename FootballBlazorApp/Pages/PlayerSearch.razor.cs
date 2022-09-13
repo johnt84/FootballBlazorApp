@@ -1,9 +1,9 @@
 ﻿using FootballShared.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace FootballBlazorApp.Pages
@@ -17,6 +17,8 @@ namespace FootballBlazorApp.Pages
         private bool IsSortedAscending;
 
         private string CurrentSortColumn;
+
+        private ElementReference playerPositionsList;
 
         private List<string> playerPositions = new List<string>()
         {
@@ -40,6 +42,12 @@ namespace FootballBlazorApp.Pages
         {
             playerSearchCriteria = new PlayerSearchCriteria();
             await SearchPlayersAsync();
+        }
+
+        private async Task OnSelectionChanged(ChangeEventArgs eventArgs)
+        {
+            var selectedPositions = await GetSelectedItemsFromPlayerPositionsListAsync();
+            playerSearchCriteria.PlayerPositions = selectedPositions;
         }
 
         private string GetSortStyle(string columnName)
@@ -99,6 +107,11 @@ namespace FootballBlazorApp.Pages
             {
 
             }
+        }
+
+        public async Task<List<string>> GetSelectedItemsFromPlayerPositionsListAsync()
+        {
+            return (await _jsRuntime.InvokeAsync<List<string>>("getSelectedItemsInList", playerPositionsList)).ToList();
         }
     }
 }

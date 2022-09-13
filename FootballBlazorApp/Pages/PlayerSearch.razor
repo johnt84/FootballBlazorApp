@@ -2,6 +2,7 @@
 
 @inject IFootballDataService FootballDataService;
 @inject IConfiguration Configuration;
+@inject IJSRuntime _jsRuntime;
 
 <h1>Player Search</h1>
 
@@ -53,17 +54,18 @@
             <td>
                 <input type="text" placeholder="Player Country"  @bind-value="@playerSearchCriteria.PlayerCountry" />
             </td>
+        </tr>
+        <tr>
             <td>
                 Player Position:
             </td>
             <td>
-                <InputSelect placeholder="Player Position" @bind-Value="@playerSearchCriteria.PlayerPosition" class="form-control">
-                    <option value="">All</option>
+                <select @ref="playerPositionsList" @onchange="OnSelectionChanged" multiple>
                     @foreach (var playerPosition in playerPositions)
                     {
-                        <option value="@playerPosition">@playerPosition</option>
+                        <option value="@playerPosition" selected="@playerPositions.Contains(playerPosition)">@playerPosition</option>
                     }
-                </InputSelect>
+                </select>
             </td>
         </tr>
         <tr>
