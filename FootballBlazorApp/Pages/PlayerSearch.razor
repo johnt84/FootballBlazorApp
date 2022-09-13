@@ -16,7 +16,7 @@
 </style>
 
 <EditForm Model="@playerSearchCriteria" OnValidSubmit="@SearchPlayersAsync">
-    <table style="width: 1024px; margin-bottom: 5px; border-collapse:separate; border-spacing:7px;1px;">
+    <table style="width: 440px; margin-bottom: 5px; border-collapse:separate; border-spacing:7px;1px;">
         <tr>
             <td>
                 Name:
@@ -30,21 +30,16 @@
                 Team:
             </td>
             <td>
-                <input type="text" placeholder="Team Name"  @bind-value="@playerSearchCriteria.TeamName" />
+                <input type="text" placeholder="Team Name" @bind-value="@playerSearchCriteria.TeamName" />
             </td>
         </tr>
         <tr>
             <td>
-                Player Age Minimum:
+                Player Age (between):
             </td>
             <td>
-                <input type="text" placeholder="Player Age Minimum" @bind-value="@playerSearchCriteria.PlayerAgeMinimum" />
-            </td>
-            <td>
-                Player Age Maximum:
-            </td>
-            <td>
-                <input type="text" placeholder="Player Age Maximum" @bind-value="@playerSearchCriteria.PlayerAgeMaximum" />
+                <input type="text" placeholder="16" size="2px" maxlength="2" @bind-value="@playerSearchCriteria.PlayerAgeMinimum" /> and
+                <input type="text" placeholder="50" size="2px" maxlength="2" @bind-value="@playerSearchCriteria.PlayerAgeMaximum" />
             </td>
         </tr>
         <tr>
@@ -70,16 +65,11 @@
         </tr>
         <tr>
             <td>
-                Team Position Minimum:
+                Team Position (between):
             </td>
             <td>
-                <input type="text" placeholder="Team Position Minimum" @bind-value="@playerSearchCriteria.TeamPositionMinimum" />
-            </td>
-            <td>
-                Team Position Maximum:
-            </td>
-            <td>
-                <input type="text" placeholder="Team Position Maximum " @bind-value="@playerSearchCriteria.TeamPositionMaximum" />
+                <input type="text" placeholder="1" size="2px" maxlength="2" @bind-value="@playerSearchCriteria.TeamPositionMinimum" /> and
+                <input type="text" placeholder="20" size="2px" maxlength="2" @bind-value="@playerSearchCriteria.TeamPositionMaximum" />
             </td>
         </tr>
     </table>
