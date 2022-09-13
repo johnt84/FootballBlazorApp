@@ -7,7 +7,7 @@
         public int? PlayerAgeMinimum { get; set; }
         public int? PlayerAgeMaximum { get; set; }
         public string PlayerCountry { get; set; }
-        public string PlayerPosition { get; set; }
+        public List<string> PlayerPositions { get; set; }
         public int? TeamPositionMinimum { get; set; }
         public int? TeamPositionMaximum { get; set; }
     }
