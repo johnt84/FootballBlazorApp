@@ -18,6 +18,9 @@ namespace FootballBlazorApp.Pages
             try
             {
                 fixturesAndResultsByDays = await FootballDataService.GetFixturesAndResultsByDaysAsync();
+
+                fixturesAndResultsByDays = await UpdateFixtureTimeWithLocalOffset(fixturesAndResultsByDays);
+
                 isInvalidFixturesAndResults = false;
             }
             catch (Exception ex) when (ex.Message.Contains(Constants.TOO_MANY_REQUESTS_ERROR_CODE.ToString()))
@@ -30,6 +33,22 @@ namespace FootballBlazorApp.Pages
                 isInvalidFixturesAndResults = true;
                 ErrorMessage = $"Could not retrieve any fixtures & results";
             }
+        }
+
+        private async Task<List<FixturesAndResultsByDay>> UpdateFixtureTimeWithLocalOffset(List<FixturesAndResultsByDay> fixturesAndResultsByDays)
+        {
+            int offsetInMinutesForUser = await TimeZoneOffsetService.GetLocalOffsetInMinutesForUser();
+
+            foreach (var fixtureByDay in fixturesAndResultsByDays)
+            {
+                foreach (var fixtureAndResult in fixtureByDay.FixturesAndResults)
+                {
+                    fixtureAndResult.FixtureDate = fixtureAndResult.FixtureDate.AddMinutes(-offsetInMinutesForUser);
+                }
+
+            }
+
+            return fixturesAndResultsByDays;
         }
     }
 }

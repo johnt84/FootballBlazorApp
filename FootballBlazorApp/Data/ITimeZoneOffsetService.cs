@@ -4,6 +4,6 @@ namespace FootballBlazorApp.Data
 {
     public interface ITimeZoneOffsetService
     {
-        public ValueTask<int> GetLocalOffsetInMinutes();
+        public ValueTask<int> GetLocalOffsetInMinutesForUser();
     }
 }
