@@ -1,4 +1,4 @@
-﻿namespace FootballShared.Models.Enums
+﻿namespace FootballShared.Models
 {
     public class Enums
     {
@@ -45,6 +45,17 @@
             Defender,
             Midfielder,
             Attacker,
+        }
+
+        public enum Confederation
+        {
+            Africa,
+            Asia,
+            Europe,
+            NorthAndCentralAmerica,
+            Carribean,
+            Oceania,
+            SouthAmerica,
         }
     }
 }

@@ -21,7 +21,7 @@ namespace FootballEngine.Services
                                                                                     .LastRefreshTime
                                                                                     .AddHours(hoursUntilRefreshCache);
 
-        bool IsTeamsCached(FootballDataState footballDataState) => footballDataState != null
+        private bool IsTeamsCached(FootballDataState footballDataState) => footballDataState != null
                                                                     && footballDataState.Teams != null;
 
         public FootballDataService(IHttpAPIClient httpAPIClient, FootballDataState footballDataState, FootballEngineInput footballEngineInput)
@@ -113,7 +113,8 @@ namespace FootballEngine.Services
                                 && ((!string.IsNullOrWhiteSpace(playerSearchCriteria.PlayerName) && x.Name.ToLower().Contains(playerSearchCriteria.PlayerName.ToLower())) || (string.IsNullOrWhiteSpace(playerSearchCriteria.PlayerName) && x.Name == x.Name))
                                 && ((!string.IsNullOrWhiteSpace(playerSearchCriteria.TeamName) && x.TeamName.ToLower().Contains(playerSearchCriteria.TeamName.ToLower())) || (string.IsNullOrWhiteSpace(playerSearchCriteria.TeamName) && x.TeamName == x.TeamName))
                                 && ((playerSearchCriteria.TeamPositionMinimum.HasValue && x.TeamCurrentPosition >= playerSearchCriteria.TeamPositionMinimum.Value) || (!playerSearchCriteria.TeamPositionMinimum.HasValue && x.TeamCurrentPosition == x.TeamCurrentPosition))
-                                && ((playerSearchCriteria.TeamPositionMaximum.HasValue && x.TeamCurrentPosition <= playerSearchCriteria.TeamPositionMaximum.Value) || (!playerSearchCriteria.TeamPositionMaximum.HasValue && x.TeamCurrentPosition == x.TeamCurrentPosition)))
+                                && ((playerSearchCriteria.TeamPositionMaximum.HasValue && x.TeamCurrentPosition <= playerSearchCriteria.TeamPositionMaximum.Value) || (!playerSearchCriteria.TeamPositionMaximum.HasValue && x.TeamCurrentPosition == x.TeamCurrentPosition))
+                                && ((playerSearchCriteria.PlayerConfederations != null && playerSearchCriteria.PlayerConfederations.Contains(x.ConfederationForDisplay.ToString()) || (playerSearchCriteria.PlayerConfederations == null || !playerSearchCriteria.PlayerConfederations.Any()) && x.ConfederationForDisplay == x.ConfederationForDisplay)))
                             .ToList();
             }
 

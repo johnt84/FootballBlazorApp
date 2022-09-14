@@ -1,7 +1,7 @@
 ﻿using FootballEngine.Logic.Interfaces;
 using FootballShared.Models;
 using FootballShared.Models.FootballData;
-using static FootballShared.Models.Enums.Enums;
+using static FootballShared.Models.Enums;
 
 namespace FootballEngine.Services
 {
@@ -9,6 +9,161 @@ namespace FootballEngine.Services
     {
         private readonly Teams _teamsFootballDataModel;
         private readonly FootballShared.Models.FootballData.Team _teamFootballDataModel;
+
+        private List<CountriesInConfederation> countriesInConfederations => new List<CountriesInConfederation>()
+        {
+            new CountriesInConfederation()
+            {
+                Confederation = Confederation.Africa,
+                ConfederationForDisplay = Confederation.Africa.ToString(),
+                Countries = new List<string>()
+                {
+                    "Algeria",
+                    "Burkina Faso",
+                    "Cape Verde",
+                    "Cameroon",
+                    "Central African Republic",
+                    "Comoros",
+                    "Cote d'Ivoire",
+                    "DR Congo",
+                    "Egypt",
+                    "Gabon",
+                    "Ghana",
+                    "Guinea",
+                    "Mali",
+                    "Martinique",
+                    "Mauritania",
+                    "Montserrat",
+                    "Morocco",
+                    "Nigeria",
+                    "Senegal",
+                    "South Africa",
+                    "Tunisia",
+                    "Zambia",
+                    "Zimbabwe",
+                },
+            },
+            new CountriesInConfederation()
+            {
+                Confederation = Confederation.Asia,
+                ConfederationForDisplay = Confederation.Asia.ToString(),
+                Countries = new List<string>()
+                {
+                    "China",
+                    "Iran",
+                    "Japan",
+                    "Korea, South",
+                    "Malaysia",
+                    "UAE",
+                },
+            },
+            new CountriesInConfederation()
+            {
+                Confederation = Confederation.Carribean,
+                ConfederationForDisplay = Confederation.Carribean.ToString(),
+                Countries = new List<string>()
+                {
+                    "Dominican Republic",
+                    "Grenada",
+                    "Jamaica",
+                    "Trinidad & Tobago",
+                },
+            },
+            new CountriesInConfederation()
+            {
+                Confederation = Confederation.Europe,
+                ConfederationForDisplay = Confederation.Europe.ToString(),
+                Countries = new List<string>()
+                {
+                    "Albania",
+                    "Armenia",
+                    "Azerbaijan",
+                    "Austria",
+                    "Belgium",
+                    "Bosnia and Herzegovina",
+                    "Bosnia-Herzegovina",
+                    "Bulgaria",
+                    "Croatia",
+                    "Czech Republic",
+                    "Denmark",
+                    "England",
+                    "Faroe Islands",
+                    "Finland",
+                    "France",
+                    "Georgia",
+                    "Germany",
+                    "Greece",
+                    "Hungary",
+                    "Iceland",
+                    "Ireland",
+                    "Israel",
+                    "Italy",
+                    "Kosovo",
+                    "Latvia",
+                    "Moldova",
+                    "Montenegro",
+                    "Netherlands",
+                    "North Macedonia",
+                    "Norway",
+                    "Northern Ireland",
+                    "Poland",
+                    "Portugal",
+                    "Republic of Ireland",
+                    "Romania",
+                    "Russia",
+                    "Scotland",
+                    "Serbia",
+                    "Slovakia",
+                    "Slovenia",
+                    "Spain",
+                    "Sweden",
+                    "Switzerland",
+                    "Turkey",
+                    "Ukraine",
+                    "Wales",
+                },
+            },
+            new CountriesInConfederation()
+            {
+                Confederation = Confederation.NorthAndCentralAmerica,
+                ConfederationForDisplay = "North & Central America",
+                Countries = new List<string>()
+                {
+                    "Canada",
+                    "Costa Rica",
+                    "Mexico",
+                    "United States",
+                },
+            },
+            new CountriesInConfederation()
+            {
+                Confederation = Confederation.Oceania,
+                ConfederationForDisplay = Confederation.Oceania.ToString(),
+                Countries = new List<string>()
+                {
+                    "Australia",
+                    "New Zealand"
+                },
+            },
+            new CountriesInConfederation()
+            {
+                Confederation = Confederation.SouthAmerica,
+                ConfederationForDisplay = "South America",
+                Countries = new List<string>()
+                {
+                    "Argentina",
+                    "Brazil",
+                    "Chile",
+                    "Colombia",
+                    "Ecuador",
+                    "Paraguay",
+                    "Peru",
+                    "Suriname",
+                    "Uruguay",
+                    "Venezuela",
+                },
+            },
+        };
 
         public TeamLogic(Teams teamsFootballDataModel)
         {
@@ -46,6 +201,7 @@ namespace FootballEngine.Services
                                 Age = CalculateAge(x.coach.dateOfBirth),
                                 TeamID = x.id,
                                 TeamName = x.shortName,
+                                ConfederationForDisplay = GetPlayerConfederationForDisplay(x.coach.nationality),
                             },
                         })
                         .OrderBy(x => x.Name)
@@ -83,9 +239,9 @@ namespace FootballEngine.Services
                 Age = CalculateAge(squad.dateOfBirth),
                 TeamID = teamID,
                 TeamName = teamName,
+                ConfederationForDisplay = GetPlayerConfederationForDisplay(squad.nationality),
             };
         }
-
 
         private int CalculateAge(DateTime? dateOfBirth)
         {
@@ -156,6 +312,20 @@ namespace FootballEngine.Services
             }
 
             return squadSortOrder;
+        }
+
+        private string GetPlayerConfederationForDisplay(string nationality)
+        {
+            if(string.IsNullOrWhiteSpace(nationality))
+            {
+                return "Unknown";
+            }
+            
+            var countriesInConfederation = countriesInConfederations
+                                            .Where(x => x.Countries.Contains(nationality))
+                                            .FirstOrDefault();
+
+            return countriesInConfederation?.ConfederationForDisplay ?? "Unknown";
         }
     }
 }

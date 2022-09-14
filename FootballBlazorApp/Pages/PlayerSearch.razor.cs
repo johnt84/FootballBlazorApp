@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static FootballShared.Models.Enums;
 
 namespace FootballBlazorApp.Pages
 {
@@ -20,12 +21,25 @@ namespace FootballBlazorApp.Pages
 
         private ElementReference playerPositionsList;
 
+        private ElementReference playerConfederationsList;
+
         private List<string> playerPositions = new List<string>()
         {
-            "Goalkeeper",
-            "Defender",
-            "Midfielder",
-            "Attacker",
+            PlayerPosition.Goalkeeper.ToString(),
+            PlayerPosition.Defender.ToString(),
+            PlayerPosition.Midfielder.ToString(),
+            PlayerPosition.Attacker.ToString(),
+        };
+
+        private List<string> playerConfederations = new List<string>()
+        {
+            Confederation.Africa.ToString(),
+            Confederation.Asia.ToString(),
+            Confederation.Carribean.ToString(),
+            Confederation.Europe.ToString(),
+            "North & Central America",
+            Confederation.Oceania.ToString(),
+            "South America",
         };
 
         private string GetPlayerDateOfBirth(Player player) => player.DateOfBirth.HasValue
@@ -47,10 +61,16 @@ namespace FootballBlazorApp.Pages
             await SearchPlayersAsync();
         }
 
-        private async Task OnSelectionChanged(ChangeEventArgs eventArgs)
+        private async Task OnPlayerPositionsListSelectionChanged(ChangeEventArgs eventArgs)
         {
             var selectedPositions = await GetSelectedItemsFromPlayerPositionsListAsync();
             playerSearchCriteria.PlayerPositions = selectedPositions;
+        }
+
+        private async Task OnPlayerConfederationsListSelectionChanged(ChangeEventArgs eventArgs)
+        {
+            var selectedConfederations = await GetSelectedItemsFromPlayerConfederationsListAsync();
+            playerSearchCriteria.PlayerConfederations = selectedConfederations;
         }
 
         private string GetSortStyle(string columnName)
@@ -114,7 +134,17 @@ namespace FootballBlazorApp.Pages
 
         public async Task<List<string>> GetSelectedItemsFromPlayerPositionsListAsync()
         {
-            return (await _jsRuntime.InvokeAsync<List<string>>("getSelectedItemsInList", playerPositionsList)).ToList();
+            return await GetSelectedItemsFromListAsync(playerPositionsList);
+        }
+
+        public async Task<List<string>> GetSelectedItemsFromPlayerConfederationsListAsync()
+        {
+            return await GetSelectedItemsFromListAsync(playerConfederationsList);
+        }
+
+        private async Task<List<string>> GetSelectedItemsFromListAsync(ElementReference dropdownList)
+        {
+            return (await _jsRuntime.InvokeAsync<List<string>>("getSelectedItemsInList", dropdownList)).ToList();
         }
     }
 }
