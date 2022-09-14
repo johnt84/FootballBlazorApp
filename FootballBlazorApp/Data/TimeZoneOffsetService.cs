@@ -12,7 +12,7 @@ namespace FootballBlazorApp.Data
             _jsRuntime = jsRuntime;
         }
 
-        public async ValueTask<int> GetLocalOffsetInMinutes()
+        public async ValueTask<int> GetLocalOffsetInMinutesForUser()
         {
             return await _jsRuntime.InvokeAsync<int>("blazorGetTimezoneOffset");
         }
