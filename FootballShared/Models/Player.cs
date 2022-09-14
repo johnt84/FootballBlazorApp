@@ -1,5 +1,4 @@
-﻿using System;
-using static FootballShared.Models.Enums.Enums;
+﻿using static FootballShared.Models.Enums;
 
 namespace FootballShared.Models
 {
@@ -16,5 +15,6 @@ namespace FootballShared.Models
         public int TeamID { get; set; }
         public string TeamName { get; set; }
         public int TeamCurrentPosition { get; set; }
+        public string ConfederationForDisplay { get; set; }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using static FootballShared.Models.Enums.Enums;
+﻿using static FootballShared.Models.Enums;
 
 namespace FootballShared.Models
 {

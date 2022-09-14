@@ -1,7 +1,7 @@
 ﻿using FootballEngine.Logic.Interfaces;
 using FootballShared.Models;
 using FootballShared.Models.FootballData;
-using static FootballShared.Models.Enums.Enums;
+using static FootballShared.Models.Enums;
 
 namespace FootballEngine.Services
 {

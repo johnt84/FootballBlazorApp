@@ -33,7 +33,7 @@
 @code {
     private const string TBD = "TBD";
 
-    private string GetStageNameForDisplay(FootballShared.Models.Enums.Enums.Stage stage) => stage.ToString().Replace("_", " ");
+    private string GetStageNameForDisplay(FootballShared.Models.Enums.Stage stage) => stage.ToString().Replace("_", " ");
 
     private string GetStageName(FootballShared.Models.FixtureAndResult fixtureAndResult) =>
                                         fixtureAndResult.Stage == Enums.Stage.Group

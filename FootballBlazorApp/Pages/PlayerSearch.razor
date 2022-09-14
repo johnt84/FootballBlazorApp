@@ -55,7 +55,7 @@
                 Player Position:
             </td>
             <td>
-                <select @ref="playerPositionsList" @onchange="OnSelectionChanged" multiple>
+                <select @ref="playerPositionsList" @onchange="OnPlayerPositionsListSelectionChanged" multiple>
                     @foreach (var playerPosition in playerPositions)
                     {
                         <option value="@playerPosition" selected="@playerPositions.Contains(playerPosition)">@playerPosition</option>
@@ -70,6 +70,19 @@
             <td>
                 <input type="text" placeholder="1" size="2px" maxlength="2" @bind-value="@playerSearchCriteria.TeamPositionMinimum" /> and
                 <input type="text" placeholder="20" size="2px" maxlength="2" @bind-value="@playerSearchCriteria.TeamPositionMaximum" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Player Confederation:
+            </td>
+            <td>
+                <select @ref="playerConfederationsList" @onchange="OnPlayerConfederationsListSelectionChanged" multiple>
+                    @foreach (var playerConfederation in playerConfederations)
+                    {
+                        <option value="@playerConfederation" selected="@playerConfederations.Contains(playerConfederation)">@playerConfederation</option>
+                    }
+                </select>
             </td>
         </tr>
     </table>
@@ -119,6 +132,10 @@ else
                 <span>@(GetSortStyle("Nationality"))</span>
             </th>
             <th>
+                <span class="sort-link" onclick=@(() => SortTable("ConfederationForDisplay"))>Confederation</span>
+                <span>@(GetSortStyle("ConfederationForDisplay"))</span>
+            </th>
+            <th>
                 <span class="sort-link" onclick=@(() => SortTable("TeamCurrentPosition"))>Team Current Position</span>
                 <span>@(GetSortStyle("TeamCurrentPosition"))</span>
             </th>
@@ -132,6 +149,7 @@ else
             <td>@player.Age</td>
             <td>@GetPlayerDateOfBirth(player)</td>
             <td>@player.Nationality</td>
+            <td>@player.ConfederationForDisplay</td>
             <td style="text-align:center;">@player.TeamCurrentPosition</td>
         </tr>
     }

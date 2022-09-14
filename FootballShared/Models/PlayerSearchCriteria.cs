@@ -10,5 +10,6 @@
         public List<string> PlayerPositions { get; set; }
         public int? TeamPositionMinimum { get; set; }
         public int? TeamPositionMaximum { get; set; }
+        public List<string> PlayerConfederations { get; set; }
     }
 }

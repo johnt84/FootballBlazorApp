@@ -1,5 +1,4 @@
 ﻿using FootballShared.Models;
-using FootballShared.Models.Enums;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Linq;
