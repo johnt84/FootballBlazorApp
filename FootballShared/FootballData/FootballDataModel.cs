@@ -20,6 +20,8 @@
         public Area area { get; set; }
         public string name { get; set; }
         public string code { get; set; }
+        public string type { get; set; }
+        public string emblem { get; set; }
         public string plan { get; set; }
         public DateTime lastUpdated { get; set; }
     }
@@ -28,6 +30,8 @@
     {
         public int id { get; set; }
         public string name { get; set; }
+        public string code { get; set; }
+        public string flag { get; set; }
     }
 
     public class Season
@@ -53,7 +57,7 @@
         public Score score { get; set; }
         public Hometeam homeTeam { get; set; }
         public Awayteam awayTeam { get; set; }
-        public object[] referees { get; set; }
+        public Referee[] referees { get; set; }
     }
 
     public class Standing
@@ -69,7 +73,7 @@
         public int position { get; set; }
         public Team team { get; set; }
         public int playedGames { get; set; }
-        public object form { get; set; }
+        public string form { get; set; }
         public int won { get; set; }
         public int draw { get; set; }
         public int lost { get; set; }
@@ -185,6 +189,14 @@
         public string name { get; set; }
         public string position { get; set; }
         public DateTime? dateOfBirth { get; set; }
+        public string nationality { get; set; }
+    }
+
+    public class Referee
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public string type { get; set; }
         public string nationality { get; set; }
     }
 }

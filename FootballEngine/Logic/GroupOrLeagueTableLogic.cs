@@ -22,15 +22,16 @@ namespace FootballEngine.Services
             return _groupsFootballDataModel
                             .standings
                             .ToList()
-                            .Select(x => GetGroupOrLeagueTableFromStanding(x))
+                            .Select(x => GetGroupOrLeagueTableFromStanding(_groupsFootballDataModel.competition.emblem, x))
                             .ToList();
         }
 
-        private GroupOrLeagueTableModel GetGroupOrLeagueTableFromStanding(Standing standing)
+        private GroupOrLeagueTableModel GetGroupOrLeagueTableFromStanding(string emblem, Standing standing)
         {
             return new GroupOrLeagueTableModel()
             {
                 Name = _footballEngineInput.HasGroups ? standing.group?.Replace(GROUP_, string.Empty) : $"{_footballEngineInput.LeagueName} Table",
+                Emblem = emblem,
                 IsGroup = _footballEngineInput.HasGroups,
                 GroupOrLeagueTableStandings = standing.table.ToList().Select(x => new GroupOrLeagueTableStanding()
                 {
@@ -49,6 +50,7 @@ namespace FootballEngine.Services
                     GoalsAgainst = x.goalsAgainst,
                     GoalDifference = x.goalDifference,
                     PointsTotal = x.points,
+                    Form = x.form,
                 })
                 .ToList(),
             };

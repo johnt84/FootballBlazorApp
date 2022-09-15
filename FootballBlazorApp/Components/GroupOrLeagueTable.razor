@@ -5,10 +5,6 @@
 {
     <h2 style="padding-bottom: 10px;">@groupOrLeagueTableName</h2>
 }
-else
-{
-    <h1 style="padding-bottom: 10px;">@groupOrLeagueTableName</h1>
-}
 
 <style>
     table th {
@@ -35,6 +31,10 @@ else
         <th>Goals Against</th>
         <th>Goal Difference</th>
         <th>Points</th>
+        @if(!GroupOrLeagueTableModel.IsGroup)
+        {
+            <th>Form (Last 5 games)</th>
+        }
     </tr>
     @foreach (var groupOrLeagueTableStanding in GroupOrLeagueTableModel.GroupOrLeagueTableStandings)
     {
@@ -58,6 +58,10 @@ else
             <td>@groupOrLeagueTableStanding.GoalsAgainst</td>
             <td>@groupOrLeagueTableStanding.GoalDifference</td>
             <td>@groupOrLeagueTableStanding.PointsTotal</td>
+            @if(!GroupOrLeagueTableModel.IsGroup)
+            {
+                <td>@TidyFormForDisplay(groupOrLeagueTableStanding.Form)</td>
+            }
         </tr>
     }
 </table>
@@ -77,6 +81,10 @@ else
     private string hideOrShow => FixturesVisible ? "Hide" : "Show";
 
     private string groupOrLeagueTableName => $"{(GroupOrLeagueTableModel.IsGroup ? "Group " : string.Empty)} {GroupOrLeagueTableModel.Name}";
+
+    private string TidyFormForDisplay(string form) => !string.IsNullOrWhiteSpace(form) 
+                                                        ? form.Replace(",", string.Empty) 
+                                                        : string.Empty;
 
     [Parameter]
     public FootballShared.Models.GroupOrLeagueTableModel GroupOrLeagueTableModel { get; set; }
