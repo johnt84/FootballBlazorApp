@@ -1,6 +1,7 @@
 ﻿using FootballShared.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FootballBlazorApp.Pages
@@ -10,6 +11,8 @@ namespace FootballBlazorApp.Pages
         private List<FootballShared.Models.GroupOrLeagueTableModel> groupsOrLeagueTable = null;
 
         private bool isInvalidGroupsOrLeagueTable = false;
+
+        private string groupEmblemForDisplay => groupsOrLeagueTable?.FirstOrDefault().Emblem ?? string.Empty;
 
         private string ErrorMessage { get; set; }
 

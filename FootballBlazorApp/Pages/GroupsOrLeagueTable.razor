@@ -3,14 +3,16 @@
 @inject IFootballDataService FootballDataService;
 @inject IConfiguration Configuration;
 
+<img src="@groupEmblemForDisplay" />
+
 @if (Convert.ToBoolean(Configuration["HasGroups"].ToString()))
 {
-    <h1 style="padding-bottom: 20px;">Groups</h1>
+    <h1 style="padding-top: 20px; padding-bottom: 20px;">Groups</h1>
 }
 
 @if(groupsOrLeagueTable == null && !isInvalidGroupsOrLeagueTable)
 {
-    <p><em>Loading...</em></p>
+    <p><e2m>Loading...</e2m></p>
 }
 else if (isInvalidGroupsOrLeagueTable)
 {
