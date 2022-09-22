@@ -25,7 +25,7 @@ namespace FootballBlazorApp.Pages
                 isInvalidTeams = true;
                 ErrorMessage = Constants.TOO_MANY_REQUESTS_ERROR_MESSAGE;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 isInvalidTeams = true;
                 ErrorMessage = $"Could not retrieve any teams";
