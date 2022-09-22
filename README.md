@@ -15,7 +15,7 @@ The Player Search page was developed as a way to help with playing the Football 
 * Player Nationality - wildcard search
 * Player Position - position the player plays in (Goalkepper, Defence, Midfield, Attacker) - multi-select list
 * Player Confederation (football confederation that player's nationality belongs to) - multi-select list
-* Team Position - between team position range in the league or group table
+* Team Position - between a team position range in the league or group table
 
 Utilises the REST API called <a href="https://www.football-data.org/">Football Data API</a> which provides responses in JSON
 
