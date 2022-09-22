@@ -1,0 +1,116 @@
+﻿@if (players == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="playerSearchResultsTable">
+        <tr>
+            <th>
+                <span class="sort-link" onclick=@(() => SortTable("Name"))>Name</span>
+                <span>@(GetSortStyle("Name"))</span>
+            </th>
+            <th>
+                <span class="sort-link" onclick=@(() => SortTable("TeamName"))>Team Name</span>
+                <span>@(GetSortStyle("TeamName"))</span>
+            </th>
+            <th>
+                <span class="sort-link" onclick=@(() => SortTable("Position"))>Position</span>
+                <span>@(GetSortStyle("Position"))</span>
+            </th>
+            <th>
+                <span class="sort-link" onclick=@(() => SortTable("Age"))>Age</span>
+                <span>@(GetSortStyle("Age"))</span>
+            </th>
+            <th>
+                <span class="sort-link" onclick=@(() => SortTable("DateOfBirth"))>Date of Birth</span>
+                <span>@(GetSortStyle("DateOfBirth"))</span>
+            </th>
+            <th>
+                <span class="sort-link" onclick=@(() => SortTable("Nationality"))>Nationality</span>
+                <span>@(GetSortStyle("Nationality"))</span>
+            </th>
+            <th>
+                <span class="sort-link" onclick=@(() => SortTable("ConfederationForDisplay"))>Confederation</span>
+                <span>@(GetSortStyle("ConfederationForDisplay"))</span>
+            </th>
+            <th>
+                <span class="sort-link" onclick=@(() => SortTable("TeamCurrentPosition"))>Team Current Position</span>
+                <span>@(GetSortStyle("TeamCurrentPosition"))</span>
+            </th>
+        </tr>
+        @foreach (var player in players)
+        {
+            <tr>
+                <td>@player.Name</td>
+                <td>@player.TeamName</td>
+                <td>@player.Position</td>
+                <td>@player.Age</td>
+                <td>@GetPlayerDateOfBirth(player)</td>
+                <td>@player.Nationality</td>
+                <td>@player.ConfederationForDisplay</td>
+                <td style="text-align:center;">@player.TeamCurrentPosition</td>
+            </tr>
+        }
+    </table>
+}
+
+@code {
+    [Parameter]
+    public List<FootballShared.Models.Player> players { get; set; }
+
+    private bool isSortedAscending;
+
+    private string currentSortColumn;
+
+    private string GetPlayerDateOfBirth(Player player) => player.DateOfBirth.HasValue
+                                                            ? player.DateOfBirth.Value.ToString("dd MMM yyyy")
+                                                            : string.Empty;
+    
+    private string GetSortStyle(string columnName)
+    {
+        if (currentSortColumn != columnName)
+        {
+            return string.Empty;
+        }
+
+        return isSortedAscending ? "▲" : "▼";
+    }
+
+    private void SortTable(string columnName)
+    {
+        if (columnName != currentSortColumn)
+        {
+            players = players.OrderBy(x =>
+                                    x.GetType()
+                                    .GetProperty(columnName)
+                                    .GetValue(x, null))
+                                    .ToList();
+
+            currentSortColumn = columnName;
+            isSortedAscending = true;
+
+        }
+        else
+        {
+            if (isSortedAscending)
+            {
+                players = players.OrderByDescending(x =>
+                                                  x.GetType()
+                                                   .GetProperty(columnName)
+                                                   .GetValue(x, null))
+                             .ToList();
+            }
+            else
+            {
+                players = players.OrderBy(x =>
+                                        x.GetType()
+                                         .GetProperty(columnName)
+                                         .GetValue(x, null))
+                                         .ToList();
+            }
+
+            isSortedAscending = !isSortedAscending;
+        }
+    }
+}

@@ -1,0 +1,127 @@
+﻿@inject IJSRuntime _jsRuntime;
+
+<table class="playerSearchBarTable">
+    <tr>
+        <td>
+            Player Name:
+        </td>
+        <td>
+            <input type="text" placeholder="Name" @bind-value="@playerSearchCriteria.PlayerName" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Team:
+        </td>
+        <td>
+            <input type="text" placeholder="Team Name" @bind-value="@playerSearchCriteria.TeamName" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Player Age (between):
+        </td>
+        <td>
+            <input type="text" placeholder="16" size="2px" maxlength="2" @bind-value="@playerSearchCriteria.PlayerAgeMinimum" /> and
+            <input type="text" placeholder="50" size="2px" maxlength="2" @bind-value="@playerSearchCriteria.PlayerAgeMaximum" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Player Country:
+        </td>
+        <td>
+            <input type="text" placeholder="Player Country" @bind-value="@playerSearchCriteria.PlayerCountry" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Player Position:
+        </td>
+        <td>
+            <select @ref="playerPositionsList" @onchange="OnPlayerPositionsListSelectionChanged" multiple>
+                @foreach (var playerPosition in playerPositions)
+                {
+                    <option value="@playerPosition" selected="@playerPositions.Contains(playerPosition)">@playerPosition</option>
+                }
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Team Position (between):
+        </td>
+        <td>
+            <input type="text" placeholder="1" size="2px" maxlength="2" @bind-value="@playerSearchCriteria.TeamPositionMinimum" /> and
+            <input type="text" placeholder="20" size="2px" maxlength="2" @bind-value="@playerSearchCriteria.TeamPositionMaximum" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Player Confederation:
+        </td>
+        <td>
+            <select @ref="playerConfederationsList" @onchange="OnPlayerConfederationsListSelectionChanged" multiple>
+                @foreach (var playerConfederation in playerConfederations)
+                {
+                    <option value="@playerConfederation" selected="@playerConfederations.Contains(playerConfederation)">@playerConfederation</option>
+                }
+            </select>
+        </td>
+    </tr>
+</table>
+
+@code {
+    [Parameter]
+    public PlayerSearchCriteria playerSearchCriteria { get; set; }
+
+    private ElementReference playerPositionsList;
+
+    private ElementReference playerConfederationsList;
+
+    private List<string> playerConfederations = new List<string>()
+    {
+        Confederation.Africa.ToString(),
+        Confederation.Asia.ToString(),
+        Confederation.Carribean.ToString(),
+        Confederation.Europe.ToString(),
+        "North & Central America",
+        Confederation.Oceania.ToString(),
+        "South America",
+    };
+
+    private List<string> playerPositions = new List<string>()
+    {
+        PlayerPosition.Goalkeeper.ToString(),
+        PlayerPosition.Defender.ToString(),
+        PlayerPosition.Midfielder.ToString(),
+        PlayerPosition.Attacker.ToString(),
+    };
+
+    private async Task OnPlayerPositionsListSelectionChanged(ChangeEventArgs eventArgs)
+    {
+        var selectedPositions = await GetSelectedItemsFromPlayerPositionsListAsync();
+        playerSearchCriteria.PlayerPositions = selectedPositions;
+    }
+
+    private async Task OnPlayerConfederationsListSelectionChanged(ChangeEventArgs eventArgs)
+    {
+        var selectedConfederations = await GetSelectedItemsFromPlayerConfederationsListAsync();
+        playerSearchCriteria.PlayerConfederations = selectedConfederations;
+    }
+
+    public async Task<List<string>> GetSelectedItemsFromPlayerPositionsListAsync()
+    {
+        return await GetSelectedItemsFromListAsync(playerPositionsList);
+    }
+
+    public async Task<List<string>> GetSelectedItemsFromPlayerConfederationsListAsync()
+    {
+        return await GetSelectedItemsFromListAsync(playerConfederationsList);
+    }
+
+    private async Task<List<string>> GetSelectedItemsFromListAsync(ElementReference dropdownList)
+    {
+        return (await _jsRuntime.InvokeAsync<List<string>>("getSelectedItemsInList", dropdownList)).ToList();
+    }
+}

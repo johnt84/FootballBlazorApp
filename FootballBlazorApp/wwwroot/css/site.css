@@ -94,3 +94,18 @@ a, .btn-link {
 .playerPositionHeader {
     margin-bottom: 15px;
 }
+
+.playerSearchBarTable {
+    width: 440px;
+    margin-bottom: 5px;
+    border-collapse: separate;
+    border-spacing: 7px;1px;
+}
+
+.playerSearchResultsTable {
+    width: 950px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border-collapse: separate;
+    border-spacing: 10px;5px;
+}

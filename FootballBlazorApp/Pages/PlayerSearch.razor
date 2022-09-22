@@ -2,7 +2,6 @@
 
 @inject IFootballDataService FootballDataService;
 @inject IConfiguration Configuration;
-@inject IJSRuntime _jsRuntime;
 
 <h1>Player Search</h1>
 
@@ -16,76 +15,7 @@
 </style>
 
 <EditForm Model="@playerSearchCriteria" OnValidSubmit="@SearchPlayersAsync">
-    <table style="width: 440px; margin-bottom: 5px; border-collapse:separate; border-spacing:7px;1px;">
-        <tr>
-            <td>
-                Name:
-            </td>
-            <td>
-                <input type="text" placeholder="Name" @bind-value="@playerSearchCriteria.PlayerName" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Team:
-            </td>
-            <td>
-                <input type="text" placeholder="Team Name" @bind-value="@playerSearchCriteria.TeamName" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Player Age (between):
-            </td>
-            <td>
-                <input type="text" placeholder="16" size="2px" maxlength="2" @bind-value="@playerSearchCriteria.PlayerAgeMinimum" /> and
-                <input type="text" placeholder="50" size="2px" maxlength="2" @bind-value="@playerSearchCriteria.PlayerAgeMaximum" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Player Country: 
-            </td>
-            <td>
-                <input type="text" placeholder="Player Country"  @bind-value="@playerSearchCriteria.PlayerCountry" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Player Position:
-            </td>
-            <td>
-                <select @ref="playerPositionsList" @onchange="OnPlayerPositionsListSelectionChanged" multiple>
-                    @foreach (var playerPosition in playerPositions)
-                    {
-                        <option value="@playerPosition" selected="@playerPositions.Contains(playerPosition)">@playerPosition</option>
-                    }
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Team Position (between):
-            </td>
-            <td>
-                <input type="text" placeholder="1" size="2px" maxlength="2" @bind-value="@playerSearchCriteria.TeamPositionMinimum" /> and
-                <input type="text" placeholder="20" size="2px" maxlength="2" @bind-value="@playerSearchCriteria.TeamPositionMaximum" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Player Confederation:
-            </td>
-            <td>
-                <select @ref="playerConfederationsList" @onchange="OnPlayerConfederationsListSelectionChanged" multiple>
-                    @foreach (var playerConfederation in playerConfederations)
-                    {
-                        <option value="@playerConfederation" selected="@playerConfederations.Contains(playerConfederation)">@playerConfederation</option>
-                    }
-                </select>
-            </td>
-        </tr>
-    </table>
+    <PlayerSearchBar playerSearchCriteria="playerSearchCriteria"></PlayerSearchBar>
 
     <table>
         <tr>
@@ -99,59 +29,4 @@
     </table>
 </EditForm>
 
-@if (players == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table style="width: 950px; margin-top: 10px; margin-bottom: 20px; border-collapse:separate; border-spacing:10px;5px;">
-        <tr>
-            <th>
-                <span class="sort-link" onclick=@(() => SortTable("Name"))>Name</span>
-                <span>@(GetSortStyle("Name"))</span>
-            </th>
-            <th>
-                <span class="sort-link" onclick=@(() => SortTable("TeamName"))>Team Name</span>
-                <span>@(GetSortStyle("TeamName"))</span>
-            </th>
-            <th>
-                <span class="sort-link" onclick=@(() => SortTable("Position"))>Position</span>
-                <span>@(GetSortStyle("Position"))</span>
-            </th>
-            <th>
-                <span class="sort-link" onclick=@(() => SortTable("Age"))>Age</span>
-                <span>@(GetSortStyle("Age"))</span>
-            </th>
-            <th>
-                <span class="sort-link" onclick=@(() => SortTable("DateOfBirth"))>Date of Birth</span>
-                <span>@(GetSortStyle("DateOfBirth"))</span>
-            </th>
-            <th>
-                <span class="sort-link" onclick=@(() => SortTable("Nationality"))>Nationality</span>
-                <span>@(GetSortStyle("Nationality"))</span>
-            </th>
-            <th>
-                <span class="sort-link" onclick=@(() => SortTable("ConfederationForDisplay"))>Confederation</span>
-                <span>@(GetSortStyle("ConfederationForDisplay"))</span>
-            </th>
-            <th>
-                <span class="sort-link" onclick=@(() => SortTable("TeamCurrentPosition"))>Team Current Position</span>
-                <span>@(GetSortStyle("TeamCurrentPosition"))</span>
-            </th>
-        </tr>
-    @foreach(var player in players)
-    {
-        <tr>
-            <td>@player.Name</td>
-            <td>@player.TeamName</td>
-            <td>@player.Position</td>
-            <td>@player.Age</td>
-            <td>@GetPlayerDateOfBirth(player)</td>
-            <td>@player.Nationality</td>
-            <td>@player.ConfederationForDisplay</td>
-            <td style="text-align:center;">@player.TeamCurrentPosition</td>
-        </tr>
-    }
-    </table>
-}
+<PlayerSearchResults players="players"></PlayerSearchResults>
