@@ -35,6 +35,7 @@ namespace FootballBlazorApp
                 LeagueName = Configuration["LeagueName"].ToString(),
                 APIToken = Configuration["APIToken"].ToString(),
                 HoursUntilRefreshCache = Convert.ToInt32(Configuration["HoursUntilRefreshCache"].ToString()),
+                MinutesUntilRefreshPlayerSearchCache = Convert.ToInt32(Configuration["MinutesUntilRefreshPlayerSearchCache"].ToString()),
             };
 
             services.AddSingleton(footballEngineInput);
@@ -42,6 +43,8 @@ namespace FootballBlazorApp
             services.AddScoped<ITimeZoneOffsetService, TimeZoneOffsetService>();
             services.AddSingleton<IFootballDataService, FootballDataService>();
             services.AddSingleton<FootballDataState>();
+            services.AddSingleton<IPlayerSearchService, PlayerSearchService>();
+            services.AddSingleton<PlayerSearchState>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
