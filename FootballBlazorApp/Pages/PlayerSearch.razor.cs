@@ -21,7 +21,7 @@ namespace FootballBlazorApp.Pages
         {
             playerSearchCriteria = new PlayerSearchCriteria();
             await SearchPlayersAsync();
-            PlayerSearchService.SavePlayerSearchToCache(playerSearchCriteria);
+            PlayerSearchCacheService.SavePlayerSearchToCache(playerSearchCriteria);
         }
 
         private async Task SearchPlayersAsync()
@@ -29,7 +29,7 @@ namespace FootballBlazorApp.Pages
             try
             {
                 players = await FootballDataService.PlayerSearchAsync(playerSearchCriteria);
-                PlayerSearchService.SavePlayerSearchToCache(playerSearchCriteria);
+                PlayerSearchCacheService.SavePlayerSearchToCache(playerSearchCriteria);
             }
             catch (Exception)
             {
@@ -39,7 +39,7 @@ namespace FootballBlazorApp.Pages
 
         private void LoadCachedPlayerSearch()
         {
-            playerSearchCriteria = PlayerSearchService.GetPlayerSearchFromCache();
+            playerSearchCriteria = PlayerSearchCacheService.GetPlayerSearchFromCache();
         }
     }
 }

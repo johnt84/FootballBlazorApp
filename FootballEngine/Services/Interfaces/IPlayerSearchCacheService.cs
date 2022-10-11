@@ -2,7 +2,7 @@
 
 namespace FootballEngine.Services.Interfaces
 {
-    public interface IPlayerSearchService
+    public interface IPlayerSearchCacheService
     {
         void SavePlayerSearchToCache(PlayerSearchCriteria playerSearchCriteria);
         PlayerSearchCriteria GetPlayerSearchFromCache();

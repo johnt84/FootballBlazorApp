@@ -3,12 +3,12 @@ using FootballShared.Models;
 
 namespace FootballEngine.Services
 {
-    public class PlayerSearchService : IPlayerSearchService
+    public class PlayerSearchCacheService : IPlayerSearchCacheService
     {
         private readonly PlayerSearchState _playerSearchState;
         private readonly FootballEngineInput _footballEngineInput;
 
-        public PlayerSearchService(PlayerSearchState playerSearchState, FootballEngineInput footballEngineInput)
+        public PlayerSearchCacheService(PlayerSearchState playerSearchState, FootballEngineInput footballEngineInput)
         {
             _playerSearchState = playerSearchState;
             _footballEngineInput = footballEngineInput;

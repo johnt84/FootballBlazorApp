@@ -43,8 +43,8 @@ namespace FootballBlazorApp
             services.AddScoped<ITimeZoneOffsetService, TimeZoneOffsetService>();
             services.AddSingleton<IFootballDataService, FootballDataService>();
             services.AddSingleton<FootballDataState>();
-            services.AddSingleton<IPlayerSearchService, PlayerSearchService>();
-            services.AddSingleton<PlayerSearchState>();
+            services.AddScoped<IPlayerSearchCacheService, PlayerSearchCacheService>();
+            services.AddScoped<PlayerSearchState>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
