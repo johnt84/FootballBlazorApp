@@ -1,7 +1,6 @@
 ﻿using FootballShared.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FootballBlazorApp.Pages
@@ -14,6 +13,7 @@ namespace FootballBlazorApp.Pages
 
         protected override async Task OnInitializedAsync()
         {
+            LoadCachedPlayerSearch();
             await SearchPlayersAsync();
         }
 
@@ -21,6 +21,7 @@ namespace FootballBlazorApp.Pages
         {
             playerSearchCriteria = new PlayerSearchCriteria();
             await SearchPlayersAsync();
+            PlayerSearchCacheService.SavePlayerSearchToCache(playerSearchCriteria);
         }
 
         private async Task SearchPlayersAsync()
@@ -28,11 +29,17 @@ namespace FootballBlazorApp.Pages
             try
             {
                 players = await FootballDataService.PlayerSearchAsync(playerSearchCriteria);
+                PlayerSearchCacheService.SavePlayerSearchToCache(playerSearchCriteria);
             }
             catch (Exception)
             {
 
             }
+        }
+
+        private void LoadCachedPlayerSearch()
+        {
+            playerSearchCriteria = PlayerSearchCacheService.GetPlayerSearchFromCache();
         }
     }
 }
