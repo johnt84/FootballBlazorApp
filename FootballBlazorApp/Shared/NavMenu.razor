@@ -16,7 +16,7 @@
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="groupsOrLeagueTable">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> League Table
+                <span class="oi oi-list-rich" aria-hidden="true"></span> @GroupsOrLeagueTable
             </NavLink>
         </li>
         <li class="nav-item px-3">
@@ -41,6 +41,8 @@
     private bool collapseNavMenu = true;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private string GroupsOrLeagueTable => footballEngineInput.HasGroups ? "Groups" : "League Table";
 
     private void ToggleNavMenu()
     {

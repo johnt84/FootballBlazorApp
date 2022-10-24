@@ -64,16 +64,15 @@ namespace FootballEngine.Services
                 teams = await GetTeamsAndUpdateCacheAsync();
             }
 
-            var teamWithSquad = teams
-                                .Where(x => x.TeamID == teamID
-                                        && x.Squad != null && x.Squad.Count > 0)
-                                .FirstOrDefault();
+            var team = teams
+                        .Where(x => x.TeamID == teamID)
+                        .FirstOrDefault();
 
             var footballDataMatches = await GetFootballDataMatchesAsync();
 
             var fixtureAndResultLogic = new FixtureAndResultLogic(footballDataMatches, _footballEngineInput);
 
-            return await fixtureAndResultLogic.GetFixturesAndResultsByTeamAsync(teamWithSquad);
+            return await fixtureAndResultLogic.GetFixturesAndResultsByTeamAsync(team);
         }
 
         public async Task<List<FixturesAndResultsByDay>> GetFixturesAndResultsByDaysAsync()
@@ -108,7 +107,7 @@ namespace FootballEngine.Services
                 players = players
                             .Where(x => ((playerSearchCriteria.PlayerAgeMinimum.HasValue && x.Age >= playerSearchCriteria.PlayerAgeMinimum.Value) || (!playerSearchCriteria.PlayerAgeMinimum.HasValue && x.Age == x.Age))
                                 && ((playerSearchCriteria.PlayerAgeMaximum.HasValue && x.Age <= playerSearchCriteria.PlayerAgeMaximum.Value) || (!playerSearchCriteria.PlayerAgeMaximum.HasValue && x.Age == x.Age))
-                                && ((!string.IsNullOrWhiteSpace(playerSearchCriteria.PlayerCountry) && !string.IsNullOrWhiteSpace(x.Nationality) && x.Nationality.ToLower().Contains(playerSearchCriteria.PlayerCountry.ToLower())) || (string.IsNullOrWhiteSpace(playerSearchCriteria.PlayerCountry) && x.Nationality == x.Nationality))
+                                && ((!string.IsNullOrWhiteSpace(playerSearchCriteria.PlayerNationality) && !string.IsNullOrWhiteSpace(x.Nationality) && x.Nationality.ToLower().Contains(playerSearchCriteria.PlayerNationality.ToLower())) || (string.IsNullOrWhiteSpace(playerSearchCriteria.PlayerNationality) && x.Nationality == x.Nationality))
                                 && ((playerSearchCriteria.PlayerPositions != null && playerSearchCriteria.PlayerPositions.Contains(x.Position) || (playerSearchCriteria.PlayerPositions == null ||  !playerSearchCriteria.PlayerPositions.Any()) && x.Position == x.Position))
                                 && ((!string.IsNullOrWhiteSpace(playerSearchCriteria.PlayerName) && x.Name.ToLower().Contains(playerSearchCriteria.PlayerName.ToLower())) || (string.IsNullOrWhiteSpace(playerSearchCriteria.PlayerName) && x.Name == x.Name))
                                 && ((!string.IsNullOrWhiteSpace(playerSearchCriteria.TeamName) && x.TeamName.ToLower().Contains(playerSearchCriteria.TeamName.ToLower())) || (string.IsNullOrWhiteSpace(playerSearchCriteria.TeamName) && x.TeamName == x.TeamName))

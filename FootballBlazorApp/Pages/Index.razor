@@ -8,10 +8,14 @@
 </div>
 
 <ul style="font-size: 18px">
-    <li><a href="groupsOrLeagueTable">League Table</a></li>
+    <li><a href="groupsOrLeagueTable">@GroupsOrLeagueTable</a></li>
     <li><a href="fixturesandresults">Fixtures & Results</a></li>
     <li><a href="teams">Teams & Players</a></li>
     <li><a href="playersearch">Player Search</a></li>
 </ul>
+
+@code {
+    private string GroupsOrLeagueTable => footballEngineInput.HasGroups ? "Groups" : "League Table";
+}
 
 
