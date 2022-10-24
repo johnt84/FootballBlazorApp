@@ -1,5 +1,7 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">Premier League Blazor App</a>
+﻿@inject FootballEngineInput footballEngineInput;
+
+<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">@footballEngineInput.LeagueName Blazor App</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
     </button>

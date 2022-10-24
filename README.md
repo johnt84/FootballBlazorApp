@@ -13,7 +13,7 @@ The Player Search page was developed as a way to help with playing the Football 
 * Team Name - wildcard search
 * Player Age - between an age range
 * Player Nationality - wildcard search
-* Player Position - position the player plays in (Goalkepper, Defence, Midfield, Attacker) - multi-select list
+* Player Position - position the player plays in (Goalkeeper, Defence, Midfield, Attacker) - multi-select list
 * Player Confederation (football confederation that player's nationality belongs to) - multi-select list
 * Team Position - between a team position range in the league or group table
 
