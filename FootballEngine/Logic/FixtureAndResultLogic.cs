@@ -137,7 +137,10 @@ namespace FootballEngine.Services
                 Stage = GetStage(match.stage),
                 GroupOrLeagueTable = new GroupOrLeagueTableModel()
                 {
-                    Name = match.group,
+                    Name = _footballEngineInput.HasGroups 
+                                    && !string.IsNullOrWhiteSpace(match.group)
+                                ? match.group.Replace("GROUP_", "Group ") 
+                                : match.group,
                 },
                 HomeTeamGoals = match.score.fullTime.home.HasValue ? match.score.fullTime.home.Value : 0,
                 AwayTeamGoals = match.score.fullTime.away.HasValue ? match.score.fullTime.away.Value : 0,
