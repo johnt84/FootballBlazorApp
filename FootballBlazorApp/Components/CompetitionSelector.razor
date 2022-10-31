@@ -1,0 +1,46 @@
+﻿@inject FootballEngineInput FootballEngineInput;
+@inject NavigationManager NavigationManager
+
+<div style="width: 400px; margin-top: 20px;">
+    <select @onchange="OnCompetitionSelectionChanged">
+        @foreach (var competition in FootballEngineInput.AvailableCompetitions.OrderBy(x => x.CompetitionName).ToList())
+        {
+            if (competition.CompetitionCode == selectedCompetitionCode)
+            {
+                <option value="@competition.CompetitionCode" selected>@competition.CompetitionName</option>
+            }
+            else
+            {
+                <option value="@competition.CompetitionCode">@competition.CompetitionName</option>
+            }
+        }
+    </select>
+</div>
+
+@code {
+    private string selectedCompetitionCode;
+
+    protected override void OnInitialized()
+    {
+        selectedCompetitionCode = FootballEngineInput.SelectedCompetition.CompetitionCode;
+    }
+
+    private void OnCompetitionSelectionChanged(ChangeEventArgs eventArgs)
+    {
+        selectedCompetitionCode = eventArgs.Value.ToString();
+
+        var selectedCompetition = FootballEngineInput
+                                    .AvailableCompetitions
+                                    .Where(x => x.CompetitionCode == selectedCompetitionCode)
+                                    .First();
+
+        FootballEngineInput.SelectedCompetition = selectedCompetition;
+
+        FootballEngineInput.ForceCacheRefreshInput.ForceCacheRefresh = true;
+        FootballEngineInput.ForceCacheRefreshInput.StandingsRefreshed = false;
+        FootballEngineInput.ForceCacheRefreshInput.MatchesRefreshed = false;
+        FootballEngineInput.ForceCacheRefreshInput.TeamsAndPlayersRefreshed = false;
+
+        NavigationManager.NavigateTo("/", true);
+    }
+}

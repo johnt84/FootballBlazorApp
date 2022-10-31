@@ -21,8 +21,23 @@ namespace FootballEngine.Services
                                                                                     .LastRefreshTime
                                                                                     .AddHours(hoursUntilRefreshCache);
 
+        private bool IsForceCacheRefreshRequiredForStandings => _footballEngineInput.ForceCacheRefreshInput.ForceCacheRefresh
+                                                                            && !_footballEngineInput.ForceCacheRefreshInput.StandingsRefreshed;
+
+        private bool IsForceCacheRefreshRequiredForMatches => _footballEngineInput.ForceCacheRefreshInput.ForceCacheRefresh
+                                                                            && !_footballEngineInput.ForceCacheRefreshInput.MatchesRefreshed;
+
+        private bool IsForceCacheRefreshRequiredForTeamsAndPlayers => _footballEngineInput.ForceCacheRefreshInput.ForceCacheRefresh
+                                                                            && !_footballEngineInput.ForceCacheRefreshInput.TeamsAndPlayersRefreshed;
+
         private bool IsTeamsCached(FootballDataState footballDataState) => footballDataState != null
-                                                                    && footballDataState.Teams != null;
+                                                                    && footballDataState.Teams != null 
+                                                                    && !IsForceCacheRefreshRequiredForTeamsAndPlayers;
+
+        private bool IsAllCacheRefreshedAfterForceRefresh => _footballEngineInput.ForceCacheRefreshInput.ForceCacheRefresh 
+                                                                && _footballEngineInput.ForceCacheRefreshInput.StandingsRefreshed 
+                                                                && _footballEngineInput.ForceCacheRefreshInput.MatchesRefreshed 
+                                                                && _footballEngineInput.ForceCacheRefreshInput.TeamsAndPlayersRefreshed;
 
         public FootballDataService(IHttpAPIClient httpAPIClient, FootballDataState footballDataState, FootballEngineInput footballEngineInput)
         {
@@ -173,7 +188,10 @@ namespace FootballEngine.Services
 
         private async Task<FootballDataModel> GetFootballDataMatchesAsync()
         {
-            bool footballDataMatchesCached = _footballDataState != null && _footballDataState.FootballDataMatches != null;
+            bool footballDataMatchesCached = _footballDataState != null 
+                                                && _footballDataState.FootballDataMatches != null 
+                                                && !IsForceCacheRefreshRequiredForMatches;
+
             bool footballDataMatchesCacheRequiresRefresh = !footballDataMatchesCached
                                                 || CacheRequiresRefresh(_footballEngineInput.HoursUntilRefreshCache);
 
@@ -194,6 +212,10 @@ namespace FootballEngine.Services
                 _footballDataState.FootballDataMatches = footballDataMatches;
                 _footballDataState.CompetitionStartDate = GetCompetitionStartDate(startDate);
                 MarkCacheAsRefreshed();
+
+                _footballEngineInput.ForceCacheRefreshInput.MatchesRefreshed = true;
+
+                CompleteForceRefresh();
             }
 
             return footballDataMatches;
@@ -201,7 +223,10 @@ namespace FootballEngine.Services
 
         private async Task<FootballDataModel> GetFootballDataStandingsAsync()
         {
-            bool footballDataStandingsCached = _footballDataState != null && _footballDataState.FootballDataStandings != null;
+            bool footballDataStandingsCached = _footballDataState != null 
+                                                && _footballDataState.FootballDataStandings != null 
+                                                && !IsForceCacheRefreshRequiredForStandings;
+
             bool footballDataModelCacheRequiresRefresh = !footballDataStandingsCached
                                                 || CacheRequiresRefresh(_footballEngineInput.HoursUntilRefreshCache);
 
@@ -223,6 +248,10 @@ namespace FootballEngine.Services
                 _footballDataState.FootballDataStandings = footballDataStandings;
                 _footballDataState.CompetitionStartDate = GetCompetitionStartDate(footballDataStandings.season.startDate);
                 MarkCacheAsRefreshed();
+
+                _footballEngineInput.ForceCacheRefreshInput.StandingsRefreshed = true;
+
+                CompleteForceRefresh();
             }
 
             return footballDataStandings;
@@ -240,24 +269,28 @@ namespace FootballEngine.Services
             _footballDataState.CompetitionStartDate = GetCompetitionStartDate(footballDataTeams.season.startDate);
             MarkCacheAsRefreshed();
 
+            _footballEngineInput.ForceCacheRefreshInput.TeamsAndPlayersRefreshed = true;
+
+            CompleteForceRefresh();
+
             return teams;
         }
 
         private async Task<FootballDataModel> GetFootballDataMatchesFromAPIAsync()
         {
-            string json = await _httpAPIClient.GetAsync($"competitions/{_footballEngineInput.Competition}/matches/");
+            string json = await _httpAPIClient.GetAsync($"competitions/{_footballEngineInput.SelectedCompetition.CompetitionCode}/matches/");
             return JsonSerializer.Deserialize<FootballDataModel>(json);
         }
 
         private async Task<FootballDataModel> GetFootballDataStandingsFromAPIAsync()
         {
-            string json = await _httpAPIClient.GetAsync($"competitions/{_footballEngineInput.Competition}/standings/");
+            string json = await _httpAPIClient.GetAsync($"competitions/{_footballEngineInput.SelectedCompetition.CompetitionCode}/standings/");
             return JsonSerializer.Deserialize<FootballDataModel>(json);
         }
 
         private async Task<Teams> GetFootballDataTeamsFromAPIAsync()
         {
-            string json = await _httpAPIClient.GetAsync($"competitions/{_footballEngineInput.Competition}/teams/");
+            string json = await _httpAPIClient.GetAsync($"competitions/{_footballEngineInput.SelectedCompetition.CompetitionCode}/teams/");
             return JsonSerializer.Deserialize<Teams>(json);
         }
         
@@ -265,6 +298,14 @@ namespace FootballEngine.Services
         {
             _footballDataState.LastRefreshTime = DateTime.UtcNow;
             _footballDataState.IsCacheRefreshed = true;
+        }
+
+        private void CompleteForceRefresh()
+        {
+            if(IsAllCacheRefreshedAfterForceRefresh)
+            {
+                _footballEngineInput.ForceCacheRefreshInput = new ForceCacheRefreshInput();
+            }
         }
     }
 }

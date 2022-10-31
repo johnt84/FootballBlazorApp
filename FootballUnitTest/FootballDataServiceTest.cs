@@ -34,11 +34,19 @@ namespace FootballEngineUnitTest
             footballEngineInput = new FootballEngineInput()
             {
                 FootballDataAPIUrl = "https://api.testfootballdata.com/",
-                Competition = "PL",
-                HasGroups = false,
-                LeagueName = "Premier League",
+                SelectedCompetition = new FootballShared.Models.Competition()
+                {
+                    CompetitionCode = "PL",
+                    CompetitionName = "Premier League",
+                    HasGroups = false,
+                },
                 APIToken = "",
                 HoursUntilRefreshCache = 3,
+                ForceCacheRefreshInput = new ForceCacheRefreshInput()
+                {
+                    ForceCacheRefresh = false,
+                },
+
             };
 
             footballDataTeamsJson = @"{
@@ -29397,11 +29405,11 @@ namespace FootballEngineUnitTest
 
             mockHttpAPIClient = new Mock<IHttpAPIClient>();
 
-            mockHttpAPIClient.Setup(x => x.GetAsync($"competitions/{footballEngineInput.Competition}/teams/")).ReturnsAsync(footballDataTeamsJson);
+            mockHttpAPIClient.Setup(x => x.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/teams/")).ReturnsAsync(footballDataTeamsJson);
 
-            mockHttpAPIClient.Setup(x => x.GetAsync($"competitions/{footballEngineInput.Competition}/matches/")).ReturnsAsync(footballDataMatchesJson);
+            mockHttpAPIClient.Setup(x => x.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/matches/")).ReturnsAsync(footballDataMatchesJson);
 
-            mockHttpAPIClient.Setup(x => x.GetAsync($"competitions/{footballEngineInput.Competition}/standings/")).ReturnsAsync(footballDataStandingsJson);
+            mockHttpAPIClient.Setup(x => x.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/standings/")).ReturnsAsync(footballDataStandingsJson);
         }
 
         [TestClass]
@@ -29422,8 +29430,8 @@ namespace FootballEngineUnitTest
 
                 var firstGroupOrLeagueTable = groupsOrLeagueTable.FirstOrDefault();
 
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/standings/"), Times.Once());
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Never());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/standings/"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/matches/"), Times.Never());
 
                 Assert.IsNotNull(firstGroupOrLeagueTable);
                 Assert.AreEqual("Premier League Table", firstGroupOrLeagueTable.Name);
@@ -29456,7 +29464,7 @@ namespace FootballEngineUnitTest
 
                 var firstGroupOrLeagueTable = groupsOrLeagueTable.FirstOrDefault();
 
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/standings/"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/standings/"), Times.Once());
 
                 Assert.IsNotNull(firstGroupOrLeagueTable);
                 Assert.AreEqual("Premier League Table", firstGroupOrLeagueTable.Name);
@@ -29489,8 +29497,8 @@ namespace FootballEngineUnitTest
 
                 var firstGroupOrLeagueTable = groupsOrLeagueTable.FirstOrDefault();
 
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/standings/"), Times.Never);
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Never());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/standings/"), Times.Never);
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/matches/"), Times.Never());
 
                 Assert.IsNotNull(firstGroupOrLeagueTable);
                 Assert.AreEqual("Premier League Table", firstGroupOrLeagueTable.Name);
@@ -29520,8 +29528,8 @@ namespace FootballEngineUnitTest
 
                 var firstGroupOrLeagueTable = groupsOrLeagueTable.FirstOrDefault();
 
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/standings/"), Times.Once());
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Never());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/standings/"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/matches/"), Times.Never());
 
                 Assert.IsNotNull(firstGroupOrLeagueTable);
                 Assert.AreEqual("Premier League Table", firstGroupOrLeagueTable.Name);
@@ -29546,7 +29554,7 @@ namespace FootballEngineUnitTest
 
                 Assert.IsNotNull(teams);
 
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/teams/"), Times.Once());
 
                 Assert.AreEqual(20, teams.Count);
 
@@ -29573,7 +29581,7 @@ namespace FootballEngineUnitTest
 
                 Assert.IsNotNull(teams);
 
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/teams/"), Times.Once());
 
                 Assert.AreEqual(20, teams.Count);
 
@@ -29614,7 +29622,7 @@ namespace FootballEngineUnitTest
 
                 Assert.IsNotNull(teams);
 
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Never());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/teams/"), Times.Never());
 
                 Assert.AreEqual(20, teams.Count);
 
@@ -29646,8 +29654,8 @@ namespace FootballEngineUnitTest
 
                 Assert.IsNotNull(team);
 
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Once());
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/teams/"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/matches/"), Times.Once());
 
                 Assert.AreEqual("Newcastle", team.Name);
                 Assert.IsTrue(footballDataState.IsCacheRefreshed);
@@ -29671,8 +29679,8 @@ namespace FootballEngineUnitTest
 
                 Assert.IsNotNull(team);
 
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Once());
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/teams/"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/matches/"), Times.Once());
 
                 Assert.AreEqual("Newcastle", team.Name);
                 Assert.IsTrue(footballDataState.IsCacheRefreshed);
@@ -29718,8 +29726,8 @@ namespace FootballEngineUnitTest
 
                 Assert.IsNotNull(team);
 
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Never());
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/teams/"), Times.Never());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/matches/"), Times.Once());
 
                 Assert.AreEqual("Newcastle", team.Name);
                 Assert.IsTrue(footballDataState.IsCacheRefreshed);
@@ -29775,9 +29783,9 @@ namespace FootballEngineUnitTest
 
                 Assert.IsNotNull(team);
 
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Never());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/teams/"), Times.Never());
                 mockHttpAPIClient.Verify(mock => mock.GetAsync($"teams/{newcastleTeamId}"), Times.Never());
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/matches/"), Times.Once());
 
                 Assert.AreEqual("Newcastle", team.Name);
                 Assert.IsTrue(footballDataState.IsCacheRefreshed);
@@ -29836,9 +29844,9 @@ namespace FootballEngineUnitTest
 
                 Assert.IsNotNull(team);
 
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Never());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/teams/"), Times.Never());
                 mockHttpAPIClient.Verify(mock => mock.GetAsync($"teams/{newcastleTeamId}"), Times.Never());
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Never());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/matches/"), Times.Never());
 
                 Assert.AreEqual("Newcastle", team.Name);
                 Assert.IsFalse(footballDataState.IsCacheRefreshed);
@@ -29861,7 +29869,7 @@ namespace FootballEngineUnitTest
 
                 Assert.IsNotNull(fixturesAndResultsByDays);
 
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/matches/"), Times.Once());
 
                 Assert.AreEqual(9, fixturesAndResultsByDays.Count);
 
@@ -29887,7 +29895,7 @@ namespace FootballEngineUnitTest
 
                 Assert.IsNotNull(fixturesAndResultsByDays);
 
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/matches/"), Times.Once());
 
                 Assert.AreEqual(106, fixturesAndResultsByDays.Count);
 
@@ -29918,7 +29926,7 @@ namespace FootballEngineUnitTest
 
                 Assert.IsNotNull(fixturesAndResultsByDays);
 
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/matches/"), Times.Once());
 
                 Assert.AreEqual(9, fixturesAndResultsByDays.Count);
 
@@ -29949,7 +29957,7 @@ namespace FootballEngineUnitTest
 
                 Assert.IsNotNull(fixturesAndResultsByDays);
 
-                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Never());
+                mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.SelectedCompetition.CompetitionCode}/matches/"), Times.Never());
 
                 Assert.AreEqual(9, fixturesAndResultsByDays.Count);
 

@@ -2,8 +2,9 @@
 
 @inject IFootballDataService FootballDataService;
 @inject ITimeZoneOffsetService TimeZoneOffsetService;
+@inject FootballEngineInput FootballEngineInput;
 
-<h1 style="padding-bottom: 10px;">Fixtures & Results</h1>
+<h1 style="padding-bottom: 10px;">Fixtures & Results - @FootballEngineInput.SelectedCompetition.CompetitionName</h1>
 
 @if (fixturesAndResultsByDays == null && !isInvalidFixturesAndResults)
 {

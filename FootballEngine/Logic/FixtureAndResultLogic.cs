@@ -137,7 +137,7 @@ namespace FootballEngine.Services
                 Stage = GetStage(match.stage),
                 GroupOrLeagueTable = new GroupOrLeagueTableModel()
                 {
-                    Name = _footballEngineInput.HasGroups 
+                    Name = _footballEngineInput.SelectedCompetition.HasGroups 
                                     && !string.IsNullOrWhiteSpace(match.group)
                                 ? match.group.Replace("GROUP_", "Group ") 
                                 : match.group,

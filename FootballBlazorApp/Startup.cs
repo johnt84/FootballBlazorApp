@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FootballBlazorApp
 {
@@ -27,22 +29,28 @@ namespace FootballBlazorApp
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
+            var availableCompetitions = Configuration.GetSection("AvailableCompetitions").Get<List<Competition>>();
+
+            var defaultCompetition = availableCompetitions
+                                        .Where(x => x.CompetitionCode == Configuration["DefaultCompetitionCode"].ToString())
+                                        .FirstOrDefault();
+
             var footballEngineInput = new FootballEngineInput()
             {
                 FootballDataAPIUrl = Configuration["FootballDataAPIUrl"].ToString(),
-                Competition = Configuration["Competition"].ToString(),
-                HasGroups = Convert.ToBoolean(Configuration["HasGroups"].ToString()),
-                LeagueName = Configuration["LeagueName"].ToString(),
+                AvailableCompetitions = availableCompetitions,
+                SelectedCompetition = defaultCompetition ?? availableCompetitions.First(),
                 APIToken = Configuration["APIToken"].ToString(),
                 HoursUntilRefreshCache = Convert.ToInt32(Configuration["HoursUntilRefreshCache"].ToString()),
                 MinutesUntilRefreshPlayerSearchCache = Convert.ToInt32(Configuration["MinutesUntilRefreshPlayerSearchCache"].ToString()),
+                ForceCacheRefreshInput = new ForceCacheRefreshInput(),
             };
 
             services.AddSingleton(footballEngineInput);
             services.AddHttpClient<IHttpAPIClient, HttpAPIClient>();
             services.AddScoped<ITimeZoneOffsetService, TimeZoneOffsetService>();
-            services.AddSingleton<IFootballDataService, FootballDataService>();
-            services.AddSingleton<FootballDataState>();
+            services.AddScoped<IFootballDataService, FootballDataService>();
+            services.AddScoped<FootballDataState>();
             services.AddScoped<IPlayerSearchCacheService, PlayerSearchCacheService>();
             services.AddScoped<PlayerSearchState>();
         }

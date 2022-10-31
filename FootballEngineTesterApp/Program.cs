@@ -16,9 +16,12 @@ var config = builder.Build();
 var footballEngineInput = new FootballEngineInput()
 {
     FootballDataAPIUrl = config["FootballDataAPIUrl"].ToString(),
-    Competition = config["Competition"].ToString(),
-    HasGroups = Convert.ToBoolean(config["HasGroups"].ToString()),
-    LeagueName = config["LeagueName"].ToString(),
+    SelectedCompetition = new Competition()
+    {
+        CompetitionCode = config["Competition"].ToString(),
+        CompetitionName = config["LeagueName"].ToString(),
+        HasGroups = Convert.ToBoolean(config["HasGroups"].ToString()),
+    },
     APIToken = config["APIToken"].ToString(),
     HoursUntilRefreshCache = Convert.ToInt32(config["HoursUntilRefreshCache"].ToString()),
 };

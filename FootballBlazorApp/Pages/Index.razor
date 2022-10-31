@@ -1,10 +1,14 @@
 ﻿@page "/"
 
-@inject FootballEngineInput footballEngineInput;
+@inject FootballEngineInput FootballEngineInput;
 
 <div style="padding-bottom: 20px">
     <img src="brand.png" width="50" height="50" />
-    <span style="margin-left: 10px" class="h1">@footballEngineInput.LeagueName Blazor Server App</span>
+    <span style="margin-left: 10px" class="h1">Football Blazor Server App</span>
+</div>
+
+<div style="margin-bottom:20px;">
+    <span style="margin-left: 10px;" class="h2">@FootballEngineInput.SelectedCompetition.CompetitionName</span>
 </div>
 
 <ul style="font-size: 18px">
@@ -15,7 +19,7 @@
 </ul>
 
 @code {
-    private string GroupsOrLeagueTable => footballEngineInput.HasGroups ? "Groups" : "League Table";
+    private string GroupsOrLeagueTable => FootballEngineInput.SelectedCompetition.HasGroups ? "Groups" : "League Table";
 }
 
 

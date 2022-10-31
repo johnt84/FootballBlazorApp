@@ -1,6 +1,6 @@
-﻿@inject IConfiguration configuration;
+﻿@inject FootballEngineInput FootballEngineInput;
 
-@if (Convert.ToBoolean(configuration["HasGroups"].ToString()))
+@if (Convert.ToBoolean(FootballEngineInput.SelectedCompetition.HasGroups.ToString()))
 {
     <h2 style="padding-bottom: 10px;">@groupOrLeagueTableName</h2>
 }

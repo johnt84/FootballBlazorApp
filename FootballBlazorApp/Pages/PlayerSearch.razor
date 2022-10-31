@@ -2,9 +2,9 @@
 
 @inject IFootballDataService FootballDataService;
 @inject IPlayerSearchCacheService PlayerSearchCacheService;
-@inject IConfiguration Configuration;
+@inject FootballEngineInput FootballEngineInput;
 
-<h1>Player Search</h1>
+<h1>Player Search - @FootballEngineInput.SelectedCompetition.CompetitionName</h1>
 
 <style>
     .sort-link

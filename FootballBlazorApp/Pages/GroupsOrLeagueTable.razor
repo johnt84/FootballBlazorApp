@@ -1,11 +1,11 @@
 ﻿@page "/groupsOrLeagueTable"
 
 @inject IFootballDataService FootballDataService;
-@inject IConfiguration Configuration;
+@inject FootballEngineInput FootballEngineInput;
 
 <img src="@groupEmblemForDisplay" width="150px" height="150px" />
 
-@if (Convert.ToBoolean(Configuration["HasGroups"].ToString()))
+@if (Convert.ToBoolean(FootballEngineInput.SelectedCompetition.HasGroups.ToString()))
 {
     <h1 style="padding-top: 20px; padding-bottom: 20px;">Groups</h1>
 }

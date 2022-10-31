@@ -1,8 +1,9 @@
 ﻿@page "/teams"
   
 @inject IFootballDataService FootballDataService;
+@inject FootballEngineInput FootballEngineInput;
 
-<h1 style="padding-bottom: 20px;">Teams</h1>
+<h1 style="padding-bottom: 20px;">Teams - @FootballEngineInput.SelectedCompetition.CompetitionName</h1>
 
 @if (teams == null && !isInvalidTeams)
 {
