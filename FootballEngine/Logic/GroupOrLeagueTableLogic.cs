@@ -50,7 +50,7 @@ namespace FootballEngine.Services
                     GoalsAgainst = x.goalsAgainst,
                     GoalDifference = x.goalDifference,
                     PointsTotal = x.points,
-                    Form = x.form,
+                    Form = string.Join(",", x.form.Split(",").Reverse()) //Reversed order of form guide so form guide order is in ascending order from the earliest game
                 })
                 .ToList(),
             };

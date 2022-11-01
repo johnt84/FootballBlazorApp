@@ -16,9 +16,9 @@ namespace FootballEngine.Services
             _footballEngineInput = footballEngineInput;
         }
 
-        public async Task<List<FixturesAndResultsByDay>> GetFixturesAndResultsByDayAsync()
+        public List<FixturesAndResultsByDay> GetFixturesAndResultsByDay()
         {
-            var fixturesAndResults = await GetFixtureAndResultsAsync();
+            var fixturesAndResults = GetFixtureAndResults();
 
             return fixturesAndResults
                         .GroupBy(x => x.FixtureDate.Date)
@@ -30,9 +30,9 @@ namespace FootballEngine.Services
                         .ToList();
         }
 
-        public async Task<List<GroupOrLeagueTableModel>> GetFixturesAndResultsByGroupsOrLeagueTableAsync(List<GroupOrLeagueTableModel> groups)
+        public List<GroupOrLeagueTableModel> GetFixturesAndResultsByGroupsOrLeagueTable(List<GroupOrLeagueTableModel> groups)
         {
-            var fixturesAndResults = await GetFixtureAndResultsAsync();
+            var fixturesAndResults = GetFixtureAndResults();
 
             var fixturesAndResultsByGroupsOrLeagueTable = fixturesAndResults
                                                             .GroupBy(x => x.GroupOrLeagueTable.Name)
@@ -59,9 +59,9 @@ namespace FootballEngine.Services
             return groups;
         }
 
-        public async Task<FootballShared.Models.Team> GetFixturesAndResultsByTeamAsync(FootballShared.Models.Team team)
+        public FootballShared.Models.Team GetFixturesAndResultsByTeam(FootballShared.Models.Team team)
         {
-            var fixturesAndResults = await GetFixtureAndResultsAsync();
+            var fixturesAndResults = GetFixtureAndResults();
 
             var teamsFixtures = fixturesAndResults
                                     .Where(x => x.HomeTeam.Name == team.Name || x.AwayTeam.Name == team.Name)
@@ -81,7 +81,7 @@ namespace FootballEngine.Services
             return team;
         }
 
-        private async Task<List<FixtureAndResult>> GetFixtureAndResultsAsync()
+        private List<FixtureAndResult> GetFixtureAndResults()
         {
             var fixturesAndResults = _fixturesAndResultsFootballDataModel
                                         .matches

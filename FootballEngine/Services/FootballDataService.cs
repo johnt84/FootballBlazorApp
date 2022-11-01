@@ -72,7 +72,7 @@ namespace FootballEngine.Services
 
             var fixtureAndResultLogic = new FixtureAndResultLogic(footballDataMatches, _footballEngineInput);
 
-            return await fixtureAndResultLogic.GetFixturesAndResultsByTeamAsync(team);
+            return fixtureAndResultLogic.GetFixturesAndResultsByTeam(team);
         }
 
         public async Task<List<FixturesAndResultsByDay>> GetFixturesAndResultsByDaysAsync()
@@ -81,7 +81,7 @@ namespace FootballEngine.Services
 
             var fixtureAndResultLogic = new FixtureAndResultLogic(footballDataMatches, _footballEngineInput);
 
-            return await fixtureAndResultLogic.GetFixturesAndResultsByDayAsync();
+            return fixtureAndResultLogic.GetFixturesAndResultsByDay();
         }
 
         public async Task<List<GroupOrLeagueTableModel>> GetFixturesAndResultsByGroupsAsync(List<GroupOrLeagueTableModel> groupsOrLeagueTable)
@@ -95,7 +95,7 @@ namespace FootballEngine.Services
 
             var fixtureAndResultLogic = new FixtureAndResultLogic(footballDataMatches, _footballEngineInput);
 
-            return await fixtureAndResultLogic.GetFixturesAndResultsByGroupsOrLeagueTableAsync(groupsOrLeagueTable);
+            return fixtureAndResultLogic.GetFixturesAndResultsByGroupsOrLeagueTable(groupsOrLeagueTable);
         }
 
         public async Task<List<FootballShared.Models.Player>> PlayerSearchAsync(PlayerSearchCriteria playerSearchCriteria)
