@@ -30,7 +30,9 @@ namespace FootballEngine.Services
         {
             return new GroupOrLeagueTableModel()
             {
-                Name = _footballEngineInput.SelectedCompetition.HasGroups ? standing.group?.Replace(GROUP_, string.Empty) : $"{_footballEngineInput.SelectedCompetition.CompetitionName} Table",
+                Name = _footballEngineInput.SelectedCompetition.HasGroups 
+                            ? standing.group?.Replace(GROUP_, string.Empty) 
+                            : $"{_footballEngineInput.SelectedCompetition.CompetitionName} Table",
                 Emblem = emblem,
                 IsGroup = _footballEngineInput.SelectedCompetition.HasGroups,
                 GroupOrLeagueTableStandings = standing.table.ToList().Select(x => new GroupOrLeagueTableStanding()
