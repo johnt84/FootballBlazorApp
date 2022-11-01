@@ -30,7 +30,9 @@ namespace FootballEngine.Services
         {
             return new GroupOrLeagueTableModel()
             {
-                Name = _footballEngineInput.HasGroups ? standing.group?.Replace(GROUP_, string.Empty) : $"{_footballEngineInput.LeagueName} Table",
+                Name = _footballEngineInput.HasGroups 
+                            ? standing.group?.Replace(GROUP_, string.Empty) 
+                            : $"{_footballEngineInput.LeagueName} Table",
                 Emblem = emblem,
                 IsGroup = _footballEngineInput.HasGroups,
                 GroupOrLeagueTableStandings = standing.table.ToList().Select(x => new GroupOrLeagueTableStanding()
@@ -50,7 +52,9 @@ namespace FootballEngine.Services
                     GoalsAgainst = x.goalsAgainst,
                     GoalDifference = x.goalDifference,
                     PointsTotal = x.points,
-                    Form = string.Join(",", x.form.Split(",").Reverse()) //Reversed order of form guide so form guide order is in ascending order from the earliest game
+                    Form = !string.IsNullOrWhiteSpace(x.form) 
+                                ? string.Join(",", x.form.Split(",").Reverse()) //Reversed order of form guide so form guide order is in ascending order from the earliest game
+                                : x.form, 
                 })
                 .ToList(),
             };
