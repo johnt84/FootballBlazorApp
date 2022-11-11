@@ -33,6 +33,7 @@ namespace FootballBlazorApp
                 Competition = Configuration["Competition"].ToString(),
                 HasGroups = Convert.ToBoolean(Configuration["HasGroups"].ToString()),
                 LeagueName = Configuration["LeagueName"].ToString(),
+                Title = Configuration["Title"].ToString(),
                 APIToken = Configuration["APIToken"].ToString(),
                 HoursUntilRefreshCache = Convert.ToInt32(Configuration["HoursUntilRefreshCache"].ToString()),
                 MinutesUntilRefreshPlayerSearchCache = Convert.ToInt32(Configuration["MinutesUntilRefreshPlayerSearchCache"].ToString()),

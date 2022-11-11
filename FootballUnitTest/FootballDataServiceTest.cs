@@ -37,6 +37,7 @@ namespace FootballEngineUnitTest
                 Competition = "PL",
                 HasGroups = false,
                 LeagueName = "Premier League",
+                Title = "PremierLeagueBlazorApp",
                 APIToken = "",
                 HoursUntilRefreshCache = 3,
             };

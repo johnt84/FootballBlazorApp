@@ -19,6 +19,7 @@ var footballEngineInput = new FootballEngineInput()
     Competition = config["Competition"].ToString(),
     HasGroups = Convert.ToBoolean(config["HasGroups"].ToString()),
     LeagueName = config["LeagueName"].ToString(),
+    Title = config["Title"].ToString(),
     APIToken = config["APIToken"].ToString(),
     HoursUntilRefreshCache = Convert.ToInt32(config["HoursUntilRefreshCache"].ToString()),
 };
