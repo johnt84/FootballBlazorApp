@@ -1,5 +1,9 @@
 ﻿@page "/"
 @namespace FootballBlazorApp.Pages
+
+@using FootballShared.Models
+@inject FootballEngineInput footballEngineInput;
+
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = null;
@@ -10,7 +14,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PremierLeagueBlazorApp</title>
+    <title>@footballEngineInput.Title</title>
     <base href="~/" />
     <link rel="shortcut icon" href="brand.png" />
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
