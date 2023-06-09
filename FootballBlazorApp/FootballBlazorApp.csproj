@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\FootballEngine\FootballDataEngine.csproj" />
     <ProjectReference Include="..\FootballShared\FootballShared.csproj" />
   </ItemGroup>

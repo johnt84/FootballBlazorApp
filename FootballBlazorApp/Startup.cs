@@ -1,4 +1,5 @@
 using FootballBlazorApp.Data;
+using FootballDataEngine;
 using FootballEngine.API;
 using FootballEngine.API.Interfaces;
 using FootballEngine.Services;
@@ -46,6 +47,8 @@ namespace FootballBlazorApp
             services.AddSingleton<FootballDataState>();
             services.AddScoped<IPlayerSearchCacheService, PlayerSearchCacheService>();
             services.AddScoped<PlayerSearchState>();
+
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(FootballDataEngineMediatREntryPoint).Assembly));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

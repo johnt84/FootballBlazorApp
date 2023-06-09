@@ -1,4 +1,5 @@
-﻿using FootballShared.Models;
+﻿using FootballDataEngine.Queries;
+using FootballShared.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ namespace FootballBlazorApp.Pages
 {
     public partial class FixturesAndResults
     {
-        private List<FootballShared.Models.FixturesAndResultsByDay> fixturesAndResultsByDays = null;
+        private List<FixturesAndResultsByDay> fixturesAndResultsByDays = null;
 
         private bool isInvalidFixturesAndResults = false;
 
@@ -17,7 +18,7 @@ namespace FootballBlazorApp.Pages
         {
             try
             {
-                fixturesAndResultsByDays = await FootballDataService.GetFixturesAndResultsByDaysAsync();
+                fixturesAndResultsByDays = await Mediator.Send(new GetFixturesAndResultsByDayQuery());
 
                 fixturesAndResultsByDays = await UpdateFixtureTimeWithLocalOffset(fixturesAndResultsByDays);
 
