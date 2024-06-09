@@ -2,7 +2,7 @@
 
 @if (Convert.ToBoolean(configuration["HasGroups"].ToString()))
 {
-    <h2 style="padding-bottom: 10px;">@groupOrLeagueTableName</h2>
+    <h2 style="padding-bottom: 10px;">@GroupOrLeagueTableModel.Name</h2>
 }
 
 <style>
@@ -78,8 +78,6 @@
     private bool FixturesVisible { get; set; } = false;
 
     private string hideOrShow => FixturesVisible ? "Hide" : "Show";
-
-    private string groupOrLeagueTableName => $"{(GroupOrLeagueTableModel.IsGroup ? "Group " : string.Empty)} {GroupOrLeagueTableModel.Name}";
 
     private string TidyFormForDisplay(string form) => !string.IsNullOrWhiteSpace(form) 
                                                         ? form.Replace(",", string.Empty) 

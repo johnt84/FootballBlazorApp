@@ -49,13 +49,11 @@ namespace FootballEngine.Services
                                                                         .Select(x => new FixturesAndResultsByDay(){FixtureDate = x.Key,FixturesAndResults = x.ToList(),})
                                                                         .ToList());
 
-            const string GROUP = "Group";
-
             groups
                 .ForEach(x => x.FixturesAndResultsByGroupOrLeagueTable = fixturesAndResultsByGroupsOrLeagueTable
-                                                                          .Where(y => y.GroupName == $"{GROUP} {x.Name}")
+                                                                          .Where(y => y.GroupName == x.Name)
                                                                           .FirstOrDefault());
-
+            
             return groups;
         }
 
