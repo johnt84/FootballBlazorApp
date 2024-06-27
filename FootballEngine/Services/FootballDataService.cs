@@ -12,6 +12,8 @@ namespace FootballEngine.Services
         private readonly FootballDataState _footballDataState;
         private readonly FootballEngineInput _footballEngineInput;
 
+        const string EurosCompetitionCode = "EC";
+
         private DateTime GetCompetitionStartDate(DateTime startDate) => !_footballDataState.CompetitionStartDate.HasValue
                                                                             ? startDate
                                                                             : _footballDataState.CompetitionStartDate.Value;
@@ -37,6 +39,11 @@ namespace FootballEngine.Services
 
             var groupOrLeagueTableLogic = new GroupOrLeagueTableLogic(footballDataStandings, _footballEngineInput);
             var groupsOrLeagueTable = groupOrLeagueTableLogic.GetGroupsOrLeagueTable();
+
+            if (footballDataStandings.competition.code == EurosCompetitionCode)
+            {
+                groupOrLeagueTableLogic.BuildEurosThirdPlaceRankingTable(groupsOrLeagueTable);
+            }
 
             return await GetFixturesAndResultsByGroupsAsync(groupsOrLeagueTable);
         }
