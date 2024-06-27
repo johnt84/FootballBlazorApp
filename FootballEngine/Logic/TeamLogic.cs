@@ -274,12 +274,26 @@ namespace FootballEngine.Services
                     tidySquadPosition = PlayerPosition.Goalkeeper.ToString();
                     break;
                 case "Defence":
+                case "Defender":
+                case "Centre-Back":
+                case "Left-Back":
+                case "Right-Back":
                     tidySquadPosition = PlayerPosition.Defender.ToString();
                     break;
                 case "Midfield":
+                case "Midfielder":
+                case "Defensive Midfield":
+                case "Attacking Midfield":
+                case "Central Midfield":
+                case "Left Midfield":
+                case "Right Midfield":
+                case "Left Winger":
+                case "Right Winger":
                     tidySquadPosition = PlayerPosition.Midfielder.ToString();
                     break;
                 case "Offence":
+                case "Centre-Forward":
+                case "Forward":
                     tidySquadPosition = PlayerPosition.Attacker.ToString();
                     break;
                 default:
