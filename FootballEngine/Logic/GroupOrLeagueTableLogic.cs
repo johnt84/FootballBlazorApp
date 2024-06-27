@@ -11,6 +11,8 @@ namespace FootballEngine.Services
 
         const string GROUP_ = "GROUP_";
 
+        const int ThirdPlace = 3;
+
         public GroupOrLeagueTableLogic(FootballDataModel groupsFootballDataModel, FootballEngineInput footballEngineInput)
         {
             _groupsFootballDataModel = groupsFootballDataModel;
@@ -24,6 +26,20 @@ namespace FootballEngine.Services
                             .ToList()
                             .Select(x => GetGroupOrLeagueTableFromStanding(_groupsFootballDataModel.competition.emblem, x))
                             .ToList();
+        }
+
+        public void BuildEurosThirdPlaceRankingTable(List<GroupOrLeagueTableModel> groups)
+        {
+            if (!groups.All(group => group.IsGroup))
+            {
+                return;
+            }
+            
+            var thirdPlaceGroup = GetThirdPlaceRankingTeams(groups);
+
+            SetThirdPlaceRankingPositions(thirdPlaceGroup.GroupOrLeagueTableStandings);
+
+           groups.Add(thirdPlaceGroup);
         }
 
         private GroupOrLeagueTableModel GetGroupOrLeagueTableFromStanding(string emblem, Standing standing)
@@ -58,6 +74,50 @@ namespace FootballEngine.Services
                 })
                 .ToList(),
             };
+        }
+
+        private GroupOrLeagueTableModel GetThirdPlaceRankingTeams(List<GroupOrLeagueTableModel> groups)
+        {
+            var thirdPlaceGroup = new GroupOrLeagueTableModel
+            {
+                Name = "Third Place Rankings",
+                IsGroup = true,
+                GroupOrLeagueTableStandings = new List<GroupOrLeagueTableStanding>()
+            };
+
+            var standings = new List<GroupOrLeagueTableStanding>();
+
+            foreach (var group in groups)
+            {
+                var thirdPlaceTeam = group.GroupOrLeagueTableStandings
+                                        .Where(standing => standing.Position == ThirdPlace)
+                                        .FirstOrDefault();
+
+                if (thirdPlaceTeam != null)
+                {
+                    thirdPlaceGroup.GroupOrLeagueTableStandings.Add(thirdPlaceTeam);
+                }
+            }
+
+            thirdPlaceGroup.GroupOrLeagueTableStandings = thirdPlaceGroup.GroupOrLeagueTableStandings
+                                                .OrderByDescending(standing => standing.PointsTotal)
+                                                .ThenByDescending(standing => standing.GoalDifference)
+                                                .ThenByDescending(standing => standing.GoalsScored)
+                                                .ToList();
+
+            return thirdPlaceGroup;
+        }
+
+        private void SetThirdPlaceRankingPositions(List<GroupOrLeagueTableStanding> thirdRankingPlaceStandings)
+        {
+            int currentPosition = 0;
+
+            foreach (var standing in thirdRankingPlaceStandings)
+            {
+                standing.Position = currentPosition + 1;
+
+                currentPosition++;
+            }
         }
     }
 }
