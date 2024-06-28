@@ -1,6 +1,6 @@
 ﻿@inject IConfiguration configuration;
 
-@if (Convert.ToBoolean(configuration["HasGroups"].ToString()))
+@if (HasGroups)
 {
     <h2 style="padding-bottom: 10px;">@GroupOrLeagueTableModel.Name</h2>
 }
@@ -65,14 +65,16 @@
     }
 </table>
 
-<div>
-    <button class="toggleFixtureAndResultsVisibilityButton" @onclick="@ToggleVisbilityOfFixtures">@hideOrShow Fixtures</button>
-    @if (FixturesVisible)
-    {
-        <FixturesAndResultsByGroupOrLeagueTable FixturesAndResultsByGroupOrLeagueTableModel="@GroupOrLeagueTableModel.FixturesAndResultsByGroupOrLeagueTable"></FixturesAndResultsByGroupOrLeagueTable>
-    }
-</div>
-
+@if (HasGroups && GroupOrLeagueTableModel.Name != GroupNames.ThirdPlaceRankings)
+{
+    <div>
+        <button class="toggleFixtureAndResultsVisibilityButton" @onclick="@ToggleVisbilityOfFixtures">@hideOrShow Fixtures</button>
+        @if (FixturesVisible)
+        {
+            <FixturesAndResultsByGroupOrLeagueTable FixturesAndResultsByGroupOrLeagueTableModel="@GroupOrLeagueTableModel.FixturesAndResultsByGroupOrLeagueTable"></FixturesAndResultsByGroupOrLeagueTable>
+        }
+    </div>
+}
 
 @code {
     private bool FixturesVisible { get; set; } = false;
@@ -87,6 +89,8 @@
         groupName == GroupNames.ThirdPlaceRankings && standing.ThirdRankingPosition is not null
                         ? standing.ThirdRankingPosition.Value 
                         : standing.Position;
+
+    private bool HasGroups => Convert.ToBoolean(configuration["HasGroups"].ToString());
 
     [Parameter]
     public FootballShared.Models.GroupOrLeagueTableModel GroupOrLeagueTableModel { get; set; }
