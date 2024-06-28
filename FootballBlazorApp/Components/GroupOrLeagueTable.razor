@@ -39,7 +39,7 @@
     {
         <tr>
             <td>
-                <span style="padding-right: 12px;">@groupOrLeagueTableStanding.Position</span>
+                <span style="padding-right: 12px;">@GetPosition(GroupOrLeagueTableModel.Name, groupOrLeagueTableStanding)</span>
                 <span>
                     <span style="padding-right:8px">
                         <img src="@groupOrLeagueTableStanding.Team.TeamCrestUrl" width="40" height="55" />
@@ -82,6 +82,11 @@
     private string TidyFormForDisplay(string form) => !string.IsNullOrWhiteSpace(form) 
                                                         ? form.Replace(",", string.Empty) 
                                                         : string.Empty;
+
+    public int GetPosition(string groupName, GroupOrLeagueTableStanding standing) =>
+        groupName == GroupNames.ThirdPlaceRankings && standing.ThirdRankingPosition is not null
+                        ? standing.ThirdRankingPosition.Value 
+                        : standing.Position;
 
     [Parameter]
     public FootballShared.Models.GroupOrLeagueTableModel GroupOrLeagueTableModel { get; set; }
