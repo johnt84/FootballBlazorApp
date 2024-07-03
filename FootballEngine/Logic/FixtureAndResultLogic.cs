@@ -158,11 +158,14 @@ namespace FootballEngine.Services
                 case "LAST_16":
                     stage = Stage.Round_of_16;
                     break;
-                case "QUARTER_FINAL":
+                case "QUARTER_FINALS":
                     stage = Stage.Quarter_Final;
                     break;
-                case "SEMI_FINAL":
+                case "SEMI_FINALS":
                     stage = Stage.Semi_Final;
+                    break;
+                case "THIRD_PLACE":
+                    stage = Stage.Third_Place;
                     break;
                 case "FINAL":
                     stage = Stage.Final;
