@@ -8,6 +8,7 @@
             Round_of_16,
             Quarter_Final,
             Semi_Final,
+            Third_Place,
             Final,
         }
 
