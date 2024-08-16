@@ -10,6 +10,8 @@ namespace FootballEngine.Services
         private readonly FootballDataModel _fixturesAndResultsFootballDataModel;
         private readonly FootballEngineInput _footballEngineInput;
 
+        private const int NextFiveFixtures = 5;
+
         public FixtureAndResultLogic(FootballDataModel fixturesAndResultsFootballDataModel, FootballEngineInput footballEngineInput)
         {
             _fixturesAndResultsFootballDataModel = fixturesAndResultsFootballDataModel;
@@ -66,12 +68,14 @@ namespace FootballEngine.Services
                                     .ToList();
 
             var teamsFixturesAndResultsByDays = teamsFixtures
+                                                .Where(x => x.FixtureDate.Date > DateTime.UtcNow)
                                                 .GroupBy(x => x.FixtureDate.Date)
                                                 .Select(x => new FixturesAndResultsByDay() 
                                                 { 
                                                     FixtureDate = x.Key,
                                                     FixturesAndResults = x.ToList(), 
                                                 })
+                                                .Take(NextFiveFixtures)
                                                 .ToList();
 
             team.FixturesAndResultsByDays = teamsFixturesAndResultsByDays;
