@@ -1,44 +1,43 @@
 ﻿using FootballEngine.Services.Interfaces;
 using FootballShared.Models;
 
-namespace FootballEngine.Services
+namespace FootballEngine.Services;
+
+public class PlayerSearchCacheService : IPlayerSearchCacheService
 {
-    public class PlayerSearchCacheService : IPlayerSearchCacheService
+    private readonly PlayerSearchState _playerSearchState;
+    private readonly FootballEngineInput _footballEngineInput;
+
+    public PlayerSearchCacheService(PlayerSearchState playerSearchState, FootballEngineInput footballEngineInput)
     {
-        private readonly PlayerSearchState _playerSearchState;
-        private readonly FootballEngineInput _footballEngineInput;
+        _playerSearchState = playerSearchState;
+        _footballEngineInput = footballEngineInput;
+    }
 
-        public PlayerSearchCacheService(PlayerSearchState playerSearchState, FootballEngineInput footballEngineInput)
+    public void SavePlayerSearchToCache(PlayerSearchCriteria playerSearchCriteria)
+    {
+        _playerSearchState.PlayerSearchCriteria = playerSearchCriteria;
+        _playerSearchState.LastRefreshTime = DateTime.UtcNow;
+    }
+
+    public PlayerSearchCriteria GetPlayerSearchFromCache()
+    {
+        if (_playerSearchState == null)
         {
-            _playerSearchState = playerSearchState;
-            _footballEngineInput = footballEngineInput;
+            return null;
         }
 
-        public void SavePlayerSearchToCache(PlayerSearchCriteria playerSearchCriteria)
+        var playerSearchCriteria = new PlayerSearchCriteria();
+
+        if (DateTime.UtcNow > _playerSearchState
+        .LastRefreshTime
+                                        .AddMinutes(_footballEngineInput.MinutesUntilRefreshPlayerSearchCache))
         {
-            _playerSearchState.PlayerSearchCriteria = playerSearchCriteria;
-            _playerSearchState.LastRefreshTime = DateTime.UtcNow;
+            return playerSearchCriteria;
         }
-
-        public PlayerSearchCriteria GetPlayerSearchFromCache()
+        else
         {
-            if (_playerSearchState == null)
-            {
-                return null;
-            }
-
-            var playerSearchCriteria = new PlayerSearchCriteria();
-
-            if (DateTime.UtcNow > _playerSearchState
-            .LastRefreshTime
-                                            .AddMinutes(_footballEngineInput.MinutesUntilRefreshPlayerSearchCache))
-            {
-                return playerSearchCriteria;
-            }
-            else
-            {
-                return _playerSearchState.PlayerSearchCriteria ?? playerSearchCriteria;
-            }
+            return _playerSearchState.PlayerSearchCriteria ?? playerSearchCriteria;
         }
     }
 }

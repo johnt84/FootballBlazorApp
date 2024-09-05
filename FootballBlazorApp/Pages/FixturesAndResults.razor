@@ -5,21 +5,21 @@
 
 <h1 style="padding-bottom: 10px;">Fixtures & Results</h1>
 
-@if (fixturesAndResultsByDays == null && !isInvalidFixturesAndResults)
+@if (FixturesAndResultsByDays == null && !IsInvalidFixturesAndResults)
 {
     <p><em>Loading...</em></p>
 }
-else if (isInvalidFixturesAndResults)
+else if (IsInvalidFixturesAndResults)
 {
     <ErrorMessage Error="@ErrorMessage"></ErrorMessage>
 }
-else if (!fixturesAndResultsByDays.Any())
+else if (!FixturesAndResultsByDays.Any())
 {
     <ErrorMessage Error="No fixtures could be found"></ErrorMessage>
 }
 else
 {
-    @foreach (var fixtureandResultByDay in fixturesAndResultsByDays)
+    @foreach (var fixtureandResultByDay in FixturesAndResultsByDays)
     {
         <FixturesAndResultsByDayComponent ComponentSource="Enums.ComponentSource.FixturesAndResults" FixturesAndResultsByDayModel="fixtureandResultByDay"></FixturesAndResultsByDayComponent>
     }

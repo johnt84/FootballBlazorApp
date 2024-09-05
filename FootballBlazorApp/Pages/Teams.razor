@@ -4,7 +4,7 @@
 
 <h1 style="padding-bottom: 20px;">Teams</h1>
 
-@if (teams == null && !isInvalidTeams)
+@if (TeamsList == null && !isInvalidTeams)
 {
     <p><em>Loading...</em></p>
 }
@@ -12,18 +12,32 @@ else if (isInvalidTeams)
 {
     <ErrorMessage Error="@ErrorMessage"></ErrorMessage>
 }
-else if (!teams.Any())
+else if (!TeamsList.Any())
 {
     <ErrorMessage Error="No teams could be found"></ErrorMessage>
 }
 else
 {
-    <div class="teamsContainer">
+    if (IsSmall)
+    {
         <ul>
-            @foreach (var team in teams)
+            @foreach (var team in TeamsList)
             {
                 <TeamTile Team="team"></TeamTile>
             }
         </ul>
-    </div>
+    }
+    else
+    {
+        <div class="teamsContainer">
+            <ul>
+                @foreach (var team in TeamsList)
+                {
+                    <TeamTile Team="team"></TeamTile>
+                }
+            </ul>
+        </div>
+    }
 }
+
+<MediaQuery Media="@BlazorPro.BlazorSize.Breakpoints.SmallDown" @bind-Matches="IsSmall" />

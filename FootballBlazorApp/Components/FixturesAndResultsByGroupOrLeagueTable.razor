@@ -1,4 +1,4 @@
-﻿@if (fixturesAndResultsExist)
+﻿@if (FixturesAndResultsExist)
 {
     <h3 style="padding-bottom: 10px;">Fixtures</h3>
     
@@ -11,7 +11,7 @@
 }
 
 @code {
-    private bool fixturesAndResultsExist => FixturesAndResultsByGroupOrLeagueTableModel != null 
+    private bool FixturesAndResultsExist => FixturesAndResultsByGroupOrLeagueTableModel != null 
                                             && (FixturesAndResultsByGroupOrLeagueTableModel.FixturesAndResults?.Count ?? 0) > 0;
 
     [Parameter]

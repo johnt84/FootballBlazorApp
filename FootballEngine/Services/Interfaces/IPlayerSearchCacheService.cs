@@ -1,10 +1,9 @@
 ﻿using FootballShared.Models;
 
-namespace FootballEngine.Services.Interfaces
+namespace FootballEngine.Services.Interfaces;
+
+public interface IPlayerSearchCacheService
 {
-    public interface IPlayerSearchCacheService
-    {
-        void SavePlayerSearchToCache(PlayerSearchCriteria playerSearchCriteria);
-        PlayerSearchCriteria GetPlayerSearchFromCache();
-    }
+    void SavePlayerSearchToCache(PlayerSearchCriteria playerSearchCriteria);
+    PlayerSearchCriteria GetPlayerSearchFromCache();
 }
