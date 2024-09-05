@@ -1,6 +1,4 @@
-﻿@inject IConfiguration configuration;
-
-@if (HasGroups)
+﻿@if (HasGroups)
 {
     <h2 style="padding-bottom: 10px;">@GroupOrLeagueTableModel.Name</h2>
 }
@@ -22,17 +20,46 @@
 <table class="table">
     <tr>
         <th></th>
-        <th>Played</th>
-        <th>Won</th>
-        <th>Drawn</th>
-        <th>Lost</th>
-        <th>Goals For</th>
-        <th>Goals Against</th>
-        <th>Goal Difference</th>
-        <th>Points</th>
-        @if(!GroupOrLeagueTableModel.IsGroup)
+
+        @if (IsSmall)
         {
-            <th>Form (Last 5 games)</th>
+            <th>
+                Pld
+            </th>
+        }
+        else
+        {
+            <th>
+                Played
+            </th>
+        }
+
+        @if (!IsSmall)
+        {
+            <th>Won</th>
+            <th>Drawn</th>
+            <th>Lost</th>
+            <th>Goals For</th>
+            <th>Goals Against</th>
+        }
+
+        @if (IsSmall)
+        {
+            <th>
+                GD
+            </th>
+            <th>
+                Pts
+            </th>
+        }
+        else
+        {
+            <th>
+                Goal Difference
+            </th>
+            <th>
+                Points
+            </th>
         }
     </tr>
     @foreach (var groupOrLeagueTableStanding in GroupOrLeagueTableModel.GroupOrLeagueTableStandings)
@@ -50,17 +77,18 @@
                 </span>
             </td>
             <td>@groupOrLeagueTableStanding.GamesPlayed</td>
-            <td>@groupOrLeagueTableStanding.GamesWon</td>
-            <td>@groupOrLeagueTableStanding.GamesDrawn</td>
-            <td>@groupOrLeagueTableStanding.GamesLost</td>
-            <td>@groupOrLeagueTableStanding.GoalsScored</td>
-            <td>@groupOrLeagueTableStanding.GoalsAgainst</td>
+
+            @if (!IsSmall)
+            {
+                <td>@groupOrLeagueTableStanding.GamesWon</td>
+                <td>@groupOrLeagueTableStanding.GamesDrawn</td>
+                <td>@groupOrLeagueTableStanding.GamesLost</td>
+                <td>@groupOrLeagueTableStanding.GoalsScored</td>
+                <td>@groupOrLeagueTableStanding.GoalsAgainst</td>
+            }
+
             <td>@groupOrLeagueTableStanding.GoalDifference</td>
             <td>@groupOrLeagueTableStanding.PointsTotal</td>
-            @if(!GroupOrLeagueTableModel.IsGroup)
-            {
-                <td>@TidyFormForDisplay(groupOrLeagueTableStanding.Form)</td>
-            }
         </tr>
     }
 </table>
@@ -76,27 +104,4 @@
     </div>
 }
 
-@code {
-    private bool FixturesVisible { get; set; } = false;
-
-    private string hideOrShow => FixturesVisible ? "Hide" : "Show";
-
-    private string TidyFormForDisplay(string form) => !string.IsNullOrWhiteSpace(form) 
-                                                        ? form.Replace(",", string.Empty) 
-                                                        : string.Empty;
-
-    public int GetPosition(string groupName, GroupOrLeagueTableStanding standing) =>
-        groupName == GroupNames.ThirdPlaceRankings && standing.ThirdRankingPosition is not null
-                        ? standing.ThirdRankingPosition.Value 
-                        : standing.Position;
-
-    private bool HasGroups => Convert.ToBoolean(configuration["HasGroups"].ToString());
-
-    [Parameter]
-    public FootballShared.Models.GroupOrLeagueTableModel GroupOrLeagueTableModel { get; set; }
-
-    private void ToggleVisbilityOfFixtures()
-    {
-        FixturesVisible = !FixturesVisible;
-    }
-}
+<MediaQuery Media="@BlazorPro.BlazorSize.Breakpoints.SmallDown" @bind-Matches="IsSmall" />

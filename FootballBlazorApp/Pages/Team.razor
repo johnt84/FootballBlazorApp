@@ -2,11 +2,11 @@
 
 @inject IFootballDataService FootballDataService;
 
-@if (team == null && !isInvalidTeam)
+@if (team == null && !IsInvalidTeam)
 {
     <p><em>Loading...</em></p>
 }
-else if (isInvalidTeam)
+else if (IsInvalidTeam)
 {
     <ErrorMessage Error="@ErrorMessage"></ErrorMessage>
 }
@@ -18,12 +18,16 @@ else
 {
     <table style="margin-bottom: 20px;">
         <tr>
-            <td style="padding-right: 12px;"><img src="@team.TeamCrestUrl" width="60" height="75" /></td>
-            <td><h1>@team.Name</h1></td>
+            <td style="padding-right: 12px;">
+                <img src="@team.TeamCrestUrl" width="60" height="75" />
+            </td>
+            <td>
+                <h1>@team.Name</h1>
+            </td>
         </tr>
     </table>
 
-    <table class="table" style="width: 630px;">
+    <table class="table" style="@GetOverviewTableStyle(IsSmall)">
         <tr>
             <th>Year Founded</th>
             <th>Website</th>
@@ -32,7 +36,9 @@ else
         </tr>
         <tr>
             <td>@team.YearFounded</td>
-            <td><a href="@team.Website">Team Website</a></td>
+            <td>
+                <a href="@team.Website">Team Website</a>
+            </td>
             <td>@team.TeamColours</td>
             <td>@team.HomeStadium</td>
         </tr>
@@ -40,11 +46,11 @@ else
 
     <Squad PlayersByPosition="team.SquadByPosition" Coach="team.Coach"></Squad>
 
-    @if (fixturesAndResultsExist)
+    @if (FixturesAndResultsExist)
     {
         <h2 style="padding-bottom: 10px;">Fixtures</h2>
 
-        <button class="toggleFixtureAndResultsVisibilityButton" @onclick="@ToggleVisbilityOfFixtures">@hideOrShow Fixtures</button>
+        <button class="toggleFixtureAndResultsVisibilityButton" @onclick="@ToggleVisbilityOfFixtures">@HideOrShow Fixtures</button>
         @if (FixturesVisible)
         {
             <table class="table" style="width: 450px; margin-bottom: 20px;">
@@ -56,3 +62,5 @@ else
         }
     }
 }
+
+<MediaQuery Media="@BlazorPro.BlazorSize.Breakpoints.SmallDown" @bind-Matches="IsSmall" />
