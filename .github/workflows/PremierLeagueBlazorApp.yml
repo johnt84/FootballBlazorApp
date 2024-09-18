@@ -1,26 +1,21 @@
-name: Build and deploy .NET Core app to Windows WebApp PremierLeagueBlazorApp
+name: Build and deploy .NET Core application to Web App PremierLeagueBlazorApp
 on:
   push:
     branches:
     - master
-    paths:
-    - 'FootballBlazorApp/**'
-    - 'FootballEngine/**'
 env:
   AZURE_WEBAPP_NAME: PremierLeagueBlazorApp
-  AZURE_WEBAPP_PACKAGE_PATH: FootballBlazorApp/publish
-  AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.PremierLeagueBlazorApp_e1fb }}
+  AZURE_WEBAPP_PACKAGE_PATH: FootballBlazorApp\published
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 8.0.x
   WORKING_DIRECTORY: FootballBlazorApp
-  TEST_DIRECTORY: FootballUnitTest
 jobs:
-  build-and-deploy:
+  build:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+    - uses: actions/checkout@v4
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
     - name: Restore
@@ -28,17 +23,26 @@ jobs:
     - name: Build
       run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
     - name: Test
-      run: dotnet test "${{ env.TEST_DIRECTORY }}"
+      run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
     - name: Publish
       run: dotnet publish "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
+    - name: Publish Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: webapp
+        path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    steps:
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v3
+      with:
+        name: webapp
+        path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
     - name: Deploy to Azure WebApp
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.PremierLeagueBlazorApp_B2EE }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-        publish-profile: ${{ env.AZURE_WEBAPP_PUBLISH_PROFILE }}
-    - name: Publish Artifacts
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: webapp
-        path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
