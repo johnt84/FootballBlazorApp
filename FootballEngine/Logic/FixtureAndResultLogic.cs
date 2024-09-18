@@ -68,7 +68,7 @@ public class FixtureAndResultLogic : IFixtureAndResultLogic
                                 .ToList();
 
         var teamsFixturesAndResultsByDays = teamsFixtures
-                                            .Where(x => x.FixtureDate.Date > DateTime.UtcNow)
+                                            .Where(x => x.GameStatus == GameStatus.Scheduled)
                                             .GroupBy(x => x.FixtureDate.Date)
                                             .Select(x => new FixturesAndResultsByDay() 
                                             { 
