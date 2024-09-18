@@ -24,6 +24,8 @@ public partial class FixtureAndResult
 
     private string GetTeamName(Team team) => TeamExists(team) ? team.Name : TBD;
 
+    private string GetTeamUrl(int teamId) => $"team/{teamId}";
+
     private string GetScore(FootballShared.Models.FixtureAndResult fixtureAndResult) => $"{fixtureAndResult.HomeTeamGoals} - {fixtureAndResult.AwayTeamGoals}";
 
     private string GetScoreOrKickOffTime(FootballShared.Models.FixtureAndResult fixtureAndResult) =>

@@ -10,7 +10,9 @@
     <td>
         @if (FixtureAndResultModel.HomeTeam.TeamID > 0)
         {
-            <a href="team/@FixtureAndResultModel.HomeTeam.TeamID">@GetTeamName(FixtureAndResultModel.HomeTeam)</a>
+            <a href="@GetTeamUrl(FixtureAndResultModel.HomeTeam.TeamID)" target="_parent">
+                @GetTeamName(FixtureAndResultModel.HomeTeam)
+            </a>
         }
         else
         {
@@ -21,7 +23,9 @@
     <td>
         @if (FixtureAndResultModel.AwayTeam.TeamID > 0)
         {
-            <a href="team/@FixtureAndResultModel.AwayTeam.TeamID">@GetTeamName(FixtureAndResultModel.AwayTeam)</a>
+            <a href="@GetTeamUrl(FixtureAndResultModel.AwayTeam.TeamID)" target="_parent">
+                @GetTeamName(FixtureAndResultModel.AwayTeam)
+            </a>
         }
         else
         {
