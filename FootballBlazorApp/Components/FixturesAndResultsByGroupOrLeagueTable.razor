@@ -2,7 +2,7 @@
 {
     <h3 style="padding-bottom: 10px;">Fixtures</h3>
     
-    <table class="table" style="width: 450px; margin-bottom: 20px;">
+    <table class="table" style="@TableStyle">
         @foreach (var fixtureandResultByDay in FixturesAndResultsByGroupOrLeagueTableModel.FixturesAndResultsByDays)
         {
             <FixturesAndResultsByDayComponent ComponentSource="Enums.ComponentSource.FixturesByGroup" FixturesAndResultsByDayModel="fixtureandResultByDay"></FixturesAndResultsByDayComponent>
@@ -10,10 +10,4 @@
     </table>
 }
 
-@code {
-    private bool FixturesAndResultsExist => FixturesAndResultsByGroupOrLeagueTableModel != null 
-                                            && (FixturesAndResultsByGroupOrLeagueTableModel.FixturesAndResults?.Count ?? 0) > 0;
-
-    [Parameter]
-    public FootballShared.Models.FixturesAndResultsByGroupOrLeagueTable FixturesAndResultsByGroupOrLeagueTableModel { get; set; }
-}
+<MediaQuery Media="@BlazorPro.BlazorSize.Breakpoints.SmallDown" @bind-Matches="IsSmall" />
