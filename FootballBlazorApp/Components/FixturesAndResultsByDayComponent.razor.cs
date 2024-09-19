@@ -21,8 +21,8 @@ public partial class FixturesAndResultsByDayComponent
 
 
     private string TableStyle => ComponentSource == Enums.ComponentSource.FixturesAndResults && !IsSmall
-                                        ? "width : 670px; margin-bottom: 20px;"
-                                        : "width : 480px; margin-bottom: 20px;";
+                                        ? "width: 670px; margin-bottom: 20px;"
+                                        : "width: 340px; margin-bottom: 20px;";
 
     private List<FootballShared.Models.FixtureAndResult> FixturesAndResults;
 

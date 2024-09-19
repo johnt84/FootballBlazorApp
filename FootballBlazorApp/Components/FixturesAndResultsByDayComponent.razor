@@ -1,12 +1,21 @@
 ﻿@if (FixturesAndResultsExist)
 {
-    @switch (ComponentSource)
+    switch (ComponentSource)
     {
         case Enums.ComponentSource.FixturesAndResults:
         case Enums.ComponentSource.Team:
-            <h2 style="padding-bottom: 10px;">
-                @FixtureDate.ToString("dddd dd MMMM yyyy")
-            </h2>
+            @if (!IsSmall)
+            {
+                <h2 style="padding-bottom: 10px;">
+                    @FixtureDate.ToString("dddd dd MMMM yyyy")
+                </h2>
+            }
+            else
+            {
+                <h4 style="padding-bottom: 10px;">
+                    @FixtureDate.ToString("dddd dd MMMM yyyy")
+                </h4>
+            }
             break;
         case Enums.ComponentSource.FixturesByGroup:
             <h4 style="padding-bottom: 10px;">
