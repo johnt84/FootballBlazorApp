@@ -5,6 +5,7 @@
         public string FootballDataAPIUrl { get; set; }
         public string Competition { get; set; }
         public bool HasGroups { get; set; }
+        public bool HasThirdPlaceRanking { get; set; }
         public string LeagueName { get; set; }
         public string Title { get; set; }
         public string APIToken { get; set; }

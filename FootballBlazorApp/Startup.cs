@@ -34,6 +34,7 @@ public class Startup
             FootballDataAPIUrl = Configuration["FootballDataAPIUrl"].ToString(),
             Competition = Configuration["Competition"].ToString(),
             HasGroups = Convert.ToBoolean(Configuration["HasGroups"].ToString()),
+            HasThirdPlaceRanking = Convert.ToBoolean(Configuration["HasThirdPlaceRanking"].ToString()),
             LeagueName = Configuration["LeagueName"].ToString(),
             Title = Configuration["Title"].ToString(),
             APIToken = Configuration["APIToken"].ToString(),

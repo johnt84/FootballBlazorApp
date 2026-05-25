@@ -29,7 +29,7 @@ public class GroupOrLeagueTableLogic : IGroupOrLeagueTableLogic
                         .ToList();
     }
 
-    public void BuildEurosThirdPlaceRankingTable(List<GroupOrLeagueTableModel> groups)
+    public void BuildThirdPlaceRankingTable(List<GroupOrLeagueTableModel> groups)
     {
         if (!groups.All(group => group.IsGroup))
         {
@@ -104,6 +104,7 @@ public class GroupOrLeagueTableLogic : IGroupOrLeagueTableLogic
                                             .OrderByDescending(standing => standing.PointsTotal)
                                             .ThenByDescending(standing => standing.GoalDifference)
                                             .ThenByDescending(standing => standing.GoalsScored)
+                                            .ThenBy(standing => standing.Team.Name)
                                             .ToList();
 
         return thirdPlaceGroup;
