@@ -36,6 +36,7 @@ namespace FootballEngineUnitTest
                 FootballDataAPIUrl = "https://api.testfootballdata.com/",
                 Competition = "PL",
                 HasGroups = false,
+                HasThirdPlaceRanking = false,
                 LeagueName = "Premier League",
                 Title = "PremierLeagueBlazorApp",
                 APIToken = "",
