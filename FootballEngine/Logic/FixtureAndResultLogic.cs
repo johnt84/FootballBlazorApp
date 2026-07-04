@@ -159,6 +159,9 @@ public class FixtureAndResultLogic : IFixtureAndResultLogic
             case "GROUP_STAGE":
                 stage = Stage.Group;
                 break;
+            case "LAST_32":
+                stage = Stage.Round_of_32;
+                break;
             case "LAST_16":
                 stage = Stage.Round_of_16;
                 break;
