@@ -29410,7 +29410,7 @@ namespace FootballEngineUnitTest
         public class GetGroupsOrLeagueTableAsync : FootballDataServiceTest
         {
             [TestMethod]
-            public async Task WhenGroupsOrLeagueTableFootballDataNeverCachedAndCompetitionDoesNotUseGroups_ThenStandingsReturnedFromAPIAndCacheRefreshed()
+            public async Task WhenGroupsOrLeagueTableFootballDataNeverCachedAndCompetitionDoesNotUseGroups_ThenStandingsReturnedFromAPIAndCacheRefreshedAsync()
             {
                 SetupTests();
 
@@ -29429,12 +29429,12 @@ namespace FootballEngineUnitTest
 
                 Assert.IsNotNull(firstGroupOrLeagueTable);
                 Assert.AreEqual("Premier League Table", firstGroupOrLeagueTable.Name);
-                Assert.AreEqual(20, firstGroupOrLeagueTable.GroupOrLeagueTableStandings.Count);
+                Assert.HasCount(20, firstGroupOrLeagueTable.GroupOrLeagueTableStandings);
                 Assert.IsTrue(footballDataState.IsCacheRefreshed);
             }
 
             [TestMethod]
-            public async Task WhenGroupsOrLeagueTableFootballDataCachedMoreThanOrEqualToNumberOfHoursToRefreshTime_ThenStandingsReturnedFromAPIButMatchesReturnedFromCacheAfterCacheRefresh()
+            public async Task WhenGroupsOrLeagueTableFootballDataCachedMoreThanOrEqualToNumberOfHoursToRefreshTime_ThenStandingsReturnedFromAPIButMatchesReturnedFromCacheAfterCacheRefreshAsync()
             {
                 SetupTests();
 
@@ -29462,12 +29462,12 @@ namespace FootballEngineUnitTest
 
                 Assert.IsNotNull(firstGroupOrLeagueTable);
                 Assert.AreEqual("Premier League Table", firstGroupOrLeagueTable.Name);
-                Assert.AreEqual(20, firstGroupOrLeagueTable.GroupOrLeagueTableStandings.Count);
+                Assert.HasCount(20, firstGroupOrLeagueTable.GroupOrLeagueTableStandings);
                 Assert.IsTrue(footballDataState.IsCacheRefreshed);
             }
 
             [TestMethod]
-            public async Task WhenGroupsOrLeagueTableFootballDataStandingsAndMatchesCachedLessThanNumberOfHoursToRefreshTime_ThenStandingsAndMatchesReturnedFromCache()
+            public async Task WhenGroupsOrLeagueTableFootballDataStandingsAndMatchesCachedLessThanNumberOfHoursToRefreshTime_ThenStandingsAndMatchesReturnedFromCacheAsync()
             {
                 SetupTests();
 
@@ -29496,12 +29496,12 @@ namespace FootballEngineUnitTest
 
                 Assert.IsNotNull(firstGroupOrLeagueTable);
                 Assert.AreEqual("Premier League Table", firstGroupOrLeagueTable.Name);
-                Assert.AreEqual(20, firstGroupOrLeagueTable.GroupOrLeagueTableStandings.Count);
+                Assert.HasCount(20, firstGroupOrLeagueTable.GroupOrLeagueTableStandings);
                 Assert.IsFalse(footballDataState.IsCacheRefreshed);
             }
 
             [TestMethod]
-            public async Task WhenOnlyGroupsOrLeagueTableFootballDataMatchesCached_ThenMatchesReturnedFromCacheButStandingsReturnedFromAPI()
+            public async Task WhenOnlyGroupsOrLeagueTableFootballDataMatchesCached_ThenMatchesReturnedFromCacheButStandingsReturnedFromAPIAsync()
             {
                 SetupTests();
 
@@ -29527,7 +29527,7 @@ namespace FootballEngineUnitTest
 
                 Assert.IsNotNull(firstGroupOrLeagueTable);
                 Assert.AreEqual("Premier League Table", firstGroupOrLeagueTable.Name);
-                Assert.AreEqual(20, firstGroupOrLeagueTable.GroupOrLeagueTableStandings.Count);
+                Assert.HasCount(20, firstGroupOrLeagueTable.GroupOrLeagueTableStandings);
                 Assert.IsTrue(footballDataState.IsCacheRefreshed);
             }
         }
@@ -29536,7 +29536,7 @@ namespace FootballEngineUnitTest
         public class GetTeamsAsync : FootballDataServiceTest
         {
             [TestMethod]
-            public async Task WhenTeamsNeverCached_ThenTeamsReturnedFromAPIAndCacheRefreshed()
+            public async Task WhenTeamsNeverCached_ThenTeamsReturnedFromAPIAndCacheRefreshedAsync()
             {
                 SetupTests();
 
@@ -29550,7 +29550,7 @@ namespace FootballEngineUnitTest
 
                 mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Once());
 
-                Assert.AreEqual(20, teams.Count);
+                Assert.HasCount(20, teams);
 
                 var firstTeam = teams.FirstOrDefault();
 
@@ -29560,7 +29560,7 @@ namespace FootballEngineUnitTest
             }
 
             [TestMethod]
-            public async Task WhenTeamsFootballDataStateNotNullButTeamsCacheIsNull_ThenTeamsReturnedFromAPIAndCacheRefreshed()
+            public async Task WhenTeamsFootballDataStateNotNullButTeamsCacheIsNull_ThenTeamsReturnedFromAPIAndCacheRefreshedAsync()
             {
                 SetupTests();
 
@@ -29577,7 +29577,7 @@ namespace FootballEngineUnitTest
 
                 mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Once());
 
-                Assert.AreEqual(20, teams.Count);
+                Assert.HasCount(20, teams);
 
                 var firstTeam = teams.FirstOrDefault();
 
@@ -29587,7 +29587,7 @@ namespace FootballEngineUnitTest
             }
 
             [TestMethod]
-            public async Task WhenTeamsCached_ThenTeamsReturnedFromCache()
+            public async Task WhenTeamsCached_ThenTeamsReturnedFromCacheAsync()
             {
                 SetupTests();
 
@@ -29618,7 +29618,7 @@ namespace FootballEngineUnitTest
 
                 mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/teams/"), Times.Never());
 
-                Assert.AreEqual(20, teams.Count);
+                Assert.HasCount(20, teams);
 
                 var firstTeam = teams.FirstOrDefault();
 
@@ -29634,7 +29634,7 @@ namespace FootballEngineUnitTest
             int newcastleTeamId = 67;
 
             [TestMethod]
-            public async Task WhenTeamsNeverCached_ThenTeamsAndTeamSquadAndMatchesReturnedFromAPIAndCacheRefreshed()
+            public async Task WhenTeamsNeverCached_ThenTeamsAndTeamSquadAndMatchesReturnedFromAPIAndCacheRefreshedAsync()
             {
                 teamId = newcastleTeamId;
 
@@ -29656,7 +29656,7 @@ namespace FootballEngineUnitTest
             }
 
             [TestMethod]
-            public async Task WhenTeamFootballDataStateNotNullButTeamsCacheIsNull_ThenTeamsAndTeamSquadAndMatchesReturnedFromAPIAndCacheRefreshed()
+            public async Task WhenTeamFootballDataStateNotNullButTeamsCacheIsNull_ThenTeamsAndTeamSquadAndMatchesReturnedFromAPIAndCacheRefreshedAsync()
             {
                 teamId = newcastleTeamId;
 
@@ -29681,7 +29681,7 @@ namespace FootballEngineUnitTest
             }
 
             [TestMethod]
-            public async Task WhenTeamsCachedButTeamSquadAndMatchesNotCached_ThenTeamsReturnedFromCacheButTeamSquadAndMatchesReturnedFromAPI()
+            public async Task WhenTeamsCachedButTeamSquadAndMatchesNotCached_ThenTeamsReturnedFromCacheButTeamSquadAndMatchesReturnedFromAPIAsync()
             {
                 teamId = newcastleTeamId;
 
@@ -29728,7 +29728,7 @@ namespace FootballEngineUnitTest
             }
 
             [TestMethod]
-            public async Task WhenTeamsAndTeamSquadCachedButMatchesAreNotCached_ThenTeamsAndTeamSquadReturnedFromCacheButMatchesReturnedFromAPI()
+            public async Task WhenTeamsAndTeamSquadCachedButMatchesAreNotCached_ThenTeamsAndTeamSquadReturnedFromCacheButMatchesReturnedFromAPIAsync()
             {
                 teamId = newcastleTeamId;
 
@@ -29786,7 +29786,7 @@ namespace FootballEngineUnitTest
             }
 
             [TestMethod]
-            public async Task WhenTeamsAndTeamSquadAndMatchesCached_ThenTeamsAndTeamSquadAndMatchesReturnedFromCache()
+            public async Task WhenTeamsAndTeamSquadAndMatchesCached_ThenTeamsAndTeamSquadAndMatchesReturnedFromCacheAsync()
             {
                 teamId = newcastleTeamId;
 
@@ -29851,7 +29851,7 @@ namespace FootballEngineUnitTest
         public class GetFixturesAndResultsByDaysAsync : FootballDataServiceTest
         {
             [TestMethod]
-            public async Task WhenFixturesNeverCached_ThenFootbalDataFixturesReturnedFromAPIAndCacheRefreshed()
+            public async Task WhenFixturesNeverCached_ThenFootbalDataFixturesReturnedFromAPIAndCacheRefreshedAsync()
             {
                 SetupTests();
 
@@ -29865,7 +29865,7 @@ namespace FootballEngineUnitTest
 
                 mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
 
-                Assert.AreEqual(9, fixturesAndResultsByDays.Count);
+                Assert.HasCount(9, fixturesAndResultsByDays);
 
                 var firstFixture = fixturesAndResultsByDays.FirstOrDefault();
 
@@ -29874,7 +29874,7 @@ namespace FootballEngineUnitTest
                 Assert.IsTrue(footballDataState.IsCacheRefreshed);
             }
 
-            public async Task WhenFixturesFootballDataStateNotNullButFootballDataMatchesCacheIsNull_ThenFootbalDataFixturesReturnedFromAPIAndCacheRefreshed()
+            public async Task WhenFixturesFootballDataStateNotNullButFootballDataMatchesCacheIsNull_ThenFootbalDataFixturesReturnedFromAPIAndCacheRefreshedAsync()
             {
                 SetupTests();
 
@@ -29891,7 +29891,7 @@ namespace FootballEngineUnitTest
 
                 mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
 
-                Assert.AreEqual(106, fixturesAndResultsByDays.Count);
+                Assert.HasCount(106, fixturesAndResultsByDays);
 
                 var firstFixture = fixturesAndResultsByDays.FirstOrDefault();
 
@@ -29901,7 +29901,7 @@ namespace FootballEngineUnitTest
             }
 
             [TestMethod]
-            public async Task WhenFixturesCachedMoreThanOrEqualToNumberOfHoursToRefreshTime_ThenFixturesReturnedFromAPIAndCacheRefreshed()
+            public async Task WhenFixturesCachedMoreThanOrEqualToNumberOfHoursToRefreshTime_ThenFixturesReturnedFromAPIAndCacheRefreshedAsync()
             {
                 SetupTests();
 
@@ -29922,7 +29922,7 @@ namespace FootballEngineUnitTest
 
                 mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Once());
 
-                Assert.AreEqual(9, fixturesAndResultsByDays.Count);
+                Assert.HasCount(9, fixturesAndResultsByDays);
 
                 var firstFixture = fixturesAndResultsByDays.FirstOrDefault();
 
@@ -29932,7 +29932,7 @@ namespace FootballEngineUnitTest
             }
 
             [TestMethod]
-            public async Task WhenFixturesCachedLessThanNumberOfHoursToRefreshTime_ThenFixturesReturnedFromCache()
+            public async Task WhenFixturesCachedLessThanNumberOfHoursToRefreshTime_ThenFixturesReturnedFromCacheAsync()
             {
                 SetupTests();
 
@@ -29953,7 +29953,7 @@ namespace FootballEngineUnitTest
 
                 mockHttpAPIClient.Verify(mock => mock.GetAsync($"competitions/{footballEngineInput.Competition}/matches/"), Times.Never());
 
-                Assert.AreEqual(9, fixturesAndResultsByDays.Count);
+                Assert.HasCount(9, fixturesAndResultsByDays);
 
                 var firstFixture = fixturesAndResultsByDays.FirstOrDefault();
 
