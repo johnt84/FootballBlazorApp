@@ -3,6 +3,6 @@
     public class FixturesAndResultsByDay
     {
         public DateTime FixtureDate { get; set; }
-        public List<FixtureAndResult> FixturesAndResults { get; set; }
+        public List<FixtureAndResult> FixturesAndResults { get; set; } = null!;
     }
 }
