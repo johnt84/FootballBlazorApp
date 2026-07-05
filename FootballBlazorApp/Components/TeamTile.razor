@@ -4,7 +4,7 @@
             <img src="@Team.TeamCrestUrl" width="40" height="55" />
         </span>
         <span>
-            <a href="team/@Team.TeamID">@Team.Name</a>
+            <a href="team/@Team.TeamID" style="@(Team?.IsEliminated == true ? "text-decoration: line-through;" : string.Empty)">@Team.Name</a>
         </span>
     </span>
 </li>

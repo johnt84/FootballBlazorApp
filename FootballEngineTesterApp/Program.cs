@@ -17,6 +17,7 @@ var footballEngineInput = new FootballEngineInput()
 {
     FootballDataAPIUrl = config["FootballDataAPIUrl"].ToString(),
     Competition = config["Competition"].ToString(),
+    IsCupCompetition = Convert.ToBoolean(config["IsCupCompetition"].ToString()),
     HasGroups = Convert.ToBoolean(config["HasGroups"].ToString()),
     HasThirdPlaceRanking = Convert.ToBoolean(config["HasThirdPlaceRanking"].ToString()),
     LeagueName = config["LeagueName"].ToString(),

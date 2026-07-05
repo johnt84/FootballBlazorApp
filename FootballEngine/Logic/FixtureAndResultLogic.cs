@@ -1,6 +1,7 @@
 ﻿using FootballEngine.Logic.Interfaces;
 using FootballShared.Models;
 using FootballShared.Models.FootballData;
+using FootballShared.Values;
 using static FootballShared.Models.Enums;
 
 namespace FootballEngine.Services;
@@ -80,7 +81,57 @@ public class FixtureAndResultLogic : IFixtureAndResultLogic
 
         team.FixturesAndResultsByDays = teamsFixturesAndResultsByDays;
 
+        if (!_footballEngineInput.IsCupCompetition)
+        {
+            return team; 
+        }
+
+        team.IsCupCompetition = true;
+        team.IsEliminated = !team.FixturesAndResultsByDays.Any();
+        team.CupStage = team.IsEliminated ?? false ?
+                            ConstantValues.Eliminated : 
+                            team.FixturesAndResultsByDays.Last().FixturesAndResults.Last().Stage.ToString().Replace("_", " ");
+
         return team;
+    }
+
+    public List<FootballShared.Models.Team> SetEliminationStatusForCupCompetition(List<FootballShared.Models.Team> teams, FootballEngineInput footballEngineInput)
+    {
+        var fixturesAndResults = GetFixtureAndResults();
+
+        teams.ForEach(team =>
+        {
+            var stageReached = GetStageReached(fixturesAndResults, team);
+
+            if (stageReached is not null)
+            { 
+                if (stageReached == Stage.Final.ToString())
+                {
+                    var wonFinal = GetWonFinal(fixturesAndResults, team);
+
+                    team.IsEliminated = !wonFinal;
+
+                    team.CupStage = wonFinal ? ConstantValues.Champions : ConstantValues.RunnersUp;
+                }
+                else
+                {
+                    team.IsEliminated = !GetTeamHasUpcomingFixture(fixturesAndResults, team);
+
+                    team.IsCupCompetition = true;
+
+                    if (team.IsEliminated ?? false)
+                    {
+                        team.CupStage = $"{ConstantValues.Eliminated} at {stageReached} stage";
+                    }
+                    else
+                    {
+                        team.CupStage = $"{ConstantValues.Reached} {stageReached} stage";
+                    }
+                } 
+            }
+        });
+
+        return teams;
     }
 
     private List<FixtureAndResult> GetFixtureAndResults()
@@ -93,6 +144,39 @@ public class FixtureAndResultLogic : IFixtureAndResultLogic
 
         return PopulateNotDrawnFixtures(fixturesAndResults);
     }
+
+    private bool GetTeamHasUpcomingFixture(List<FixtureAndResult> fixturesAndResults, FootballShared.Models.Team team) =>
+        fixturesAndResults.Any(x => x.GameStatus == GameStatus.Scheduled
+                                        && (IsTeamMatch(x.HomeTeam, team)
+                                            || IsTeamMatch(x.AwayTeam, team)));
+
+    private string? GetStageReached(List<FixtureAndResult> fixturesAndResults, FootballShared.Models.Team team) =>
+        fixturesAndResults
+            .Where(fixture => IsTeamMatch(fixture.HomeTeam, team) || IsTeamMatch(fixture.AwayTeam, team))
+            .Select(fixture => fixture.Stage.ToString().Replace("_", " "))
+            .LastOrDefault();
+
+    private bool GetWonFinal(List<FixtureAndResult> fixturesAndResults, FootballShared.Models.Team team)
+    {
+        var finalFixture = fixturesAndResults
+                            .Where(fixture => fixture.Stage == Stage.Final
+                                                && fixture.GameStatus == GameStatus.Result
+                                                && (IsTeamMatch(fixture.HomeTeam, team)
+                                                    || IsTeamMatch(fixture.AwayTeam, team)))
+                            .LastOrDefault();
+
+        if (finalFixture is null)
+        {
+            return false;
+        }
+
+        return (IsTeamMatch(finalFixture.HomeTeam, team) && finalFixture.Result == Result.Home_Win)
+                || (IsTeamMatch(finalFixture.AwayTeam, team) && finalFixture.Result == Result.Away_Win);
+    }
+
+    private bool IsTeamMatch(FootballShared.Models.Team fixtureTeam, FootballShared.Models.Team team) =>
+        (fixtureTeam.TeamID != 0 && fixtureTeam.TeamID == team.TeamID)
+        || string.Equals(fixtureTeam.Name, team.Name, StringComparison.OrdinalIgnoreCase);
 
     private List<FixtureAndResult> PopulateNotDrawnFixtures(List<FixtureAndResult> fixturesAndResults)
     {

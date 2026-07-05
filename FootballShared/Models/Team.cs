@@ -6,6 +6,9 @@ namespace FootballShared.Models
     {
         public int TeamID { get; set; }
         public string Name { get; set; }
+        public bool IsCupCompetition { get; set; }
+        public bool? IsEliminated { get; set; }
+        public string? CupStage { get; set; }
         public string TeamCrestUrl { get; set; }
         public int? YearFounded { get; set; }
         public string Website { get; set; }

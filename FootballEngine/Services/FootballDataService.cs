@@ -241,6 +241,14 @@ public class FootballDataService : IFootballDataService
 
         var teams = teamLogic.GetTeams();
 
+        if (teams.Any(team => team.IsCupCompetition))
+        {
+            var footballDataMatches = await GetFootballDataMatchesAsync();
+            var fixtureAndResultLogic = new FixtureAndResultLogic(footballDataMatches, _footballEngineInput);
+
+            teams = fixtureAndResultLogic.SetEliminationStatusForCupCompetition(teams, _footballEngineInput);
+        }
+
         _footballDataState.Teams = teams;
         _footballDataState.CompetitionStartDate = GetCompetitionStartDate(footballDataTeams.season.startDate);
         MarkCacheAsRefreshed();

@@ -177,35 +177,38 @@ public class TeamLogic : ITeamLogic
 
     public List<FootballShared.Models.Team> GetTeams()
     {
+        bool isCupCompetition = string.Equals(_teamsFootballDataModel?.competition?.type, "CUP", StringComparison.OrdinalIgnoreCase);
+
         var teams =  _teamsFootballDataModel
-                    .teams
-                    .ToList()
-                    .Select(x => new FootballShared.Models.Team()
-                    {
-                        TeamID = x.id,
-                        Name = x.shortName,
-                        TeamCrestUrl = x.crest,
-                        YearFounded = x.founded,
-                        Website = x.website,
-                        TeamColours = x.clubColors,
-                        HomeStadium = x.venue,
-                        Squad = x.squad
-                                .ToList()
-                                .Select(y => GetPlayerFromSquad(y, x.id, x.shortName))
-                                .ToList(),
-                        Coach = new FootballShared.Models.Coach() { 
-                            CoachID = x.coach.id,
-                            Name = x.coach.name,
-                            DateOfBirth = x.coach.dateOfBirth,
-                            Nationality = x.coach.nationality,
-                            Age = CalculateAge(x.coach.dateOfBirth),
+                        .teams
+                        .ToList()
+                        .Select(x => new FootballShared.Models.Team()
+                        {
                             TeamID = x.id,
-                            TeamName = x.shortName,
-                            ConfederationForDisplay = GetPlayerConfederationForDisplay(x.coach.nationality),
-                        },
-                    })
-                    .OrderBy(x => x.Name)
-                    .ToList();
+                            Name = x.shortName,
+                            IsCupCompetition = isCupCompetition,
+                            TeamCrestUrl = x.crest,
+                            YearFounded = x.founded,
+                            Website = x.website,
+                            TeamColours = x.clubColors,
+                            HomeStadium = x.venue,
+                            Squad = x.squad
+                                    .ToList()
+                                    .Select(y => GetPlayerFromSquad(y, x.id, x.shortName))
+                                    .ToList(),
+                            Coach = new FootballShared.Models.Coach() { 
+                                CoachID = x.coach.id,
+                                Name = x.coach.name,
+                                DateOfBirth = x.coach.dateOfBirth,
+                                Nationality = x.coach.nationality,
+                                Age = CalculateAge(x.coach.dateOfBirth),
+                                TeamID = x.id,
+                                TeamName = x.shortName,
+                                ConfederationForDisplay = GetPlayerConfederationForDisplay(x.coach.nationality),
+                            },
+                        })
+                        .OrderBy(x => x.Name)
+                        .ToList();
 
         teams.ForEach(x => x.SquadByPosition = GetPlayersByPosition(x.Squad));
 
