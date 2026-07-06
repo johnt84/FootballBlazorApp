@@ -127,10 +127,13 @@ public class FixtureAndResultLogic : IFixtureAndResultLogic
             .Select(fixture => fixture.Stage.ToString().Replace("_", " "))
             .LastOrDefault();
 
-    private bool GetWonFinal(List<FixtureAndResult> fixturesAndResults, FootballShared.Models.Team team)
+    private bool GetWonFinal(
+        List<FixtureAndResult> fixturesAndResults, 
+        FootballShared.Models.Team team, 
+        Stage stage)
     {
         var finalFixture = fixturesAndResults
-                            .Where(fixture => fixture.Stage == Stage.Final
+                            .Where(fixture => fixture.Stage == stage
                                                 && fixture.GameStatus == GameStatus.Result
                                                 && (IsTeamMatch(fixture.HomeTeam, team)
                                                     || IsTeamMatch(fixture.AwayTeam, team)))
@@ -191,13 +194,20 @@ public class FixtureAndResultLogic : IFixtureAndResultLogic
             return;
         }
 
-        if (stageReached == Stage.Final.ToString())
+        if (stageReached == Stage.Final.ToString() || stageReached == Stage.Third_Place.ToString())
         {
-            var wonFinal = GetWonFinal(fixturesAndResults, team);
+            var wonFinal = GetWonFinal(fixturesAndResults, team, Enum.Parse<Stage>(stageReached));
 
-            team.IsEliminated = !wonFinal;
-
-            team.CupStage = wonFinal ? ConstantValues.Champions : ConstantValues.RunnersUp;
+            if (stageReached == Stage.Final.ToString())
+            {
+                team.IsEliminated = !wonFinal;
+                team.CupStage = wonFinal ? ConstantValues.Champions : ConstantValues.RunnersUp;
+            }
+            else if (stageReached == Stage.Third_Place.ToString())
+            {
+                team.IsEliminated = true;
+                team.CupStage = wonFinal ? ConstantValues.ThirdPlace : ConstantValues.FourthPlace;
+            }
         }
         else
         {
