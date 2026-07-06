@@ -6,6 +6,6 @@ namespace FootballEngine.Logic.Interfaces
     {
         List<FixturesAndResultsByDay> GetFixturesAndResultsByDay();
         List<GroupOrLeagueTableModel> GetFixturesAndResultsByGroupsOrLeagueTable(List<GroupOrLeagueTableModel> groups);
-        FootballShared.Models.Team GetFixturesAndResultsByTeam(FootballShared.Models.Team team);
+        FootballShared.Models.Team GetFixturesAndResultsByTeam(Team team, FootballEngineInput footballEngineInput);
     }
 }

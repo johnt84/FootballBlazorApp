@@ -60,7 +60,7 @@ public class FixtureAndResultLogic : IFixtureAndResultLogic
         return groups;
     }
 
-    public FootballShared.Models.Team GetFixturesAndResultsByTeam(FootballShared.Models.Team team)
+    public FootballShared.Models.Team GetFixturesAndResultsByTeam(FootballShared.Models.Team team, FootballEngineInput footballEngineInput)
     {
         var fixturesAndResults = GetFixtureAndResults();
 
@@ -81,16 +81,14 @@ public class FixtureAndResultLogic : IFixtureAndResultLogic
 
         team.FixturesAndResultsByDays = teamsFixturesAndResultsByDays;
 
-        if (!_footballEngineInput.IsCupCompetition)
+        team.IsCupCompetition = _footballEngineInput.IsCupCompetition;
+
+        if (!team.IsCupCompetition)
         {
-            return team; 
+            return team;
         }
 
-        team.IsCupCompetition = true;
-        team.IsEliminated = !team.FixturesAndResultsByDays.Any();
-        team.CupStage = team.IsEliminated ?? false ?
-                            ConstantValues.Eliminated : 
-                            team.FixturesAndResultsByDays.Last().FixturesAndResults.Last().Stage.ToString().Replace("_", " ");
+        SetTeamCupStatus(fixturesAndResults, team, footballEngineInput);
 
         return team;
     }
@@ -101,34 +99,7 @@ public class FixtureAndResultLogic : IFixtureAndResultLogic
 
         teams.ForEach(team =>
         {
-            var stageReached = GetStageReached(fixturesAndResults, team);
-
-            if (stageReached is not null)
-            { 
-                if (stageReached == Stage.Final.ToString())
-                {
-                    var wonFinal = GetWonFinal(fixturesAndResults, team);
-
-                    team.IsEliminated = !wonFinal;
-
-                    team.CupStage = wonFinal ? ConstantValues.Champions : ConstantValues.RunnersUp;
-                }
-                else
-                {
-                    team.IsEliminated = !GetTeamHasUpcomingFixture(fixturesAndResults, team);
-
-                    team.IsCupCompetition = true;
-
-                    if (team.IsEliminated ?? false)
-                    {
-                        team.CupStage = $"{ConstantValues.Eliminated} at {stageReached} stage";
-                    }
-                    else
-                    {
-                        team.CupStage = $"{ConstantValues.Reached} {stageReached} stage";
-                    }
-                } 
-            }
+            SetTeamCupStatus(fixturesAndResults, team, footballEngineInput);
         });
 
         return teams;
@@ -202,6 +173,49 @@ public class FixtureAndResultLogic : IFixtureAndResultLogic
                         && string.IsNullOrEmpty(x.AwayTeam.Name));
 
         return fixturesAndResults;
+    }
+
+    private void SetTeamCupStatus(
+        List<FixtureAndResult> fixturesAndResults, FootballShared.Models.Team team, 
+        FootballEngineInput footballEngineInput)
+    {
+        if (!footballEngineInput.IsCupCompetition)
+        {
+            return;
+        }
+        
+        var stageReached = GetStageReached(fixturesAndResults, team);
+
+        if (stageReached is null)
+        {
+            return;
+        }
+
+        if (stageReached == Stage.Final.ToString())
+        {
+            var wonFinal = GetWonFinal(fixturesAndResults, team);
+
+            team.IsEliminated = !wonFinal;
+
+            team.CupStage = wonFinal ? ConstantValues.Champions : ConstantValues.RunnersUp;
+        }
+        else
+        {
+            string stageReachedName = stageReached == Stage.Group.ToString() && !footballEngineInput.HasGroups
+                                        ? ConstantValues.League
+                                        : stageReached;
+
+            team.IsEliminated = !GetTeamHasUpcomingFixture(fixturesAndResults, team);
+
+            if (team.IsEliminated ?? false)
+            {
+                team.CupStage = $"{ConstantValues.Eliminated} at {stageReachedName} stage";
+            }
+            else
+            {
+                team.CupStage = $"{ConstantValues.Reached} {stageReached} stage";
+            }
+        }
     }
 
     private FixtureAndResult GetFixtureAndResultFromMatch(Match match, int timeZoneOffsetInMinutes)
