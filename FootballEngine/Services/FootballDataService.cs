@@ -38,6 +38,11 @@ public class FootballDataService : IFootballDataService
         var groupOrLeagueTableLogic = new GroupOrLeagueTableLogic(footballDataStandings, _footballEngineInput);
         var groupsOrLeagueTable = groupOrLeagueTableLogic.GetGroupsOrLeagueTable();
 
+        if (_footballEngineInput.IsCupCompetition)
+        {
+            groupsOrLeagueTable = await SetCupCompetitionStatusForGroupsOrLeagueTableAsync(groupsOrLeagueTable);
+        }
+
         if (_footballEngineInput.HasThirdPlaceRanking)
         {
             groupOrLeagueTableLogic.BuildThirdPlaceRankingTable(groupsOrLeagueTable);
@@ -56,9 +61,9 @@ public class FootballDataService : IFootballDataService
         return await GetTeamsAndUpdateCacheAsync();
     }
 
-    public async Task<FootballShared.Models.Team> GetTeamAsync(int teamID)
+    public async Task<FootballShared.Models.Team?> GetTeamAsync(int teamID)
     {
-        List<FootballShared.Models.Team> teams = null;
+        List<FootballShared.Models.Team> teams = null!;
 
         if (IsTeamsCached(_footballDataState))
         {
@@ -73,11 +78,16 @@ public class FootballDataService : IFootballDataService
                     .Where(x => x.TeamID == teamID)
                     .FirstOrDefault();
 
+        if (team is null)
+        {
+            return null;
+        }
+
         var footballDataMatches = await GetFootballDataMatchesAsync();
 
         var fixtureAndResultLogic = new FixtureAndResultLogic(footballDataMatches, _footballEngineInput);
 
-        return fixtureAndResultLogic.GetFixturesAndResultsByTeam(team);
+        return fixtureAndResultLogic.GetFixturesAndResultsByTeam(team, _footballEngineInput);
     }
 
     public async Task<List<FixturesAndResultsByDay>> GetFixturesAndResultsByDaysAsync()
@@ -241,7 +251,7 @@ public class FootballDataService : IFootballDataService
 
         var teams = teamLogic.GetTeams();
 
-        if (teams.Any(team => team.IsCupCompetition))
+        if (_footballEngineInput.IsCupCompetition)
         {
             var footballDataMatches = await GetFootballDataMatchesAsync();
             var fixtureAndResultLogic = new FixtureAndResultLogic(footballDataMatches, _footballEngineInput);
@@ -254,6 +264,27 @@ public class FootballDataService : IFootballDataService
         MarkCacheAsRefreshed();
 
         return teams;
+    }
+
+    private async Task<List<GroupOrLeagueTableModel>> SetCupCompetitionStatusForGroupsOrLeagueTableAsync(List<GroupOrLeagueTableModel> groupsOrLeagueTable)
+    {
+        var teams = await GetTeamsAsync();
+
+        foreach (var standing in groupsOrLeagueTable.SelectMany(group => group.GroupOrLeagueTableStandings))
+        {
+            var team = teams.FirstOrDefault(team => team.TeamID == standing.Team.TeamID
+                                                    || string.Equals(team.Name, standing.Team.Name, StringComparison.OrdinalIgnoreCase));
+            if (team is null)
+            {
+                continue;
+            }
+
+            standing.Team.IsCupCompetition = team.IsCupCompetition;
+            standing.Team.IsEliminated = team.IsEliminated;
+            standing.Team.CupStage = team.CupStage;
+        }
+
+        return groupsOrLeagueTable;
     }
 
     private async Task<FootballDataModel> GetFootballDataMatchesFromAPIAsync()

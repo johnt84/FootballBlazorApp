@@ -32,6 +32,7 @@ public class Startup
         var footballEngineInput = new FootballEngineInput()
         {
             FootballDataAPIUrl = Configuration["FootballDataAPIUrl"].ToString(),
+            IsCupCompetition = Convert.ToBoolean(Configuration["IsCupCompetition"].ToString()),
             Competition = Configuration["Competition"].ToString(),
             HasGroups = Convert.ToBoolean(Configuration["HasGroups"].ToString()),
             HasThirdPlaceRanking = Convert.ToBoolean(Configuration["HasThirdPlaceRanking"].ToString()),

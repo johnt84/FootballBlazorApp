@@ -22,7 +22,7 @@ else
                 <img src="@team.TeamCrestUrl" width="60" height="75" />
             </td>
             <td>
-                <h1 style="@(team.IsEliminated ?? false ? "text-decoration: line-through;" : string.Empty)">@team.Name</h1>
+                <h1 style="@(team?.IsEliminated == true ? "text-decoration: line-through;" : string.Empty)">@team.Name</h1>
                 @if (team.IsCupCompetition)
                 {
                     <p><strong>Status:</strong> @(team.CupStage)</p>
