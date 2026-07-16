@@ -121,13 +121,13 @@ public class FixtureAndResultLogic : IFixtureAndResultLogic
                                         && (IsTeamMatch(x.HomeTeam, team)
                                             || IsTeamMatch(x.AwayTeam, team)));
 
-    private string? GetStageReached(List<FixtureAndResult> fixturesAndResults, FootballShared.Models.Team team) =>
+    private Stage? GetStageReached(List<FixtureAndResult> fixturesAndResults, FootballShared.Models.Team team) =>
         fixturesAndResults
             .Where(fixture => IsTeamMatch(fixture.HomeTeam, team) || IsTeamMatch(fixture.AwayTeam, team))
-            .Select(fixture => fixture.Stage.ToString().Replace("_", " "))
+            .Select(fixture => fixture.Stage)
             .LastOrDefault();
 
-    private bool GetWonFinal(
+    private bool? GetWonFinal(
         List<FixtureAndResult> fixturesAndResults, 
         FootballShared.Models.Team team, 
         Stage stage)
@@ -141,7 +141,7 @@ public class FixtureAndResultLogic : IFixtureAndResultLogic
 
         if (finalFixture is null)
         {
-            return false;
+            return null;
         }
 
         return (IsTeamMatch(finalFixture.HomeTeam, team) && finalFixture.Result == Result.Home_Win)
@@ -194,26 +194,35 @@ public class FixtureAndResultLogic : IFixtureAndResultLogic
             return;
         }
 
-        if (stageReached == Stage.Final.ToString() || stageReached == Stage.Third_Place.ToString())
-        {
-            var wonFinal = GetWonFinal(fixturesAndResults, team, Enum.Parse<Stage>(stageReached));
+        team.StageReached = stageReached.Value;
 
-            if (stageReached == Stage.Final.ToString())
+        if (team.StageReached == Stage.Final || team.StageReached == Stage.Third_Place)
+        {
+            var wonFinal = GetWonFinal(fixturesAndResults, team, team.StageReached);
+
+            if (wonFinal is null)
+            {
+                team.CupStage = $"{ConstantValues.Reached} {team.StageReached.ToString().Replace("_", " ")} stage";
+
+                return;
+            }
+
+            if (team.StageReached == Stage.Final)
             {
                 team.IsEliminated = !wonFinal;
-                team.CupStage = wonFinal ? ConstantValues.Champions : ConstantValues.RunnersUp;
+                team.CupStage = wonFinal.Value ? ConstantValues.Champions : ConstantValues.RunnersUp;
             }
-            else if (stageReached == Stage.Third_Place.ToString())
+            else if (team.StageReached == Stage.Third_Place)
             {
                 team.IsEliminated = true;
-                team.CupStage = wonFinal ? ConstantValues.ThirdPlace : ConstantValues.FourthPlace;
+                team.CupStage = wonFinal.Value ? ConstantValues.ThirdPlace : ConstantValues.FourthPlace;
             }
         }
         else
         {
-            string stageReachedName = stageReached == Stage.Group.ToString() && !footballEngineInput.HasGroups
+            string stageReachedName = team.StageReached == Stage.Group && !footballEngineInput.HasGroups
                                         ? ConstantValues.League
-                                        : stageReached;
+                                        : team.StageReached.ToString().Replace("_", " ");
 
             team.IsEliminated = !GetTeamHasUpcomingFixture(fixturesAndResults, team);
 
